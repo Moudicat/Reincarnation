@@ -1,0 +1,8 @@
+{
+  "name": "reincarnation-server",
+  "version": "0.0.1",
+  "description": "A blog system based on Koa2 MongoDB.",
+  "main": "index.js",
+  "author": "Moudicat <i@0u0b.com>",
+  "license": "MIT"
+}
