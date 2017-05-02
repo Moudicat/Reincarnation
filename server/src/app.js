@@ -1,20 +1,28 @@
 /**
  * Created by Moudi on 2017/4/30.
  */
-import Koa from 'koa';
-import bodyParser from 'koa-better-body';
-import kcors from 'kcors';
-import convert from 'koa-convert';
-import KoaRouter from 'koa-router';
+const Koa = require('koa');
+const bodyParser = require('koa-better-body');
+// const kcors = require('kcors');
+const convert = require('koa-convert');
+const Router = require('koa-router');
 
 const app = new Koa();
 
-app.use(convert(kcors));
+const router = new Router();
+// app.use(kcors);
 
 app.use(convert(bodyParser({
   fields: 'body'
 })));
 
+app.use(async (ctx) => {
+  ctx.body = {
+    url: ctx.url,
+    request: ctx.request.body
+  };
+});
+
 app.listen(8111, () => {
-  console.log(111111);
+  console.log('监听开始');
 });

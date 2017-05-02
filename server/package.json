@@ -7,13 +7,11 @@
   "license": "MIT",
   "scripts": {
     "del": "rimraf ./dist",
-    "start": "nodemon ./src/app.js",
-    "build": "babel ./src -d ./dist",
-    "serve": "node ./dist/app.js",
-    "run": "yarn del && yarn build && yarn serve"
+    "start": "nodemon ./src/app.js"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-latest": "^6.24.1",
     "nodemon": "^1.11.0",
     "rimraf": "^2.6.1"
