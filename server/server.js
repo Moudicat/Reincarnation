@@ -21,7 +21,10 @@ app.use(function(req, res, next) {
 
 app.use('/api', require('./api'));
 
-mongoose.connect('mongodb://localhost:27777', (err) => {
+// fixed: mpromise is deprecated;
+mongoose.Promise = global.Promise;
+
+mongoose.connect('mongodb://localhost:27777/reincarnation', (err) => {
   if (err) {
     console.log(err.message);
   } else {

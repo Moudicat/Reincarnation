@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Bangumi = require('../controllers/bangumi');
+const authorization = require('../middleware/authorization');
 
 let resData;
 router.use((req, res, next) => {
@@ -10,6 +11,8 @@ router.use((req, res, next) => {
   };
   next();
 });
+
+router.use(authorization);
 
 router.get('/search', (req, res, next) => {
   Bangumi.search(req.query.q).then(response => {
