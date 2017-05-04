@@ -11,4 +11,9 @@ userSchema.statics.add = async function (userInfo) {
   return user;
 };
 
+userSchema.statics.login = async function (loginInfo) {
+  const username = loginInfo.username;
+  return await this.findOne({username: username});
+}
+
 module.exports = mongoose.model('User', userSchema);

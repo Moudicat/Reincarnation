@@ -12,8 +12,6 @@ router.use((req, res, next) => {
   next();
 });
 
-router.use(authorization);
-
 router.get('/search', (req, res, next) => {
   Bangumi.search(req.query.q).then(response => {
     resData.data = response;
@@ -22,6 +20,9 @@ router.get('/search', (req, res, next) => {
     console.log(err);
   });
 });
+
+// 以下的路由需要认证
+router.use(authorization);
 
 router.patch('/', (req, res, next) => {
   if (req.body instanceof Array) {
@@ -50,5 +51,6 @@ router.patch('/', (req, res, next) => {
   resData.msg = '添加成功，本次添加了' + req.body.length + '条数据';
   res.json(resData);
 });
+
 
 module.exports = router;
