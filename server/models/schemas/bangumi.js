@@ -13,4 +13,4 @@ module.exports = new mongoose.Schema({
   end: String,
   comment: String,
   sites: Array
-});
+}, {versionKey: false});

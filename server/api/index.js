@@ -4,8 +4,8 @@
 const express = require('express');
 const router = express.Router();
 
-
 router.use('/bangumi', require('./bangumi'));
 router.use('/user', require('./user'));
+router.use('/article', require('./article'));
 
 module.exports = router;

@@ -7,4 +7,4 @@ module.exports = new mongoose.Schema({
   avatar: String,
   createTime: String,
   lastLoginTime: String
-});
+}, {versionKey: false});

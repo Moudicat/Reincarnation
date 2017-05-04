@@ -34,18 +34,22 @@ router.patch('/', (req, res, next) => {
         bangumiArr.shift();
         add();
       }).catch(err => {
-        console.log(err);
+        res.sendStatus(500);
+        return;
       });
     }
   } else if (typeof req.body === 'object') {
     Bangumi.add(req.body).then(response => {
       res.json(response);
     }).catch(err => {
-      console.log(err);
+      res.sendStatus(500);
+      return;
     });
   } else {
-    req.code = -1;
-    req.msg = '格式不正确';
+    res.status(400);
+    resData.code = -1;
+    resData.msg = '格式不正确';
+    res.json(resData);
   }
 
   resData.msg = '添加成功，本次添加了' + req.body.length + '条数据';
