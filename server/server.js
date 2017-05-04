@@ -5,7 +5,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: false}));
@@ -28,7 +27,7 @@ mongoose.connect('mongodb://localhost:27777', (err) => {
   } else {
     console.log('已成功连接到数据库');
     app.listen(2777, () => {
-      console.log('服务启动 127.0.0.1:2777');
+      console.log('服务启动127.0.0.1:2777');
     });
   }
 });

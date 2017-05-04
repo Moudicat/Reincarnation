@@ -9,3 +9,8 @@ router.use((req, res, next) => {
   };
   next();
 });
+router.get('/', (req, res, next) => {
+  res.json(resData);
+});
+
+module.exports = router;

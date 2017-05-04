@@ -5,5 +5,6 @@ module.exports = new mongoose.Schema({
   password: String,
   nickname: String,
   avatar: String,
-  createTime: String
+  createTime: String,
+  updateTime: String
 });

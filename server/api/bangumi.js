@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { addBangumi, searchBangumi }  = require('../controllers/bangumi');
+const Bangumi = require('../controllers/bangumi');
 
 let resData;
 router.use((req, res, next) => {
@@ -12,7 +12,7 @@ router.use((req, res, next) => {
 });
 
 router.get('/search', (req, res, next) => {
-  searchBangumi(req.query.q).then(response => {
+  Bangumi.search(req.query.q).then(response => {
     resData.data = response;
     res.json(resData);
   }).catch (err => {
@@ -20,13 +20,13 @@ router.get('/search', (req, res, next) => {
   });
 });
 
-router.put('/add', (req, res, next) => {
+router.patch('/', (req, res, next) => {
   if (req.body instanceof Array) {
     const bangumiArr = req.body;
     add();
     function add() {
       if (bangumiArr.length === 0) return;
-      addBangumi(bangumiArr[0]).then(response => {
+      Bangumi.add(bangumiArr[0]).then(response => {
         bangumiArr.shift();
         add();
       }).catch(err => {
@@ -34,7 +34,7 @@ router.put('/add', (req, res, next) => {
       });
     }
   } else if (typeof req.body === 'object') {
-    addBangumi(req.body).then(response => {
+    Bangumi.add(req.body).then(response => {
       res.json(response);
     }).catch(err => {
       console.log(err);

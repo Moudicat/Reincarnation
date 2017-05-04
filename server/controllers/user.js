@@ -1,7 +1,11 @@
-const User = require('../models/user');
+const UserModel = require('../models/user');
 
-// async function searchBangumi(payload) {
-//   return await Bangumi.search(payload);
-// }
+class User {
+  static async addUser(userInfo) {
+    userInfo.createTime = new Date();
+    userInfo.updateTime = new Date();
+    return await UserModel.add(userInfo);
+  }
+}
 
-module.exports = {};
+module.exports = User;
