@@ -43,6 +43,7 @@
         this.position = 'fixed';
         this.active = true;
         this.width = this.width + 'px';
+        this.$store.commit('header/SET_AVATAR', true);
       },
       reset() {
         if (!this.active) {
@@ -51,6 +52,7 @@
         this.position = '';
         this.width = 'auto';
         this.active = false;
+        this.$store.commit('header/SET_AVATAR', false);
       },
       handleScroll() {
         this.width = this.$el.getBoundingClientRect().width;

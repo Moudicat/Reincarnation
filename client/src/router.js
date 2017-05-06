@@ -7,8 +7,13 @@ export default new Router({
   routes: [
     {
       path: '/',
+      redirect: 'index'
+    },
+    {
+      path: '/index',
       name: 'Homepage',
       component: Homepage
     }
-  ]
+  ],
+  linkActiveClass: 'active'
 });

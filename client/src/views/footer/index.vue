@@ -9,5 +9,6 @@
 <style lang="scss" rel="stylesheet/scss">
   footer {
     height: 8000px;
+    border: 1px solid green;
   }
 </style>

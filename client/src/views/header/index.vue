@@ -3,16 +3,16 @@
     <h1>某迪猫|结束与起始之界</h1>
     <div class="background-wrapper">
       <div class="hitokoto-wrapper">
-        <p class="hitokoto">『我愿意给你自己所有的快乐，你愿意分担我一半的难过吗？』</p>
+        <p class="hitokoto">『记性太好，有时候是一种负担。容易忘记往事的人，是幸福的。』</p>
       </div>
     </div>
     <Sticky>
       <div class="nav-wrapper">
         <div class="nav-container">
-          <div class="avatar-wrapper">
+          <div class="avatar-wrapper" :class="{mini: miniAvatarState}">
             <img src="https://pbs.twimg.com/profile_images/803241866992885760/4DMjQyIa_400x400.jpg" alt="avatar">
           </div>
-          <div class="profile-mini-wrapper">
+          <div class="profile-mini-wrapper" :class="{mini: miniAvatarState}">
             <div class="profile-mini">
               <img src="https://pbs.twimg.com/profile_images/803241866992885760/4DMjQyIa.jpg" alt="mini-avatar">
               <div class="info">
@@ -22,16 +22,16 @@
             </div>
           </div>
           <nav>
-            <router-link to="/" class="nav-link">
+            <router-link to="/index" class="nav-link">
               <span>文章</span>
             </router-link>
-            <router-link to="/" class="nav-link">
+            <router-link to="/animation" class="nav-link">
               <span>番剧列表</span>
             </router-link>
-            <router-link to="/" class="nav-link">
+            <router-link to="/links" class="nav-link">
               <span>友情链接</span>
             </router-link>
-            <router-link to="/" class="nav-link">
+            <router-link to="/about" class="nav-link">
               <span>关于本站</span>
             </router-link>
           </nav>
@@ -45,6 +45,11 @@
   import Sticky from 'components/Sticky';
 
   export default {
+    computed: {
+      miniAvatarState() {
+        return this.$store.state.header.miniAvatarState;
+      }
+    },
     components: {
       Sticky
     }
@@ -105,9 +110,13 @@
         border-radius: 12px;
         box-shadow: 0 1px 1px rgba(136,153,166,0.15);
         overflow: hidden;
+        transition: .6s;
         > img {
           width: 180px;
           height: 180px;
+        }
+        &.mini {
+          height: 0;
         }
       }
       .profile-mini-wrapper {
@@ -115,11 +124,14 @@
         height: 60px;
         margin-left: 10px;
         padding-top: 60px;
+        transition: .6s;
         overflow: hidden;
         .profile-mini {
           display: flex;
           justify-content: space-around;
           padding: 10px 0;
+          transition: .5s .3s opacity;
+          opacity: .1;
           > img {
             width: 40px;
             height: 40px;
@@ -138,6 +150,12 @@
             }
           }
         }
+        &.mini {
+          padding-top: 0;
+          .profile-mini {
+            opacity: 1;
+          }
+        }
       }
       nav {
         display: flex;
@@ -147,8 +165,11 @@
           padding: 20px 20px;
           transition: .4s;
           border-bottom: 1px solid transparent;
-          &:hover {
+          &.active {
             border-bottom: 4px solid #ff9f71;
+          }
+          &:hover {
+            border-bottom: 4px solid #ffbb9d;
           }
           > span {
             color: #2e2f2f;
