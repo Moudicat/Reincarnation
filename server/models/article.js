@@ -15,6 +15,11 @@ articleSchema.statics.add = async function (articleObj) {
   return await newArticle.save();
 };
 
+// 更新文章
+articleSchema.statics.update = async function (articleObj) {
+  return await this.findOneAndUpdate({_id: articleObj.id}, {title: articleObj.title, content: articleObj.content, modifiedTime: articleObj.modifiedTime});
+};
+
 // 调取文章
 articleSchema.statics.getOne = async function (id) {
   return await this.findOne({_id: id});

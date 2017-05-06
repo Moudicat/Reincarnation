@@ -1,13 +1,22 @@
 const winston = require('winston');
 
-const Options = {
-  colorize: true
-};
-
-let logger = new winston.Logger({
+module.exports = new winston.Logger({
   transports: [
-    new (winston.transports.Console)(Options)
+    new (winston.transports.Console)({
+      colorize: true,
+      level: 'info'
+    }),
+    new (winston.transports.File) ({
+      name: 'warn-file',
+      filename: './logs/filelog-warn.log',
+      level: 'warn',
+      json: true
+    }),
+    new (winston.transports.File) ({
+      name: 'error-file',
+      filename: './logs/filelog-error.log',
+      level: 'error',
+      json: true
+    })
   ]
 });
-
-module.exports = logger;

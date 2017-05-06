@@ -7,24 +7,30 @@ const mongoose = require('mongoose');
 const config = require('./config');
 
 const cors = require('./middleware/cors');
-const requestLogger = require('./middleware/logger');
+const { infoLogger, warnLogger } = require('./middleware/logger');
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 // 跨域中间件
-app.use(cors());
+app.use(cors);
 
-//
-app.use(requestLogger());
+app.use(infoLogger);
 
 app.use('/api', require('./api'));
+
+app.use(function (req, res, next) {
+  res.status(404);
+  next();
+});
+
+app.use(warnLogger);
 
 // fixed: mpromise is deprecated;
 mongoose.Promise = global.Promise;
 
-mongoose.connect(`mongodb://${config.host}:${config.port}/${config.db}`, (err) => {
+mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.db}`, (err) => {
   if (err) {
     console.log(err.message);
   } else {
