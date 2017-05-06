@@ -159,7 +159,7 @@
       }
       nav {
         display: flex;
-        padding-left: 10px;
+        padding-left: 5.6%;
         .nav-link {
           display: block;
           padding: 20px 20px;
