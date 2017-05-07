@@ -9,5 +9,7 @@ module.exports = new mongoose.Schema({
   postTime: String,
   modifiedTime: String,
   status: String,
+  description: String,
+  banner: String,
   content: String
 }, {versionKey: false});
