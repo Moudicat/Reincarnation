@@ -52,7 +52,7 @@
             title: '28小盆友‏ @chengr28 ',
             time: '2017-05-06',
             desc: '之前觉得骚尼说 Hi-Res 实际上是 CD 音质不好，后来发现虽然价格高但起码能达到 CD 水平……掐指一算，家里能放音乐的：手提电脑 Conexant 加了特效，老平板 SRC 问题严重，新平板的声音居然一点低音都没有……这已经不是玄学的问题，想听个音乐就这么难吗 =_/=',
-            img: 'https://pbs.twimg.com/media/C_JS3GfXoAAOcuN.jpg'
+            img: 'https://pbs.twimg.com/media/C_I-G69VwAEz6_t.png'
           }
         ]
       };
