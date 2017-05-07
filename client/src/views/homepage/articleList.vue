@@ -12,7 +12,7 @@
     </div>
     <div class="article-list">
       <ol>
-        <ArticleListItem v-for="article in articleList" :article="article"/>
+        <ArticleListItem v-for="(article, index) in articleList" :key="index" :article="article"/>
       </ol>
     </div>
   </div>
@@ -26,31 +26,31 @@
         articleList: [
           {
             title: '我的个人博客',
-            time: '2017-05-02 12:23:45',
+            time: '2017-05-02',
             desc: '阿苏看到过或少地枫哥喝受地方哈公司',
             img: 'https://pbs.twimg.com/media/C_JpDyhV0AEgVsi.jpg'
           },
           {
             title: '趣味组红豆‏ @jeconxis',
-            time: '2017-05-03 12:23:45',
+            time: '2017-05-03',
             desc: '村委会选举候选人好无礼，一打开门直接就上楼说进门拉票了，还没说给你进来呢，做邻居十几年你们都没进过我二楼',
             img: 'https://pbs.twimg.com/media/C_IXTXbUIAIOqH7.jpg'
           },
           {
             title: 'めしまさん‏ @meshima0',
-            time: '2017-05-04 12:23:45',
+            time: '2017-05-04',
             desc: '既読感覚でいいねくれると嬉しいですﾍﾟｺﾘ(..  )♡ いいね押してくれる人すき😘💗',
             img: 'https://pbs.twimg.com/media/C_E36DzVYAARJlk.jpg'
           },
           {
             title: '上推且谢顶的叔atkio‏ @atkio ',
-            time: '2017-05-05 12:23:45',
+            time: '2017-05-05',
             desc: `日本某推友女装回老家，给了外甥一台switch。 第二天换回男装后，外甥问昨天那个姐姐呢？ 答：在浴室化掉了。。外甥哭了一个小时`,
             img: 'https://pbs.twimg.com/media/C_HMFMEVwAA0J2o.jpg'
           },
           {
             title: '28小盆友‏ @chengr28 ',
-            time: '2017-05-06 12:23:45',
+            time: '2017-05-06',
             desc: '之前觉得骚尼说 Hi-Res 实际上是 CD 音质不好，后来发现虽然价格高但起码能达到 CD 水平……掐指一算，家里能放音乐的：手提电脑 Conexant 加了特效，老平板 SRC 问题严重，新平板的声音居然一点低音都没有……这已经不是玄学的问题，想听个音乐就这么难吗 =_/=',
             img: 'https://pbs.twimg.com/media/C_JS3GfXoAAOcuN.jpg'
           }

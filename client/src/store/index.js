@@ -4,6 +4,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import header from './module/header';
+import components from './module/components';
 
 Vue.use(Vuex);
 
@@ -12,6 +13,10 @@ export default new Vuex.Store({
     header: {
       namespaced: true,
       ...header
+    },
+    components: {
+      namespaced: true,
+      ...components
     }
   }
 });

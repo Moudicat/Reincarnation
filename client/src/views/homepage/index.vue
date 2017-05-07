@@ -2,17 +2,20 @@
   <section class="homepage-wrapper">
     <r-aside />
     <ArticleList />
+    <Takemefly />
   </section>
 </template>
 
 <script type="text/ecmascript-6">
   import Aside from 'views/homepage/aside';
   import ArticleList from 'views/homepage/articleList';
+  import Takemefly from 'components/takemefly';
 
   export default {
     components: {
       rAside: Aside,
-      ArticleList
+      ArticleList,
+      Takemefly
     }
   };
 </script>

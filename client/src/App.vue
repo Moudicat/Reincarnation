@@ -24,6 +24,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;

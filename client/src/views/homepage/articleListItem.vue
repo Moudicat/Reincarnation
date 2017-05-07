@@ -1,6 +1,6 @@
 <template>
   <li class="article-list-item">
-    <h3>{{article.title}}</h3>
+    <h3>{{article.title}}<span></span></h3>
     <time><i class="icon-clock"></i> {{article.time}}</time>
     <p class="desc">{{article.desc}}</p>
     <div class="pic-wrapper">
@@ -40,22 +40,68 @@
     min-height: 150px;
     padding: 20px 30px;
     border-bottom: 1px solid #e6ecf0;
+    background: url('./img/cat_hidden.svg') right bottom no-repeat;
     transition: .4s;
+    text-align: center;
     &:hover {
-      box-shadow: 0 -1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
       background-color: #f8f9ff;
     }
     > h3 {
-      padding: 10px 0;
+      position: relative;
+      padding: 10px;
       font-size: 28px;
       font-weight: 500;
-      color: rgba(0, 0, 0, .8)
+      color: rgba(0, 0, 0, .8);
+      &::before, &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 2px;
+        width: 0;
+        transition: .4s .4s;
+      }
+      &::after {
+        left: inherit;
+        top: inherit;
+        right: 0;
+        bottom: 0;
+      }
+      &:hover::before, &:hover::after {
+        width: 3%;
+        background-color: #ff9f71;
+        transition: .3s;
+      }
+      &:hover {
+        > span::before, > span::after {
+          height: 100%;
+          background-color: #ff9f71;
+          transition: .3s .5s;
+        }
+      }
+      > span {
+        &::before, &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 0;
+          width: 2px;
+          transition: .4s;
+        }
+        &::after {
+          left: inherit;
+          top: inherit;
+          right: 0;
+          bottom: 0;
+        }
+      }
     }
     > time {
-      align-self: flex-end;
-      order: 2;
+      margin: 10px 0 15px 0;
       font-size: 14px;
       color: rgba(50, 50, 50, .7);
+      white-space: nowrap;
       > i {
         vertical-align: baseline;
       }
@@ -63,6 +109,7 @@
     .desc {
       line-height: 28px;
       text-indent: 2em;
+      text-align: left;
     }
     .pic-wrapper {
       max-width: 70%;

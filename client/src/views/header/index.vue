@@ -104,6 +104,7 @@
         position: absolute;
         top: -95px;
         left: 10px;
+        z-index: 1001;
         width: 190px;
         height: 190px;
         border: 5px solid #fff;

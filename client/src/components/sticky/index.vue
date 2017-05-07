@@ -44,6 +44,7 @@
         this.active = true;
         this.width = this.width + 'px';
         this.$store.commit('header/SET_AVATAR', true);
+        this.$store.commit('components/SET_TAKEMEFLY', true);
       },
       reset() {
         if (!this.active) {
@@ -53,6 +54,7 @@
         this.width = 'auto';
         this.active = false;
         this.$store.commit('header/SET_AVATAR', false);
+        this.$store.commit('components/SET_TAKEMEFLY', false);
       },
       handleScroll() {
         this.width = this.$el.getBoundingClientRect().width;
