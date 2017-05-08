@@ -3,6 +3,12 @@ import App from './App';
 import router from './router';
 import store from './store';
 
+import {Table, TableColumn} from 'element-ui';
+import 'element-ui/lib/theme-default/index.css';
+
+Vue.use(Table);
+Vue.use(TableColumn);
+
 Vue.config.productionTip = false;
 
 import '../static/reset.css';

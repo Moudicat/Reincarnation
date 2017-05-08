@@ -1,14 +1,12 @@
 <template>
-  <transition name="fly">
-    <section>
-      <div class="pic-404"></div>
-      <h5>404 您所访问的页面不存在</h5>
-    </section>
-  </transition>
+  <section>
+    <div class="pic-404"></div>
+    <h5>404 您所访问的页面不存在</h5>
+  </section>
 </template>
 
 <script type="text/ecmascript-6">
-export default {};
+  export default {};
 </script>
 
 <style lang="scss" rel="stylesheet/scss" scoped>
@@ -29,11 +27,5 @@ export default {};
       color: rgba(255, 255, 255, .7);
       text-shadow: 1px 1px 1px #d3d7dc;
     }
-  }
-  .fly-enter-active, .fly-leave-active {
-    transition: .5s;
-  }
-  .fly-enter, .fly-leave-active {
-    transform: translateX(-100%);
   }
 </style>

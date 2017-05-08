@@ -1,13 +1,18 @@
 <template>
   <span :class="type" class="tag">
     <slot />
+   <span class="numb" v-if="typeof num === 'number'">{{num}}</span>
   </span>
 </template>
 
 <script type="text/ecmascript-6">
   export default {
     props: {
-      type: String
+      type: String,
+      num: {
+        type: Number,
+        default: null
+      }
     }
   };
 </script>
@@ -25,7 +30,13 @@
     box-sizing: border-box;
     border: 1px solid transparent;
     white-space: nowrap;
+    .numb {
+      padding: 0 4px;
+      border-radius: 50%;
+      background-color: #fff;
+    }
   }
+
   .gray {
     background-color: #e4e8f1;
     border-color: #e4e8f1;

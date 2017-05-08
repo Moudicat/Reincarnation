@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Homepage from 'views/homepage';
+import About from 'views/about';
+import AboutPage from 'views/about/aboutPage';
+import ReleaseTable from 'components/releaseTable';
 
 import Page404 from 'views/404';
 Vue.use(Router);
@@ -15,6 +18,24 @@ export default new Router({
       path: '/index',
       name: 'Homepage',
       component: Homepage
+    },
+    {
+      path: '/about',
+      name: 'About',
+      component: About,
+      redirect: '/about/index',
+      children: [
+        {
+          path: '/about/index',
+          name: 'aboutPage',
+          component: AboutPage
+        },
+        {
+          path: '/about/release-note',
+          name: 'releaseTable',
+          component: ReleaseTable
+        }
+      ]
     },
     {
       path: '*',
