@@ -22,7 +22,7 @@
         const wrapper = ev.target.parentNode;
         const height = getComputedStyle(wrapper).height;
         const targetHeight = getComputedStyle(ev.target).height;
-        if (parseFloat(height) >= parseFloat(targetHeight)) {
+        if (Math.ceil(parseFloat(height)) >= parseFloat(targetHeight)) {
           wrapper.style.maxHeight = '340px';
         } else {
           wrapper.style.maxHeight = targetHeight;

@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <r-header/>
-    <keep-alive>
-      <router-view/>
-    </keep-alive>
+    <router-view/>
     <r-footer/>
   </div>
 </template>
@@ -40,8 +38,9 @@
   ::-webkit-scrollbar {
     width: 0;
   }
+
   /*::-webkit-scrollbar-thumb {*/
-    /*border-radius: 8px;*/
-    /*background-color: rgba(0, 0, 0, .3);*/
+  /*border-radius: 8px;*/
+  /*background-color: rgba(0, 0, 0, .3);*/
   /*}*/
 </style>
