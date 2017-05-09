@@ -14,7 +14,7 @@
           {
             version: '0.0.4',
             date: '2017-05-09',
-            desc: 'Add bangumi'
+            desc: 'Add bangumi/Aplayer'
           },
           {
             version: '0.0.3',
