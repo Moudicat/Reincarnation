@@ -4,6 +4,7 @@ import Homepage from 'views/homepage';
 import About from 'views/about';
 import AboutPage from 'views/about/aboutPage';
 import ReleaseTable from 'components/releaseTable';
+import Bangumi from 'views/bangumi';
 
 import Page404 from 'views/404';
 Vue.use(Router);
@@ -18,6 +19,11 @@ export default new Router({
       path: '/index',
       name: 'Homepage',
       component: Homepage
+    },
+    {
+      path: '/animation',
+      name: 'Animation',
+      component: Bangumi
     },
     {
       path: '/about',

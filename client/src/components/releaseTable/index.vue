@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.0.4',
+            date: '2017-05-09',
+            desc: 'Add bangumi'
+          },
+          {
             version: '0.0.3',
             date: '2017-05-08',
             desc: 'Add about/status-panel/tag'
