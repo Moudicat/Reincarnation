@@ -53,7 +53,9 @@
         this.position = '';
         this.width = 'auto';
         this.active = false;
-        this.$store.commit('header/SET_AVATAR', false);
+        if (this.$route.name !== 'Article') {
+          this.$store.commit('header/SET_AVATAR', false);
+        }
         this.$store.commit('components/SET_TAKEMEFLY', false);
       },
       handleScroll() {

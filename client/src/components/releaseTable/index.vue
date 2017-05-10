@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.0.5',
+            date: '2017-05-10',
+            desc: 'Add article(demo) | fixed bugs'
+          },
+          {
             version: '0.0.4',
             date: '2017-05-09',
             desc: 'Add bangumi/Aplayer'

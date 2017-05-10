@@ -1,6 +1,6 @@
 <template>
   <li class="article-list-item">
-    <h3>{{article.title}}<span></span></h3>
+    <h3 @click="handleOpenArticle">{{article.title}}<span></span></h3>
     <time><i class="icon-clock"></i> {{article.time}}</time>
     <p class="desc">{{article.desc}}</p>
     <div class="pic-wrapper">
@@ -11,6 +11,7 @@
 
 <script type="text/ecmascript-6">
   export default {
+    name: 'articleListItem',
     props: {
       article: Object
     },
@@ -27,6 +28,9 @@
         } else {
           wrapper.style.maxHeight = targetHeight;
         }
+      },
+      handleOpenArticle() {
+        this.$router.push('/article/' + this.article._id);
       }
     }
   };
@@ -52,6 +56,8 @@
       font-size: 28px;
       font-weight: 500;
       color: rgba(0, 0, 0, .8);
+      transition: .4s .3s;
+      cursor: pointer;
       &::before, &::after {
         content: "";
         position: absolute;
@@ -73,6 +79,7 @@
         transition: .3s;
       }
       &:hover {
+        background-color: rgba(255, 174, 186, 0.1);
         > span::before, > span::after {
           height: 100%;
           background-color: #ff9f71;

@@ -118,6 +118,7 @@
         }
         &.mini {
           height: 0;
+          opacity: 0;
         }
       }
       .profile-mini-wrapper {

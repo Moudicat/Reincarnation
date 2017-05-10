@@ -4,10 +4,10 @@
     <div class="aplayer-test">
       <p style="text-align: center;">播放器与云储存服务测试</p>
       <Aplayer :music="{
-      title: 'Echo',
-      author: 'れをる',
-      url: 'http://moudicat-data.oss-cn-beijing.aliyuncs.com/music/%E3%82%8C%E3%82%92%E3%82%8B%20-%20Echo.mp3',
-      pic: 'https://ss0.baidu.com/73t1bjeh1BF3odCf/it/u=3757491437,37706702&fm=85&s=932928AE5A73BBE714A4DE930300708E'
+      title: 'Fly',
+      author: 'Ludovico Einaudi',
+      url: 'http://moudicat-data.oss-cn-beijing.aliyuncs.com/music/Ludovico%20Einaudi%20-%20Fly.mp3',
+      pic: 'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=4116671072,3147142947&fm=58'
       }"/>
     </div>
   </aside>

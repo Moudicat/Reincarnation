@@ -5,6 +5,7 @@ import About from 'views/about';
 import AboutPage from 'views/about/aboutPage';
 import ReleaseTable from 'components/releaseTable';
 import Bangumi from 'views/bangumi';
+import Article from 'views/article';
 
 import Page404 from 'views/404';
 Vue.use(Router);
@@ -19,6 +20,11 @@ export default new Router({
       path: '/index',
       name: 'Homepage',
       component: Homepage
+    },
+    {
+      path: '/article/:id',
+      name: 'Article',
+      component: Article
     },
     {
       path: '/animation',

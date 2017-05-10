@@ -13,7 +13,7 @@
       </li>
       <li>
         最近看的番
-        <r-tag type="red" :num="4">从零开始的魔法书</r-tag>
+        <r-tag type="red" :num="5">从零开始的魔法书</r-tag>
       </li>
     </ul>
   </div>
