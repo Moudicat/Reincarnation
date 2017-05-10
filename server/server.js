@@ -13,6 +13,11 @@ const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+
+app.use((req, res, next) => {
+  res.setHeader('X-Powered-By', `${config.app.appName}/${config.app.version}`);
+  next();
+});
 // 跨域中间件
 app.use(cors);
 
@@ -20,7 +25,7 @@ app.use(infoLogger);
 
 app.use('/api', require('./api'));
 
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   res.status(404);
   next();
 });
