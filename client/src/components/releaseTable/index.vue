@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.0.6',
+            date: '2017-05-11',
+            desc: 'Add hitokoto api, use fetch'
+          },
+          {
             version: '0.0.5',
             date: '2017-05-10',
             desc: 'Add article(demo) | fixed bugs'

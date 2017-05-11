@@ -3,7 +3,7 @@
     <h1>某迪猫|结束与起始之界</h1>
     <div class="background-wrapper">
       <div class="hitokoto-wrapper">
-        <p class="hitokoto">『记性太好，有时候是一种负担。容易忘记往事的人，是幸福的。』</p>
+        <p class="hitokoto">『{{ hitokoto }}』</p>
       </div>
     </div>
     <Sticky>
@@ -43,12 +43,23 @@
 
 <script type="text/ecmascript-6">
   import Sticky from 'components/Sticky';
+  import Hitokoto from 'services/hitokoto';
 
   export default {
+    data() {
+      return {
+        hitokoto: ''
+      };
+    },
     computed: {
       miniAvatarState() {
         return this.$store.state.header.miniAvatarState;
       }
+    },
+    beforeMount() {
+      Hitokoto.get().then(response => {
+        this.hitokoto = response.data.content;
+      });
     },
     components: {
       Sticky
