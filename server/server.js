@@ -3,6 +3,7 @@
  */
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const config = require('./config');
 
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
 });
 // 跨域中间件
 app.use(cors);
+app.use(cookieParser());
 
 app.use(infoLogger);
 

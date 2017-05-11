@@ -1,7 +1,7 @@
 const Logger = require('../services/logger');
 
 const infoLogger = function (req, res, next) {
-  Logger.info(`[${req.method}] - ${req.url} - ${req.ip} - ${req.headers['user-agent']}`);
+  Logger.info(`[${req.method}] - ${req.url} - ${req.ip} - ${req.headers['user-agent']} - ${new Date().toString()}`);
   next();
 };
 

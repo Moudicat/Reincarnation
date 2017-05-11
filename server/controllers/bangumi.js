@@ -1,6 +1,6 @@
 /**
  * Created by Moudi on 2017/5/3.
- */
+*/
 const BangumiModel = require('../models/bangumi');
 
 class Bangumi {

@@ -7,5 +7,6 @@ const router = express.Router();
 router.use('/bangumi', require('./bangumi'));
 router.use('/user', require('./user'));
 router.use('/article', require('./article'));
+router.use('/hitokoto', require('./hitokoto'));
 
 module.exports = router;

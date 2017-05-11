@@ -39,9 +39,9 @@ router.post('/login', (req, res, next) => {
       const token = jwt.sign({
         uid: response._id,
         name: response.username,
-        exp: Math.floor(+new Date / 1000) + 60 * 2 // 2 min
+        exp: Math.floor(+new Date / 1000) + 60 * 30 // 30 min
       }, config.jwt.secret);
-      resData.token = token;
+      res.cookie('X-MDC-Token', token, { httpOnly: true });
       resData.msg = '登录成功';
       res.json(resData);
     } else {
