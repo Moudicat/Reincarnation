@@ -4,7 +4,7 @@
     <time><i class="icon-clock"></i> {{article.time}}</time>
     <p class="desc">{{article.desc}}</p>
     <div class="pic-wrapper">
-      <img :src="article.img" alt="article-pic" class="pic" @click.stop="handlePicClick">
+      <img v-lazy="article.img" alt="article-pic" class="pic" @click.stop="handlePicClick">
     </div>
   </li>
 </template>
