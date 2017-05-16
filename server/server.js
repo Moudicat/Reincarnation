@@ -1,6 +1,7 @@
 /**
  * Created by Moudi on 2017/5/3.
  */
+const isLocal = true;
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -10,6 +11,18 @@ const config = require('./config');
 const cors = require('./middleware/cors');
 const { infoLogger, warnLogger } = require('./middleware/logger');
 const app = express();
+
+if (!isLocal) {
+  // 只开启https服务
+  var fs = require('fs');
+  var https = require('https');
+  var privateKey = fs.readFileSync('/root/ssl/sayMoe/saymoe.key', 'utf8');
+  var certificate = fs.readFileSync('/root/ssl/sayMoe/saymoe.pem', 'utf8');
+  var credentials = {key: privateKey, cert: certificate};
+  var httpsServer = https.createServer(credentials, app);
+}
+
+
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -42,8 +55,14 @@ mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.db}`
     console.log(err.message);
   } else {
     console.log('已成功连接到数据库');
-    app.listen(2777, () => {
-      console.log('服务启动127.0.0.1:2777');
-    });
+    if (isLocal) {
+      app.listen(2777, () => {
+        console.log('服务启动127.0.0.1:2777');
+      });
+    } else {
+      httpsServer.listen(2777, () => {
+        console.log('服务启动https://say.moe');
+      });
+    }
   }
 });

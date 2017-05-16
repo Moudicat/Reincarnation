@@ -17,11 +17,20 @@ router.use((req, res, next) => {
 
 router.get('/', (req, res, next) => {
   Hitokoto.get().then(response => {
-    delete(response[0]._id);
-    resData.data = response[0];
-    res.json(resData);
+    if (response.length === 0) {
+      resData.msg = '无数据';
+      resData.code = -404;
+      res.json(resData);
+    } else {
+      delete(response[0]._id);
+      resData.data = response[0];
+      res.json(resData);
+    }
   }).catch(err => {
-    console.log(err);
+    console.error(err);
+    resData.msg = err;
+    resData.code = -500;
+    res.json(resData);
   });
 });
 
