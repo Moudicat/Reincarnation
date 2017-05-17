@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+    <meta name="author" content="Reddy.Huang <i@0u0b.com>"/>
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        ::selection {
+            background: #ffc3a0;
+        }
+        body, html {
+            height: 100%;
+            overflow: hidden;
+        }
+        .banner {
+            position: relative;
+            height: 50%;
+        }
+        .banner-bg {
+            position: absolute;
+            top: -150px;
+            bottom: -15px;
+            width: 100%;
+            margin-top: -100px;
+            transform: skewY(-3deg);
+            transform-origin: center;
+            background-image: linear-gradient(180deg, #440d30 13%, #915474 56%, #e4abc9);
+        }
+        .card {
+            display: flex;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate3d(-400px, -250px, 0);
+            width: 800px;
+            height: 500px;
+        }
+        img {
+            width: 400px;
+        }
+        h1 {
+            margin: 15px;
+            font-size: 80px;
+            color: #fff;
+        }
+        h3 {
+            text-indent: 2em;
+            color: #eee;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            color: #121212;
+        }
+        footer a {
+            text-decoration: none;
+            color: #121212;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <div class="banner-bg"></div>
+    </div>
+    <div class="card">
+        <img src="./img/47.png" alt="一只鸟">
+        <div>
+            <h1>说萌</h1>
+            <h3>API系统正常工作中~</h3>
+        </div>
+    </div>
+    <footer>Copyright © 2014-2017 <a href="https://www.moudicat.com">某迪猫</a> All Rights Reserved.</footer>
+</body>
+</html>

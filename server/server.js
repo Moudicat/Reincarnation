@@ -22,11 +22,8 @@ if (!isLocal) {
   var httpsServer = https.createServer(credentials, app);
 }
 
-
-
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-
 
 app.use((req, res, next) => {
   res.setHeader('X-Powered-By', `${config.app.appName}/${config.app.version}`);
@@ -40,12 +37,14 @@ app.use(infoLogger);
 
 app.use('/api', require('./api'));
 
+app.use(express.static('./static'));
+app.use('/', require('./routes'));
+
 app.use((req, res, next) => {
   res.status(404);
-  next();
+  app.use(warnLogger);
+  res.send('404');
 });
-
-app.use(warnLogger);
 
 // fixed: mpromise is deprecated;
 mongoose.Promise = global.Promise;
