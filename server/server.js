@@ -37,7 +37,7 @@ app.use(infoLogger);
 
 app.use('/api', require('./api'));
 
-app.use(express.static('./static'));
+// app.use(express.static('./static'));
 app.use('/', require('./routes'));
 
 app.use((req, res, next) => {

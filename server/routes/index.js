@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-  req.url = './index.html';
+  res.redirect(301, 'http://i.say.moe');
 });
 
 module.exports = router;
