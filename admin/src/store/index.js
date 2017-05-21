@@ -67,6 +67,8 @@ export default new Vuex.Store({
       });
     },
     logout({commit}) {
+      commit('SET_USERINFO', '');
+      Storage.remove('userInfo');
       commit('SET_TOKEN', '');
       Storage.remove('token');
     }

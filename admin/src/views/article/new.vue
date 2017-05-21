@@ -1,11 +1,89 @@
 <template>
-  <div>new article</div>
+  <div>
+    <MDInput v-model="article.title"  placeholder="请在此处输入文章标题">标题</MDInput>
+    <MDInput v-model="article.description"  placeholder="请在此处输入文章描述">描述</MDInput>
+    <MDInput v-model="article.banner" placeholder="请在此处输入banner图片地址">banner</MDInput>
+    <div class='simplemde-container'>
+      <textarea id='markdown-editor' ref="mde" v-model="article.content"></textarea>
+    </div>
+    <el-select v-model="article.status" placeholder="请选择">
+      <el-option
+        v-for="item in options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+      </el-option>
+    </el-select>
+    <el-button type="primary" @click="handleSubmit">提交</el-button>
+  </div>
 </template>
 
 <script type="text/ecmascript-6">
-  export default {};
+  import MDInput from 'components/material-input';
+  import SimpleMDE from 'simplemde';
+  import 'simplemde/dist/simplemde.min.css';
+  import Article from 'services/article';
+
+  export default {
+    data() {
+      return {
+        article: {
+          title: '',
+          description: '',
+          banner: '',
+          content: '',
+          status: 'publish',
+          author: this.$store.state.user.username
+        },
+        options: [{
+          value: 'publish',
+          label: '发布状态'
+        }, {
+          value: 'draft',
+          label: '草稿'
+        }, {
+          value: 'delete',
+          label: '回收站'
+        }]
+      };
+    },
+    mounted() {
+      this.mde = new SimpleMDE({
+        element: this.$refs.mde,
+        autofocus: false,
+        spellChecker: false,
+        placeholder: '在此编辑正文'
+      });
+      this.mde.codemirror.on('change', () => {
+        this.article.content = this.mde.value();
+      });
+    },
+    methods: {
+      handleSubmit() {
+        Article.add(this.article)
+          .then(response => {
+            if (response.code) throw new Error(response.msg);
+            for (let k of this.article) {
+              this.article[k] = '';
+            }
+            this.$message({
+              message: '操作成功！',
+              type: 'success'
+            });
+          })
+          .catch(err => {
+            this.$message.error(err.message);
+          });
+      }
+    },
+    components: {
+      MDInput
+    }
+  };
 </script>
 
 <style lang="scss" rel="stylesheet/scss" scoped>
-
+  .material-input__component {
+    margin-bottom: 30px;
+  }
 </style>
