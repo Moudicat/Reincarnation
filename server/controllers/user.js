@@ -15,6 +15,9 @@ class User {
     }
     return await UserModel.login(loginInfo);
   }
+  static async getInfo(username) {
+    return await UserModel.getInfo(username);
+  }
 }
 
 module.exports = User;

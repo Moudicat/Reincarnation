@@ -52,7 +52,7 @@ router.post('/login', (req, res, next) => {
       }
     })
     .catch(err => {
-      resData.msg = '用户名或密码不正确';
+      resData.msg = err.message;
       resData.code = -1;
       res.json(resData);
     });
@@ -60,14 +60,16 @@ router.post('/login', (req, res, next) => {
 
 router.use(authorization);
 
-// 列出用户信息
+// 用户信息
 router.get('/', (req, res, next) => {
-  res.json(resData);
-});
-
-// 获取该用户信息
-router.get('/:username', (req, res, next) => {
-  res.json(resData);
+  User.getInfo(req.username)
+  .then(response => {
+    resData.data = response;
+    res.json(resData);
+  })
+  .catch(err => {
+    res.sendStatus(500);
+  });
 });
 
 module.exports = router;

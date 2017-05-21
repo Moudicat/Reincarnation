@@ -16,4 +16,8 @@ userSchema.statics.login = async function (loginInfo) {
   return await this.findOne({username: username});
 };
 
+userSchema.statics.getInfo = async function (username) {
+  return await this.findOne({username: username}, {_id: false, password: false, createTime: false});
+};
+
 module.exports = mongoose.model('User', userSchema);

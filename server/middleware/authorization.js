@@ -8,6 +8,7 @@ module.exports = (req, res, next) => {
   } else {
     try {
       let tokenContent = jwt.verify(token, config.jwt.secret);
+      req.username = tokenContent.name;
       next();
     } catch (err) {
       if (err.name === 'TokenExpiredError') {
