@@ -6,6 +6,6 @@ import config from '../config';
 export default class Article {
   static async list() {
     const articleList = await fetch(config.baseURL + '/article');
-    return articleList.data;
+    return articleList.json();
   }
 }

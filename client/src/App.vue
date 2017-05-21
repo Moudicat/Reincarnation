@@ -1,9 +1,11 @@
 <template>
   <div id="app">
     <r-header/>
-    <keep-alive exclude="Article">
-      <router-view/>
-    </keep-alive>
+    <transition name="fade">
+      <keep-alive exclude="Article">
+        <router-view/>
+      </keep-alive>
+    </transition>
     <r-footer/>
   </div>
 </template>
@@ -45,4 +47,11 @@
   /*border-radius: 8px;*/
   /*background-color: rgba(0, 0, 0, .3);*/
   /*}*/
+
+  .fade-leave, .fade-enter-active {
+    transition: all .7s;
+  }
+  .fade-enter, .fade-leave-active {
+    opacity: 0;
+  }
 </style>

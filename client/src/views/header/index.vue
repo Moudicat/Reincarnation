@@ -10,11 +10,11 @@
       <div class="nav-wrapper">
         <div class="nav-container">
           <div class="avatar-wrapper" :class="{mini: miniAvatarState}">
-            <img src="https://pbs.twimg.com/profile_images/803241866992885760/4DMjQyIa_400x400.jpg" alt="avatar">
+            <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_400x400.jpg" alt="avatar">
           </div>
           <div class="profile-mini-wrapper" :class="{mini: miniAvatarState}">
             <div class="profile-mini">
-              <img src="https://pbs.twimg.com/profile_images/803241866992885760/4DMjQyIa.jpg" alt="mini-avatar">
+              <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_400x400.jpg" alt="mini-avatar">
               <div class="info">
                 <h3>某迪</h3>
                 <p>More cooperation, no competition.</p>
@@ -78,7 +78,7 @@
     }
     .background-wrapper {
       height: 400px;
-      background: url("https://pbs.twimg.com/profile_banners/744048673/1476969370/1500x500");
+      background: url("https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/banner.png");
       background-size: cover;
       .hitokoto-wrapper {
         position: absolute;

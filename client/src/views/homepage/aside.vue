@@ -2,6 +2,10 @@
   <aside>
     <StatusPanel />
     <div class="aplayer-test">
+      今天摸鱼了吗 <br>
+      github昨日提交： 1 commit
+    </div>
+    <div class="aplayer-test">
       <p style="text-align: center;">播放器与云储存服务测试</p>
       <Aplayer :music="{
         title: 'Fly',
