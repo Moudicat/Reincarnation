@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/');
 
 module.exports = (req, res, next) => {
-  const token = req.cookies['X-MDC-Token'];
+  const token = req.cookies['X-MDC-Token'] ? req.cookies['X-MDC-Token'] : req.headers['x-mdc-token'];
   if (token === '') {
     res.sendStatus(401);
   } else {

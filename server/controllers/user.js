@@ -4,6 +4,8 @@ class User {
   static async register(userInfo) {
     userInfo.createTime = +new Date();
     userInfo.lastLoginTime = +new Date();
+    userInfo.nickname = '';
+    userInfo.avatar = '';
     return await UserModel.add(userInfo);
   }
   static async login(loginInfo) {
