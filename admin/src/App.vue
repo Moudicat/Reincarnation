@@ -7,6 +7,7 @@
     name: 'app',
     beforeMount() {
       global.Store = this.$store;
+      this.$store.dispatch('init');
     }
   };
 </script>

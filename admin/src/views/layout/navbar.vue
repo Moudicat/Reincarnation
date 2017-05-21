@@ -1,7 +1,7 @@
 <template>
   <el-menu mode="horizontal" class="navbar" :router="true">
     <el-submenu index="1" class="user-info">
-      <template slot="title">username</template>
+      <template slot="title">{{$store.state.user.username ? $store.state.user.username : '未登录用户'}}</template>
       <el-menu-item index="/settings">个人设置</el-menu-item>
       <el-menu-item index="/login" @click="logout">注销</el-menu-item>
     </el-submenu>

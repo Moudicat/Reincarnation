@@ -12,4 +12,11 @@ export default class User {
     });
     return result.json();
   }
+
+  static async getInfo() {
+    const result = await fetch(config.baseURL + '/user', {
+      headers: { 'X-MDC-Token': Store.state.token }
+    });
+    return result.json();
+  }
 }

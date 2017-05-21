@@ -64,7 +64,19 @@
             this.$store.dispatch('login', this.loginForm)
               .then(() => {
                 this.loading = false;
-                this.$router.push({path: '/'});
+                this.$store.dispatch('getInfo')
+                  .then(response => {
+                    console.log(response);
+                    this.$message({
+                      message: '用户信息加载成功',
+                      type: 'success'
+                    });
+                    this.$router.push({path: '/'});
+                  })
+                  .catch(err => {
+                    this.$message.error(err.message);
+                    this.loading = false;
+                  });
               })
               .catch(err => {
                 this.$message.error(err.message);
