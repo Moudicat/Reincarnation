@@ -11,6 +11,9 @@ class Article {
   static async list() {
     return await ArticleModel.list();
   }
+  static async listAll() {
+    return await ArticleModel.listAll();
+  }
 }
 
 module.exports = Article;

@@ -9,6 +9,11 @@ articleSchema.statics.list = async function () {
   return await this.find({status: 'publish'}, '-content -status');
 };
 
+articleSchema.statics.listAll = async function () {
+  return await this.find({}, '-content');
+};
+
+
 // 添加文章
 articleSchema.statics.add = async function (articleObj) {
   const newArticle = new this(articleObj);

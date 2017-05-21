@@ -35,7 +35,9 @@ router.patch('/', (req, res) => {
      postTime: String,
      modifiedTime: String,
      status: String,
-     content: String
+     content: String,
+     description: String,
+     banner: String
   */
   let articleObj = req.body;
   if (!(articleObj.title && articleObj.author && articleObj.status && articleObj.content)) {
@@ -43,14 +45,26 @@ router.patch('/', (req, res) => {
     return;
   }
   Article.add(articleObj).then(response => {
+    if (response._id) {
+      resData.msg = '成功';
+      res.json(resData);
+    } else {
+      throw new Error('处理失败');
+    }
+  }).catch(err => {
+    res.sendStatus(500);
+  });
+});
+
+// 后台列出全部
+router.get('/all', (req, res) => {
+  Article.listAll().then(response => {
     resData.data = response;
     res.json(resData);
-  }).catch(err => {
-    resData.msg = err;
-    resData.code = -1;
-    res.status(500);
-    res.json(resData);
-  })
+  }).catch (err => {
+    console.log(err);
+    res.sendStatus(500);
+  });
 });
 
 
