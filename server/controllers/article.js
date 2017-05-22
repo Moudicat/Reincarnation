@@ -14,6 +14,13 @@ class Article {
   static async listAll() {
     return await ArticleModel.listAll();
   }
+  static async setStatus(id, status) {
+    return await ArticleModel.setStatus(id, status);
+  }
+  static async update(articleObj) {
+    articleObj.modifiedTime = +new Date();
+    return await ArticleModel.update(articleObj);
+  }
 }
 
 module.exports = Article;

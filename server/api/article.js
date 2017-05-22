@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
 // 以下的路由需要认证
 router.use(authorization);
 
-router.patch('/', (req, res) => {
+router.post('/', (req, res) => {
   /*
      title: String,
      author: String,
@@ -67,5 +67,30 @@ router.get('/all', (req, res) => {
   });
 });
 
+// 更新文章
+router.patch('/:id', (req, res) => {
+  Article.setStatus(req.params.id, req.body.articleObj)
+    .then(response => {
+      resData.msg = '修改成功';
+      res.json(resData);
+    })
+    .catch(err => {
+      resData.msg = err.message;
+      res.json(resData);
+    })
+});
+
+// 修改发布状态
+router.patch('/:id/status', (req, res) => {
+  Article.setStatus(req.params.id, req.body.status)
+    .then(response => {
+      resData.msg = '修改成功';
+      res.json(resData);
+    })
+    .catch(err => {
+      resData.msg = err.message;
+      res.json(resData);
+    })
+});
 
 module.exports = router;
