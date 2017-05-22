@@ -67,8 +67,18 @@
       };
     },
     methods: {
-      handleModifyStatus() {
-        alert('开发');
+      handleModifyStatus(article, status) {
+        Article.setStatus(article._id, status)
+          .then(response => {
+            if (response.code) throw new Error(respnse.msg);
+            this.$message({
+              message: '修改成功！',
+              type: 'success'
+            });
+          })
+          .catch(err => {
+            this.$message.error(err.message);
+          });
       }
     },
     filters: {
