@@ -12,9 +12,14 @@
       return {
         releaseData: [
           {
+            version: '0.0.8',
+            date: '2017-05-22',
+            desc: 'Added admin page & article center.'
+          },
+          {
             version: '0.0.7',
             date: '2017-05-16',
-            desc: 'make api works'
+            desc: 'Make api works'
           },
           {
             version: '0.0.6',
