@@ -1,7 +1,7 @@
 {
-  "name": "questionnaire-admin",
-  "version": "1.0.0",
-  "description": "A Vue.js based questionnaire admin project.",
+  "name": "reincarnation-admin",
+  "version": "0.0.2",
+  "description": "A Vue.js based reincarnation admin project.",
   "author": "Moudicat <i@0u0b.com>",
   "private": true,
   "scripts": {
