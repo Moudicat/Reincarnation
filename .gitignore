@@ -7,3 +7,6 @@ dist/
 */db/
 */node_modules/
 .idea/
+*/config/*
+*/mandy
+/server/blog-server

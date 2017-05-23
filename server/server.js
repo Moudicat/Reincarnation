@@ -6,7 +6,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
-const config = require('./config');
+const config = require('./config/index');
 
 const cors = require('./middleware/cors');
 const { infoLogger, warnLogger } = require('./middleware/logger');
@@ -35,9 +35,8 @@ app.use(cookieParser());
 
 app.use(infoLogger);
 
-app.use('/api', require('./api'));
+app.use('/api', require('./api/index'));
 
-// app.use(express.static('./static'));
 app.use('/', require('./routes'));
 
 app.use((req, res, next) => {
