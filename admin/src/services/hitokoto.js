@@ -8,6 +8,10 @@ export default class Hitokoto {
     const result = await fetch(config.baseURL + '/hitokoto', {
       headers: { 'X-MDC-Token': Store.state.token }
     });
-    return result.json();
+    if (result.ok) {
+      return result.json();
+    } else {
+      throw new Error(result.status);
+    }
   }
 }

@@ -10,13 +10,21 @@ export default class User {
       headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
       body: JSON.stringify(loginForm)
     });
-    return result.json();
+    if (result.ok) {
+      return result.json();
+    } else {
+      throw new Error(result.status);
+    }
   }
 
   static async getInfo() {
     const result = await fetch(config.baseURL + '/user', {
       headers: { 'X-MDC-Token': Store.state.token }
     });
-    return result.json();
+    if (result.ok) {
+      return result.json();
+    } else {
+      throw new Error(result.status);
+    }
   }
 }

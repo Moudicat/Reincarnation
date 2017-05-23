@@ -67,10 +67,17 @@ export default new Vuex.Store({
       });
     },
     logout({commit}) {
-      commit('SET_USERINFO', '');
-      Storage.remove('userInfo');
-      commit('SET_TOKEN', '');
-      Storage.remove('token');
+      return new Promise((resolve, reject) => {
+        try {
+          commit('SET_USERINFO', '');
+          Storage.remove('userInfo');
+          commit('SET_TOKEN', '');
+          Storage.remove('token');
+          resolve();
+        } catch (err) {
+          reject(err);
+        }
+      });
     }
   }
 });

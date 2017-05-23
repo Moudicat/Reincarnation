@@ -20,8 +20,8 @@ export default {
   data() {
     return {
       user: {
-        username: 'admin',
-        artcleCount: 10,
+        username: Store.state.user.username,
+        artcleCount: 11,
         statusDate: '2017-5-21'
       }
     };

@@ -12,12 +12,6 @@ Vue.use(elementUI);
 
 Vue.config.productionTip = false;
 
-router.beforeEach((to, from, next) => {
-  NProgress.start();
-  next();
-  NProgress.done();
-});
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -25,4 +19,25 @@ new Vue({
   store,
   template: '<App/>',
   components: { App }
+});
+
+router.beforeEach((to, from, next) => {
+  NProgress.start();
+  if (to.path !== '/login') {
+    if (!store.state.token) {
+      alert('未登录！');
+      router.push('/login');
+    } else {
+      next();
+    }
+  } else {
+    console.log(store.state.token);
+    if (store.state.token) {
+      alert('您已经登录！');
+      router.push('/');
+    } else {
+      next();
+    }
+  }
+  NProgress.done();
 });

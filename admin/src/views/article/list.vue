@@ -34,11 +34,11 @@
 
       <el-table-column  align="center" label="操作" width="200">
         <template scope="scope">
-          <el-button v-if="scope.row.status!='publish'" size="small" type="success" @click="handleModifyStatus(scope.row,'publish')">发布
+          <el-button v-if="scope.row.status != 'publish'" size="small" type="success" @click="handleModifyStatus(scope.row,'publish')">发布
           </el-button>
-          <el-button v-if="scope.row.status!='draft'" size="small" @click="handleModifyStatus(scope.row,'draft')">草稿
+          <el-button v-if="scope.row.status != 'draft'" size="small" @click="handleModifyStatus(scope.row,'draft')">草稿
           </el-button>
-          <el-button v-if="scope.row.status!='delete'" size="small" type="danger" @click="handleModifyStatus(scope.row,'delete')">删除
+          <el-button v-if="scope.row.status != 'delete'" size="small" type="danger" @click="handleModifyStatus(scope.row,'delete')">删除
           </el-button>
         </template>
       </el-table-column>
@@ -49,7 +49,7 @@
 
 <script type="text/ecmascript-6">
   import Article from 'services/article';
-  import { formatDate } from 'services/utils'; // disable es-lint  line
+  import { formatDate } from 'services/utils';
 
   export default {
     data() {
@@ -67,6 +67,25 @@
       };
     },
     methods: {
+      refresh() {
+        Article.listAll()
+        .then(response => {
+          console.log(response);
+          this.list = response.data;
+        })
+        .catch(err => {
+          console.log(err.message);
+          if (err.message === '401') {
+            this.$message.error('登录超时！');
+            this.$store.dispatch('logout')
+              .then(() => {
+                this.$router.push('/login');
+              });
+          } else {
+            this.$message.error(err.message);
+          }
+        });
+      },
       handleModifyStatus(article, status) {
         Article.setStatus(article._id, status)
           .then(response => {
@@ -75,6 +94,7 @@
               message: '修改成功！',
               type: 'success'
             });
+            this.refresh();
           })
           .catch(err => {
             this.$message.error(err.message);
@@ -95,13 +115,7 @@
       }
     },
     mounted() {
-      Article.listAll()
-        .then(response => {
-          this.list = response.data;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      this.refresh();
     }
   };
 </script>

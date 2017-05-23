@@ -3,7 +3,7 @@
     <el-submenu index="1" class="user-info">
       <template slot="title">{{$store.state.user.username ? $store.state.user.username : '未登录用户'}}</template>
       <el-menu-item index="/settings">个人设置</el-menu-item>
-      <el-menu-item index="/login" @click="logout">注销</el-menu-item>
+      <el-menu-item index="/" @click="logout">注销</el-menu-item>
     </el-submenu>
   </el-menu>
 </template>
@@ -12,7 +12,14 @@
   export default {
     methods: {
       logout() {
-        alert('退出登陆');
+        this.$store.dispatch('logout')
+          .then(() => {
+            this.$message('您已退出登录');
+            this.$router.push('/login');
+          })
+          .catch(err => {
+            this.$message.error(err.message);
+          });
       }
     }
   };
