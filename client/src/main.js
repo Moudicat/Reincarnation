@@ -8,6 +8,9 @@ import 'whatwg-fetch';
 import {Table, TableColumn} from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 
+import NProgress from 'nprogress'; // Progress 进度条
+import 'nprogress/nprogress.css';// Progress 进度条 样式
+
 Vue.use(Lazyload);
 Vue.use(Table);
 Vue.use(TableColumn);
@@ -23,4 +26,10 @@ new Vue({
   store,
   template: '<App/>',
   components: { App }
+});
+
+router.beforeEach((to, from, next) => {
+  NProgress.start();
+  next();
+  NProgress.done();
 });

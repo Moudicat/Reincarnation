@@ -12,9 +12,14 @@
       return {
         releaseData: [
           {
+            version: '0.0.9',
+            date: '2017-05-23',
+            desc: '改进 部署流程 | 添加 进度条 天气模块'
+          },
+          {
             version: '0.0.8',
             date: '2017-05-22',
-            desc: 'Added admin page & article center.'
+            desc: '初始化 后台管理页面 | 添加 文章管理功能'
           },
           {
             version: '0.0.7',
@@ -24,32 +29,32 @@
           {
             version: '0.0.6',
             date: '2017-05-11',
-            desc: 'Add hitokoto api, use fetch'
+            desc: '添加 hitokoto api | 使用 fetch'
           },
           {
             version: '0.0.5',
             date: '2017-05-10',
-            desc: 'Add article(demo) | fixed bugs'
+            desc: '添加 article(demo)组件 修复 bug'
           },
           {
             version: '0.0.4',
             date: '2017-05-09',
-            desc: 'Add bangumi/Aplayer'
+            desc: '添加 bangumi/Aplayer组件'
           },
           {
             version: '0.0.3',
             date: '2017-05-08',
-            desc: 'Add about/status-panel/tag'
+            desc: '添加 about/status-panel/tag组件'
           },
           {
             version: '0.0.2',
             date: '2017-05-06',
-            desc: 'Add header/footer/homepage'
+            desc: '添加 header/footer/homepage组件'
           },
           {
             version: '0.0.1',
             date: '2017-05-04',
-            desc: 'Initial commit'
+            desc: '工程建立'
           }
         ]
       };

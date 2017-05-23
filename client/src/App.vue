@@ -47,6 +47,15 @@
   /*border-radius: 8px;*/
   /*background-color: rgba(0, 0, 0, .3);*/
   /*}*/
+  .padding-top {
+    padding-top: 10px;
+  }
+  .margin-top {
+    margin-top: 10px;
+  }
+  .padding-in {
+    padding: 20px !important;
+  }
 
   .fade-leave, .fade-enter-active {
     transition: all .7s;

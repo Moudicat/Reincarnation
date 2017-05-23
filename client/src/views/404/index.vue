@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="pic-404"></div>
-    <h5>404 您所访问的页面不存在</h5>
+    <h5>404 页面不存在</h5>
   </section>
 </template>
 
@@ -12,14 +12,15 @@
 <style lang="scss" rel="stylesheet/scss" scoped>
   section {
     display: flex;
-    flex: 1;
+    flex: 1 1 320px;
     padding: 50px 15% 50px 30%;
     width: 100%;
     background: #f2ccc4;
     .pic-404 {
       flex: 0 0 45%;
+      width: 45%;
       background: url('./img/cat_with_mouse.svg') no-repeat;
-      background-size: contain;
+      background-size: 100% 100%;
     }
     h5 {
       flex: auto;

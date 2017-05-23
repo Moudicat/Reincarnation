@@ -1,9 +1,11 @@
 <template>
   <aside>
     <StatusPanel />
-    <div class="aplayer-test">
-      今天摸鱼了吗 <br>
-      github昨日提交： 1 commit
+    <WeatherPanel class="margin-top"/>
+    <div class="aplayer-test padding-in">
+      昨天摸鱼了吗 <br>
+      github昨日提交： 1 commit <br>
+      TODO： 此处与github连接
     </div>
     <div class="aplayer-test">
       <p style="text-align: center;">播放器与云储存服务测试</p>
@@ -18,12 +20,14 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import StatusPanel from 'views/status-panel';
+  import StatusPanel from 'components/status-panel';
+  import WeatherPanel from 'components/weather-panel';
   import Aplayer from 'vue-aplayer';
 
   export default {
     components: {
       StatusPanel,
+      WeatherPanel,
       Aplayer
     }
   };
