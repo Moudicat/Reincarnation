@@ -1,7 +1,6 @@
 /**
  * Created by Moudi on 2017/5/3.
  */
-const isLocal = true;
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -12,7 +11,7 @@ const cors = require('./middleware/cors');
 const { infoLogger, warnLogger } = require('./middleware/logger');
 const app = express();
 
-if (!isLocal) {
+if (process.env.NODE_ENV === 'production') {
   // 只开启https服务
   var fs = require('fs');
   var https = require('https');
@@ -53,7 +52,7 @@ mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.db}`
     console.log(err.message);
   } else {
     console.log('已成功连接到数据库');
-    if (isLocal) {
+    if (process.env.NODE_ENV !== 'production') {
       app.listen(2777, () => {
         console.log('服务启动127.0.0.1:2777');
       });

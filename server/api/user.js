@@ -39,7 +39,7 @@ router.post('/login', (req, res, next) => {
         const token = jwt.sign({
           uid: response._id,
           name: response.username,
-          exp: Math.floor(+new Date / 1000) + 60 * 30 // 30 min
+          exp: Math.floor(+new Date / 1000) + 60 * 60 // 60 min
         }, config.jwt.secret);
         res.cookie('X-MDC-Token', token, { httpOnly: true });
         resData.token = token;
