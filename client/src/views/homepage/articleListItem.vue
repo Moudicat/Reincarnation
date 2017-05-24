@@ -1,15 +1,16 @@
 <template>
   <li class="article-list-item">
     <h3 @click="handleOpenArticle">{{article.title}}<span></span></h3>
-    <time><i class="icon-clock"></i> {{article.time}}</time>
-    <p class="desc">{{article.desc}}</p>
+    <time><i class="icon-clock"></i> {{article.postTime | time}}</time>
+    <p class="desc">{{article.description}}</p>
     <div class="pic-wrapper">
-      <img v-lazy="article.img" alt="article-pic" class="pic" @click.stop="handlePicClick">
+      <img v-lazy="article.banner" alt="article-pic" class="pic" @click.stop="handlePicClick">
     </div>
   </li>
 </template>
 
 <script type="text/ecmascript-6">
+  import {formatDate} from 'services/utils';
   export default {
     name: 'articleListItem',
     props: {
@@ -31,6 +32,11 @@
       },
       handleOpenArticle() {
         this.$router.push('/article/' + this.article._id);
+      }
+    },
+    filters: {
+      time(data) {
+        return formatDate(new Date(Number(data)), 'yyyy-MM-dd hh:mm:ss');
       }
     }
   };
