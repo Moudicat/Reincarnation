@@ -63,15 +63,15 @@
         Article.add(this.article)
           .then(response => {
             if (response.code) throw new Error(response.msg);
-            for (let k of this.article) {
-              this.article[k] = '';
-            }
+            this.article.title = this.article.description = this.article.banner = this.article.content = '';
+            this.mde.value('');
             this.$message({
               message: '操作成功！',
               type: 'success'
             });
           })
           .catch(err => {
+            console.dir(err);
             this.$message.error(err.message);
           });
       }
