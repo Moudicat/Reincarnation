@@ -8,6 +8,12 @@
     beforeMount() {
       global.Store = this.$store;
       this.$store.dispatch('init');
+    },
+    mounted() {
+      if (!this.$store.state.token) {
+        alert('未登录！');
+        this.$router.push('/login');
+      }
     }
   };
 </script>

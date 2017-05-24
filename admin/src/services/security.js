@@ -7,4 +7,4 @@ const secret = 'reincarnation!@#$%^&**';
 
 export function sha256(password) {
   return crypto.createHmac('sha256', secret).update(password).digest('hex');
-}
+};
