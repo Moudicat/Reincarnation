@@ -35,7 +35,7 @@ router.post('/', (req, res, next) => {
 router.post('/login', (req, res, next) => {
   User.login(req.body)
     .then(response => {
-      if (response.password === req.body.password) {
+      if (response !== null && response.password === req.body.password) {
         const token = jwt.sign({
           uid: response._id,
           name: response.username,
