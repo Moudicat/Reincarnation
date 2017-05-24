@@ -7,7 +7,7 @@
             <router-link to="/about/index">关于本站</router-link>
           </li>
           <li>
-            <router-link to="/about/release-note" @click.native="handleClick">开发日志</router-link>
+            <router-link to="/about/release-note">开发日志</router-link>
           </li>
         </ul>
       </div>
