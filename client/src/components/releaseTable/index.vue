@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.0.10',
+            date: '2017-05-24',
+            desc: '调试 文章区域接入api'
+          },
+          {
             version: '0.0.9',
             date: '2017-05-23',
             desc: '改进 部署流程 | 添加 进度条 天气模块'
