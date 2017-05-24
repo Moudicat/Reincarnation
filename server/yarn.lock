@@ -1333,6 +1333,10 @@ preserve@^0.2.0:
   version "0.2.0"
   resolved "http://r.cnpmjs.org/preserve/download/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
+probable@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/probable/-/probable-2.1.1.tgz#991d43fccd68747fff0ae32d8587fb3833e55032"
+
 process-nextick-args@~1.0.6:
   version "1.0.7"
   resolved "http://r.cnpmjs.org/process-nextick-args/download/process-nextick-args-1.0.7.tgz#150e20b756590ad3f91093f25a4f2ad8bff30ba3"

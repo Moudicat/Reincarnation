@@ -1,4 +1,5 @@
 const schedule = require('node-schedule');
+const probable = require('probable');
 const formatDate = require('./services/utils');
 /**
   type
@@ -16,7 +17,7 @@ global.weather = {
   temperature: NaN,
   warning: '',
   season: '未知',
-  type: 0
+  type: '晴'
 };
 global.weatherOption = {
   baseTemperature: 30,
@@ -59,22 +60,18 @@ function setBaseInfo() {
     case 0:
       weather.season = '春季';
       weatherOption.baseTemperature = 10;
-      weatherOption.typeList = [0, 1, 11, 12, 81, 82, 91];
       break;
     case 1:
       weather.season = '夏季';
       weatherOption.baseTemperature = 30;
-      weatherOption.typeList = [0, 1, 11, 12, 81, 82];
       break;
     case 2:
       weather.season = '秋季';
       weatherOption.baseTemperature = 15;
-      weatherOption.typeList = [0, 1, 11, 12, 81, 82];
       break;
     case 3:
       weather.season = '冬季';
       weatherOption.baseTemperature = -10;
-      weatherOption.typeList = [0, 1, 11, 82, 91, 92];
       break;
   }
 }
@@ -85,8 +82,10 @@ function setType(temperature) {
     type
       0 晴
       1 多云
+
       11 小雨
       12 大雨
+
       81 雷电
       82 大风
       91 小雪
@@ -94,152 +93,138 @@ function setType(temperature) {
   */
   switch (weather.season) {
     case '春季':
+      var t = '';
       if (temperature < weatherOption.baseTemperature) {
-        if (seed < .2) {
-          weather.type = 11;
-        } else if ((seed - 0.2) < .1 && (seed - 0.2) > 0) {
-            weather.type = 12;
-        } else if ((seed - 0.3) < .2 && (seed - 0.3) > 0) {
-          weather.type = 1;
-        } else if ((seed - 0.5) < .05 && (seed - 0.5) > 0) {
-          weather.type = 81;
-        } else if ((seed - 0.55) < .05 && (seed - 0.55) > 0) {
-          weather.type = 82;
-        } else if (temperature < 0 && seed < 0.5) {
-          weather.type = 91;
-        } else if (seed < 0.9) {
-          weather.type = 0;
+        // 气温小于平均气温
+        if (temperature < 0) {
+          // 当气温低于0度
+          t = probable.createTableFromDef({
+            '0-10': '晴',
+            '11-50': '多云',
+            '51-100': {
+              '0-30': '大风',
+              '31-100': '小雪'
+            }
+          }).roll();
         } else {
-          weather.type = 1;
+          t = probable.createTableFromDef({
+            '0-30': '晴',
+            '31-60': '多云',
+            '61-100': {
+              '0-10': '大风',
+              '11-30': '雷电',
+              '31-70': '小雨',
+              '71-100': '大雨'
+            }
+          }).roll();
         }
       } else {
-        if (seed < .06) {
-          weather.type = 11;
-        } else if ((seed - 0.06) < .04 && (seed - 0.06) > 0) {
-            weather.type = 12;
-        } else if ((seed - 0.1) < .2 && (seed - 0.1) > 0) {
-          weather.type = 1;
-        } else if ((seed - 0.3) < .05 && (seed - 0.3) > 0) {
-          weather.type = 81;
-        } else if ((seed - 0.35) < .05 && (seed - 0.35) > 0) {
-          weather.type = 82;
-        } else if (temperature < 0 && seed < 0.5) {
-          weather.type = 91;
-        } else if (seed < 0.9) {
-          weather.type = 0;
-        } else {
-          weather.type = 1;
-        }
+        // 气温大于平均气温
+        t = probable.createTableFromDef({
+          '0-70': '晴',
+          '71-90': '多云',
+          '91-100': {
+            '0-50': '大风',
+            '51-100': '雷电'
+          }
+        }).roll();
       }
+      weather.type = t;
       break;
     case '夏季':
+      var t = '';
       if (temperature < weatherOption.baseTemperature) {
-        if (seed < .2) {
-          weather.type = 11;
-        } else if ((seed - 0.2) < .1 && (seed - 0.2) > 0) {
-            weather.type = 12;
-        } else if ((seed - 0.3) < .2 && (seed - 0.3) > 0) {
-          weather.type = 1;
-        } else if ((seed - 0.5) < .05 && (seed - 0.5) > 0) {
-          weather.type = 81;
-        } else if ((seed - 0.55) < .05 && (seed - 0.55) > 0) {
-          weather.type = 82;
-        } else if (seed < 0.9) {
-          weather.type = 0;
-        } else {
-          weather.type = 1;
-        }
+        t = probable.createTableFromDef({
+          '0-30': '晴',
+          '31-60': '多云',
+          '61-100': {
+            '0-10': '大风',
+            '11-30': '雷电',
+            '31-70': '小雨',
+            '71-100': '大雨'
+          }
+        }).roll();
       } else {
-        if (seed < .06) {
-          weather.type = 0;
-        } else if ((seed - 0.06) < .04 && (seed - 0.06) > 0) {
-            weather.type = 0;
-        } else if ((seed - 0.1) < .2 && (seed - 0.1) > 0) {
-          weather.type = 1;
-        } else if ((seed - 0.3) < .05 && (seed - 0.3) > 0) {
-          weather.type = 0;
-        } else if ((seed - 0.35) < .05 && (seed - 0.35) > 0) {
-          weather.type = 0;
-        } else if (seed < 0.9) {
-          weather.type = 0;
-        } else {
-          weather.type = 1;
-        }
+        t = probable.createTableFromDef({
+          '0-80': '晴',
+          '81-95': '多云',
+          '96-100': {
+            '0-50': '大风',
+            '51-100': '雷电'
+          }
+        }).roll();
       }
+      weather.type = t;
       break;
     case '秋季':
+      var t = '';
       if (temperature < weatherOption.baseTemperature) {
-        if (seed < .2) {
-          weather.type = 11;
-        } else if ((seed - 0.2) < .1 && (seed - 0.2) > 0) {
-            weather.type = 12;
-        } else if ((seed - 0.3) < .2 && (seed - 0.3) > 0) {
-          weather.type = 1;
-        } else if ((seed - 0.5) < .05 && (seed - 0.5) > 0) {
-          weather.type = 81;
-        } else if ((seed - 0.55) < .05 && (seed - 0.55) > 0) {
-          weather.type = 82;
-        } else if (seed < 0.9) {
-          weather.type = 0;
+        // 气温小于平均气温
+        if (temperature < 0) {
+          // 当气温低于0度
+          t = probable.createTableFromDef({
+            '0-10': '晴',
+            '11-50': '多云',
+            '51-100': {
+              '0-30': '大风',
+              '31-100': '小雪'
+            }
+          }).roll();
         } else {
-          weather.type = 1;
+          t = probable.createTableFromDef({
+            '0-30': '晴',
+            '31-60': '多云',
+            '61-100': {
+              '0-10': '大风',
+              '11-30': '雷电',
+              '31-70': '小雨',
+              '71-100': '大雨'
+            }
+          }).roll();
         }
       } else {
-        if (seed < .06) {
-          weather.type = 11;
-        } else if ((seed - 0.06) < .04 && (seed - 0.06) > 0) {
-            weather.type = 12;
-        } else if ((seed - 0.1) < .2 && (seed - 0.1) > 0) {
-          weather.type = 1;
-        } else if ((seed - 0.3) < .05 && (seed - 0.3) > 0) {
-          weather.type = 81;
-        } else if ((seed - 0.35) < .05 && (seed - 0.35) > 0) {
-          weather.type = 82;
-        } else if (seed < 0.9) {
-          weather.type = 0;
-        } else {
-          weather.type = 1;
-        }
+        // 气温大于平均气温
+        t = probable.createTableFromDef({
+          '0-70': '晴',
+          '71-90': '多云',
+          '91-100': {
+            '0-50': '大风',
+            '51-100': '雷电'
+          }
+        }).roll();
       }
+      weather.type = t;
       break;
     case '冬季':
+      var t = '';
       if (temperature < weatherOption.baseTemperature) {
-        if (seed < .2) {
-          weather.type = 11;
-        } else if ((seed - 0.2) < .1 && (seed - 0.2) > 0) {
-            weather.type = 12;
-        } else if ((seed - 0.3) < .2 && (seed - 0.3) > 0) {
-          weather.type = 1;
-        } else if ((seed - 0.5) < .05 && (seed - 0.5) > 0 && temperature < 0) {
-          weather.type = 91;
-        } else if ((seed - 0.55) < .05 && (seed - 0.55) > 0 && temperature < 0) {
-          weather.type = 92;
-        } else if (temperature > 0 && seed < 0.5) {
-          weather.type = 81;
-        } else if (seed < 0.9) {
-          weather.type = 0;
-        } else {
-          weather.type = 1;
-        }
+        t = probable.createTableFromDef({
+          '0-10': '晴',
+          '11-30': '多云',
+          '31-100': {
+            '0-10': '大风',
+            '11-60': '小雪',
+            '61-100': '大雪'
+          }
+        }).roll();
       } else {
-        if (seed < .06) {
-          weather.type = 11;
-        } else if ((seed - 0.06) < .04 && (seed - 0.06) > 0) {
-            weather.type = 12;
-        } else if ((seed - 0.1) < .2 && (seed - 0.1) > 0) {
-          weather.type = 1;
-        } else if ((seed - 0.3) < .05 && (seed - 0.3) > 0 && temperature < 0) {
-          weather.type = 91;
-        } else if ((seed - 0.35) < .05 && (seed - 0.35) > 0 && temperature < 0) {
-          weather.type = 92;
-        } else if (temperature > 0 && seed < 0.5) {
-          weather.type = 81;
-        } else if (seed < 0.9) {
-          weather.type = 0;
+        if (temperature > 0) {
+          t = probable.createTableFromDef({
+            '0-80': '晴',
+            '81-100': '多云'
+          }).roll();
         } else {
-          weather.type = 1;
+          t = probable.createTableFromDef({
+            '0-70': '晴',
+            '71-80': '多云',
+            '81-100': {
+              '0-20': '大风',
+              '21-100': '小雪'
+            }
+          }).roll();
         }
       }
+      weather.type = t;
       break;
   }
 }
@@ -264,6 +249,8 @@ function setWeather(seed) {
       weather.warning = '高温警报';
     } else if (newTemperature < weatherOption.lowTemperature) {
       weather.warning = '低温警报';
+    } else if (seed < weatherOption.badWeatherProbability) {
+      weather.warning = '大气状况不稳定';
     } else {
       weather.warning = '';
     }
@@ -277,8 +264,10 @@ let weatherGenerator = () => {
   schedule.scheduleJob('1-59 * * * * *', () => {
     const randomSeed = Math.random();
     setWeather(randomSeed);
-    console.log('weather:', JSON.stringify(weather));
-    console.log('\n');
+    setTimeout(() => {
+      console.log('weather:', JSON.stringify(weather));
+      console.log('\n');
+    }, 200);
   });
 }
 
