@@ -1,5 +1,11 @@
 <template>
-  <article v-html="article" class="markdown-body"></article>
+  <article class="markdown-body">
+    <h1>{{articleObj.title}}</h1>
+    <!-- TODO: 各种信息的展示 -->
+    <div class="content" v-html="article">
+
+    </div>
+  </article>
 </template>
 
 <script type="text/ecmascript-6">
@@ -10,6 +16,7 @@
     name: 'Article',
     data() {
       return {
+        articleObj: {},
         article: ''
       };
     },
@@ -23,7 +30,8 @@
       } else {
         Article.getOne(this.$route.params.id)
           .then(response => {
-            this.article = md.render(response);
+            this.articleObj = response.data;
+            this.article = md.render(response.data.content);
           })
           .catch(err => {
             console.error(err);
@@ -62,6 +70,9 @@
     font-size: 16px;
     line-height: 1.5;
     word-wrap: break-word;
+    time {
+      text-align: center;
+    }
   }
 
   .markdown-body .pl-c {
