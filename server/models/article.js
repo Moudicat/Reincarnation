@@ -6,11 +6,11 @@ const articleSchema = require('./schemas/article');
 
 // 获取文章列表
 articleSchema.statics.list = async function () {
-  return await this.find({status: 'publish'}, '-content -status');
+  return await this.find({status: 'publish'}, '-content -status').sort('-postTime');
 };
 // 获取全部文章
 articleSchema.statics.listAll = async function () {
-  return await this.find({}, '-content');
+  return await this.find({}, '-content')。sort('-postTime');
 };
 
 // 调取文章
