@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.0.11',
+            date: '2017-05-25',
+            desc: '添加 文章内容部分，markdown解析'
+          },
+          {
             version: '0.0.10',
             date: '2017-05-24',
             desc: '调试 文章区域接入api'
