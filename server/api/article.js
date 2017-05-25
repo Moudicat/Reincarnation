@@ -25,6 +25,18 @@ router.get('/', (req, res) => {
   });
 });
 
+router.get('/:id', (req, res) => {
+  Article.getOne(req.params.id)
+    .then(response => {
+      resData.data = response;
+      res.json(resData);
+    })
+    .catch (err => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+});
+
 // 以下的路由需要认证
 router.use(authorization);
 

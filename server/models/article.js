@@ -8,7 +8,7 @@ const articleSchema = require('./schemas/article');
 articleSchema.statics.list = async function () {
   return await this.find({status: 'publish'}, '-content -status');
 };
-
+// 获取全部文章
 articleSchema.statics.listAll = async function () {
   return await this.find({}, '-content');
 };
@@ -35,10 +35,9 @@ articleSchema.statics.setStatus = async function (id, status) {
   return await this.findOneAndUpdate({_id: id}, {status: status});
 };
 
-// 标记删除文章
-articleSchema.statics.markRemove = async function (id) {
-  return await this.findOneAndUpdate({_id: id}, {status: 'delete'});
-};
-
+// 删除标记删除的文章
+articleSchema.statics.remove = async function () {
+  return await this.deleteMany({status: 'delete'});
+}
 
 module.exports = mongoose.model('Article', articleSchema);
