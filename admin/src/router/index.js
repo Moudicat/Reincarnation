@@ -4,7 +4,8 @@ import Layout from 'views/layout/layout';
 import login from 'views/login';
 import Dashboard from 'views/dashboard/dashboard';
 import NewArticle from 'views/article/new';
-import articleList from 'views/article/list';
+import ArticleList from 'views/article/list';
+import Status from 'views/status';
 
 Vue.use(Router);
 
@@ -35,11 +36,23 @@ export default new Router({
       children: [
         {
           path: 'list',
-          component: articleList
+          component: ArticleList
         },
         {
           path: 'new',
           component: NewArticle
+        }
+      ]
+    },
+    {
+      path: '/status-panel',
+      name: 'status',
+      component: Layout,
+      redirect: '/article/update',
+      children: [
+        {
+          path: 'update',
+          component: Status
         }
       ]
     }
