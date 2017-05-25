@@ -10,7 +10,7 @@ articleSchema.statics.list = async function () {
 };
 // 获取全部文章
 articleSchema.statics.listAll = async function () {
-  return await this.find({}, '-content')。sort('-postTime');
+  return await this.find({}, '-content').sort('-postTime');
 };
 
 // 调取文章
