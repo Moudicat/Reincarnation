@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Homepage from 'views/homepage';
-import About from 'views/about';
-import AboutPage from 'views/about/aboutPage';
-import ReleaseTable from 'components/releaseTable';
-import Bangumi from 'views/bangumi';
-import Article from 'views/article';
+const About = () => import('./views/about');
+const AboutPage = () => import('./views/about/aboutPage');
+const ReleaseTable = () => import('./components/releaseTable');
+const Bangumi = () => import('./views/bangumi');
+const Article = () => import('./views/article');
 
 import Page404 from 'views/404';
 Vue.use(Router);
