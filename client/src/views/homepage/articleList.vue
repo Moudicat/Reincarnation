@@ -11,9 +11,10 @@
       </ul>
     </div>
     <div class="article-list">
-      <ol>
-        <ArticleListItem v-for="(article, index) in articleList" :key="index" :article="article"/>
+      <ol v-if="articleList.length">
+        <ArticleListItem v-for="(article, index) in articleList" :key="index" :article="article" />
       </ol>
+      <h3 class="info" v-else><i class="icon-smile"></i>{{articleListHolder}}</h3>
     </div>
   </div>
 </template>
@@ -25,7 +26,8 @@
     name: 'ArticleList',
     data() {
       return {
-        articleList: []
+        articleList: [],
+        articleListHolder: '抓取数据中...'
       };
     },
     methods: {
@@ -40,8 +42,8 @@
           console.log(response.data);
           this.articleList.splice(0, this.articleList.length, ...response.data);
         })
-        .catch(err => {
-          console.error(err);
+        .catch(() => {
+          this.articleListHolder = '抱歉，获取数据失败...';
         });
     },
     components: {
@@ -75,6 +77,14 @@
       border: 1px solid #e6ecf0;
       border-radius: 0 0 5px 5px;
       background-color: #fff;
+      .info {
+        padding: 10px;
+        text-align: center;
+        i {
+          margin-right: 5px;
+          vertical-align: middle;
+        }
+      }
     }
   }
 </style>

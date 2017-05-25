@@ -12,27 +12,33 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import Status from 'services/status';
   import Tag from 'components/tag';
   export default {
     data() {
       return {
         typeMap: ['orange', 'green', 'red', 'blue', 'gray'],
-        status: [
-          {
-            name: '目前所在地',
-            content: '帝都'
-          },
-          {
-            name: '最近的状态',
-            content: 'akwww'
-          },
-          {
-            name: '最近看的番',
-            content: '从零开始的魔法书',
-            num: 7
-          }
-        ]
+        status: []
       };
+    },
+    mounted() {
+      Status.get()
+        .then(response => {
+          if (response.data && response.data.status) {
+            this.status.splice(0, this.status.length, ...response.data.status);
+          } else {
+            this.status.push({
+              name: '获取数据失败',
+              content: '....'
+            });
+          }
+        })
+        .catch(err => {
+          this.status.push({
+            name: '获取数据失败',
+            content: err.message
+          });
+        });
     },
     components: {
       rTag: Tag
