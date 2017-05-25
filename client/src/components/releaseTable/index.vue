@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.0.12',
+            date: '2017-05-25',
+            desc: '添加 一些细小的动画，状态板接入api'
+          },
+          {
             version: '0.0.11',
             date: '2017-05-25',
             desc: '添加 文章内容部分，markdown解析'
