@@ -1,16 +1,24 @@
 <template>
-  <article class="markdown-body">
-    <h1>{{articleObj.title}}</h1>
+  <article>
+    <button class="go-back" @click="handleBack"></button>
+    <h2 class="article-title" v-show="articleObj.title">{{articleObj.title}}</h2>
+    <p class="article-time" v-show="articleObj.postTime"><i class="icon-clock"></i>
+      <time>{{articleObj.postTime | time}}</time>
+      <i class="icon-history"></i>
+      <time>{{articleObj.modifiedTime | time}}</time>
+    </p>
     <!-- TODO: 各种信息的展示 -->
-    <div class="content" v-html="article">
-
+    <div class="markdown-body content" v-html="article" v-show="article"></div>
+    <div class="markdown-body content" v-show="!article">
+      <h1>加载中~</h1>
     </div>
   </article>
 </template>
 
 <script type="text/ecmascript-6">
   import Article from 'services/article';
-  var md = require('markdown-it')();
+  import {formatDate} from 'services/utils';
+  let md = require('markdown-it')();
 
   export default {
     name: 'Article',
@@ -21,7 +29,14 @@
       };
     },
     methods: {
-
+      handleBack() {
+        this.$router.back(-1);
+      }
+    },
+    filters: {
+      time(data) {
+        return formatDate(new Date(Number(data)), 'yyyy-MM-dd hh:mm');
+      }
     },
     mounted() {
       this.$store.commit('header/SET_AVATAR', true);
@@ -29,14 +44,14 @@
         alert('非法操作');
       } else {
         Article.getOne(this.$route.params.id)
-          .then(response => {
-            this.articleObj = response.data;
-            this.article = md.render(response.data.content);
-          })
-          .catch(err => {
-            console.error(err);
-            this.article = '<h1>加载失败...请联系管理员</h1>';
-          });
+        .then(response => {
+          this.articleObj = response.data;
+          this.article = md.render(response.data.content);
+        })
+        .catch(err => {
+          console.error(err);
+          this.article = '<h1>加载失败...请联系管理员</h1>';
+        });
       }
     },
     beforeDestroy() {
@@ -47,6 +62,7 @@
 
 <style lang="scss" rel="stylesheet/scss">
   article {
+    position: relative;
     flex: 1;
     width: 100%;
     max-width: 1190px;
@@ -54,7 +70,50 @@
     border-radius: 4px;
     background-color: #fff;
     box-shadow: 0 0 0 1px #d1d1d1, 0 0 3px 2px #ccc;
+    .go-back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 0;
+      background: none;
+      border-left: 50px solid #ffbb9d;
+      border-bottom: 50px solid transparent;
+      border-right: 0;
+      border-top: 0;
+      cursor: pointer;
+      &::before {
+        position: absolute;
+        left: -44px;
+        top: 5px;
+        content: '\e90d';
+        font-family: 'icomoon';
+        font-size: 18px;
+        color: #fff;
+      }
+    }
+    .article-title,
+    .article-time {
+      text-align: center;
+    }
+    .article-title {
+      margin: 20px 0;
+      font-size: 30px;
+      font-weight: 700;
+    }
+    .article-time {
+      font-size: 12px;
+      i {
+        margin-right: 5px;
+      }
+      i:nth-of-type(2) {
+        margin-left: 20px;
+      }
+      > * {
+        vertical-align: middle;
+      }
+    }
   }
+
   @font-face {
     font-family: octicons-link;
     src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
@@ -451,11 +510,11 @@
     content: "";
   }
 
-  .markdown-body>*:first-child {
+  .markdown-body > *:first-child {
     margin-top: 0 !important;
   }
 
-  .markdown-body>*:last-child {
+  .markdown-body > *:last-child {
     margin-bottom: 0 !important;
   }
 
@@ -500,11 +559,11 @@
     border-left: 0.25em solid #dfe2e5;
   }
 
-  .markdown-body blockquote>:first-child {
+  .markdown-body blockquote > :first-child {
     margin-top: 0;
   }
 
-  .markdown-body blockquote>:last-child {
+  .markdown-body blockquote > :last-child {
     margin-bottom: 0;
   }
 
@@ -605,11 +664,11 @@
     margin-bottom: 0;
   }
 
-  .markdown-body li>p {
+  .markdown-body li > p {
     margin-top: 16px;
   }
 
-  .markdown-body li+li {
+  .markdown-body li + li {
     margin-top: 0.25em;
   }
 
@@ -667,7 +726,7 @@
     padding-bottom: 0.2em;
     margin: 0;
     font-size: 85%;
-    background-color: rgba(27,31,35,0.05);
+    background-color: rgba(27, 31, 35, 0.05);
     border-radius: 3px;
   }
 
@@ -681,7 +740,7 @@
     word-wrap: normal;
   }
 
-  .markdown-body pre>code {
+  .markdown-body pre > code {
     padding: 0;
     margin: 0;
     font-size: 100%;
@@ -746,7 +805,7 @@
     box-shadow: inset 0 -1px 0 #959da5;
   }
 
-  .markdown-body :checked+.radio-label {
+  .markdown-body :checked + .radio-label {
     position: relative;
     z-index: 1;
     border-color: #0366d6;
@@ -756,7 +815,7 @@
     list-style-type: none;
   }
 
-  .markdown-body .task-list-item+.task-list-item {
+  .markdown-body .task-list-item + .task-list-item {
     margin-top: 3px;
   }
 

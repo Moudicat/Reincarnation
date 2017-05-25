@@ -3,7 +3,7 @@
     <h1>某迪猫|结束与起始之界</h1>
     <div class="background-wrapper">
       <div class="hitokoto-wrapper">
-        <p class="hitokoto">『{{ hitokoto }}』</p>
+        <p class="hitokoto" v-show="hitokoto">『{{ hitokoto }}』</p>
       </div>
     </div>
     <Sticky>
@@ -14,7 +14,8 @@
           </div>
           <div class="profile-mini-wrapper" :class="{mini: miniAvatarState}">
             <div class="profile-mini">
-              <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_400x400.jpg" alt="mini-avatar">
+              <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_400x400.jpg"
+                   alt="mini-avatar">
               <div class="info">
                 <h3>某迪</h3>
                 <p>More cooperation, no competition.</p>
@@ -58,7 +59,19 @@
     },
     beforeMount() {
       Hitokoto.get().then(response => {
-        this.hitokoto = response.data.content;
+        let h = response.data.content;
+        let t = () => {
+          this.hitokoto += h.substring(0, 1);
+          h = h.substring(1);
+          if (h.length !== 0) {
+            setTimeout(() => {
+              t();
+            }, Math.random() * 100 + 40);
+          } else {
+            h = t = null;
+          }
+        };
+        t();
       });
     },
     components: {
@@ -101,7 +114,7 @@
       }
     }
     .nav-wrapper {
-      box-shadow: 0 1px 3px 0 rgba(0,0,0,0.25);
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
       background-color: #fff;
     }
     .nav-container {
@@ -120,7 +133,7 @@
         height: 190px;
         border: 5px solid #fff;
         border-radius: 12px;
-        box-shadow: 0 1px 1px rgba(136,153,166,0.15);
+        box-shadow: 0 1px 1px rgba(136, 153, 166, 0.15);
         overflow: hidden;
         transition: .6s;
         > img {

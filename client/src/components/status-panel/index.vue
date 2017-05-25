@@ -1,19 +1,11 @@
 <template>
   <div class="status-panel">
     <h3>状态板</h3>
-    <span>最后更新于 <r-tag type="gray"><time>2017-05-08</time></r-tag></span>
     <ul class="status-panel-list">
-      <li>
-        目前所在地
-        <r-tag type="green">帝都</r-tag>
-      </li>
-      <li>
-        最近的状态
-        <r-tag type="orange">akwww</r-tag>
-      </li>
-      <li>
-        最近看的番
-        <r-tag type="red" :num="5">从零开始的魔法书</r-tag>
+      <li v-for="(state, index) in status" :key="index">
+        {{state.name}}
+        <r-tag :type="typeMap[index%5]" :num="state.num" v-if="state.num">{{state.content}}</r-tag>
+        <r-tag :type="typeMap[index%5]" v-else>{{state.content}}</r-tag>
       </li>
     </ul>
   </div>
@@ -22,6 +14,26 @@
 <script type="text/ecmascript-6">
   import Tag from 'components/tag';
   export default {
+    data() {
+      return {
+        typeMap: ['orange', 'green', 'red', 'blue', 'gray'],
+        status: [
+          {
+            name: '目前所在地',
+            content: '帝都'
+          },
+          {
+            name: '最近的状态',
+            content: 'akwww'
+          },
+          {
+            name: '最近看的番',
+            content: '从零开始的魔法书',
+            num: 7
+          }
+        ]
+      };
+    },
     components: {
       rTag: Tag
     }
