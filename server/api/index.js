@@ -8,5 +8,6 @@ router.use('/bangumi', require('./bangumi'));
 router.use('/user', require('./user'));
 router.use('/article', require('./article'));
 router.use('/hitokoto', require('./hitokoto'));
+router.use('/status', require('./status'));
 
 module.exports = router;
