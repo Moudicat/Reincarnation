@@ -8,4 +8,8 @@ export default class Article {
     const articleList = await fetch(config.baseURL + '/article');
     return articleList.json();
   }
+  static async getOne(id) {
+    const article = await fetch(`${config.baseURL}/article/${id}`);
+    return article.json();
+  }
 }
