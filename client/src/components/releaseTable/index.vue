@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.0.13',
+            date: '2017-05-26',
+            desc: '添加 天气系统接入api'
+          },
+          {
             version: '0.0.12',
             date: '2017-05-25',
             desc: '添加 一些细小的动画，状态板接入api'
