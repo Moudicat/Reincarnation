@@ -21,6 +21,10 @@ if (process.env.NODE_ENV === 'production') {
   var httpsServer = https.createServer(credentials, app);
 }
 
+const weatherGenerator = require('./services/weatherSystem');
+
+weatherGenerator();
+
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 

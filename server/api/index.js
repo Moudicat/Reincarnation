@@ -9,5 +9,6 @@ router.use('/user', require('./user'));
 router.use('/article', require('./article'));
 router.use('/hitokoto', require('./hitokoto'));
 router.use('/status', require('./status'));
+router.use('/weather', require('./weather'));
 
 module.exports = router;

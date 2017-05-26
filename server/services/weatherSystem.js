@@ -1,6 +1,6 @@
 const schedule = require('node-schedule');
 const probable = require('probable');
-const formatDate = require('./services/utils');
+const formatDate = require('./utils');
 /**
   type
     0 晴
@@ -257,18 +257,15 @@ function setWeather(seed) {
     weather.temperature = newTemperature;
     setType(newTemperature);
   }
-  weather.timestamp = timeC(+new Date() - weatherOption.baseTimestamp );
 }
 
 let weatherGenerator = () => {
-  schedule.scheduleJob('1-59 * * * * *', () => {
+  const randomSeed = Math.random();
+  setWeather(randomSeed);
+  schedule.scheduleJob('0 0 0,4,8,12,16,20 * * *', () => {
     const randomSeed = Math.random();
     setWeather(randomSeed);
-    setTimeout(() => {
-      console.log('weather:', JSON.stringify(weather));
-      console.log('\n');
-    }, 200);
   });
-}
+};
 
-weatherGenerator();
+module.exports = weatherGenerator;
