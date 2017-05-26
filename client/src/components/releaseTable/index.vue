@@ -14,7 +14,7 @@
           {
             version: '0.0.13',
             date: '2017-05-26',
-            desc: '添加 天气系统接入api'
+            desc: '添加 天气系统接入api 采用 history api'
           },
           {
             version: '0.0.12',
