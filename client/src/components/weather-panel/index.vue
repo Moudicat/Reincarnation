@@ -1,32 +1,117 @@
 <template>
   <div class="weather-panel">
     <h3>圣都月之森实时天气情况</h3>
-    <span>当地时间 <r-tag type="gray"><time>教会历1年1月4日 08:45:10</time></r-tag></span>
+    <span>当地时间 <r-tag type="gray"><time>{{weather.timestamp | time}}</time></r-tag></span>
     <ul class="weather-panel-list">
       <li>
         温度
-        <r-tag>41.8℃</r-tag>
+        <r-tag :type="temperatureType">{{weather.temperature}}℃</r-tag>
       </li>
       <li>
         季节
-        <r-tag>夏季</r-tag>
+        <r-tag :type="seasonType">{{weather.season}}</r-tag>
       </li>
       <li>
         天气
-        <r-tag>晴</r-tag>
+        <r-tag :type="typeType">{{weather.type}}</r-tag>
       </li>
       <li>
         天气预警
-        <r-tag type="red">高温预警</r-tag>
+        <r-tag :type="warningType">{{weather.warning ? weather.warning : '无'}}</r-tag>
       </li>
-      <li>TODO: 此处是动态的 <br /> 进度：后端基本完成 调试中</li>
     </ul>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import Weather from 'services/weather';
   import Tag from 'components/tag';
+  import {formatDate} from 'services/utils';
   export default {
+    data() {
+      return {
+        weather: {},
+        timer: null
+      };
+    },
+    methods: {
+      calcTime() {
+        this.timer = setInterval(() => {
+          this.weather.timestamp += 1000;
+        }, 1000);
+      }
+    },
+    computed: {
+      temperatureType() {
+        if (this.weather.temperature < 0) {
+          return 'blue';
+        } else if (this.weather.temperature < 20) {
+          return 'green';
+        } else if (this.weather.temperature < 35) {
+          return 'orange';
+        } else {
+          return 'red';
+        }
+      },
+      seasonType() {
+        if (this.weather.season === '春季') {
+          return 'green';
+        } else if (this.weather.season === '夏季') {
+          return 'red';
+        } else if (this.weather.season === '秋季') {
+          return 'orange';
+        } else {
+          return 'blue';
+        }
+      },
+      typeType() {
+        const t = this.weather.type;
+        if (t === '晴' || t === '多云') {
+          return 'gray';
+        } else if (t === '小雨' || t === '大雨' || t === '大雪' || t === '小雪') {
+          return 'blue';
+        } else if (t === '雷电') {
+          return 'red';
+        } else {
+          return '';
+        }
+      },
+      warningType() {
+        if (this.weather.warning === '') {
+          return '';
+        } else {
+          return 'red';
+        }
+      }
+    },
+    beforeMount() {
+      Weather.get()
+        .then(response => {
+          if (response.data) {
+            this.weather = response.data;
+            this.calcTime();
+          } else {
+            throw new Error('内部错误');
+          }
+        })
+        .catch(err => {
+          this.weather = {
+            temperature: '传感器离线',
+            season: '未知',
+            timestamp: 0,
+            type: '未知',
+            warning: err.message
+          };
+        });
+    },
+    beforeDestroy() {
+      clearInterval(this.timer);
+    },
+    filters: {
+      time(t) {
+        return formatDate(new Date(t), '教会历yyyy年MM月dd日 hh:mm:ss', true);
+      }
+    },
     components: {
       rTag: Tag
     }

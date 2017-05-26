@@ -6,12 +6,16 @@
  * @example: formatDate(12353453, 'yyyy-MM-dd hh:mm:ss')
  * @return:  2010-01-11 01:01:00
  * */
-export function formatDate(date, fmt) {
+export function formatDate(date, fmt, jhl) {
   function padLeftZero(str) {
     return ('00' + str).substr(str.length);
   }
   if (/(y+)/.test(fmt)) {
-    fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
+    if (jhl) {
+      fmt = fmt.replace(RegExp.$1, (date.getFullYear() - 1970 + '').substr(4 - RegExp.$1.length));
+    } else {
+      fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length));
+    }
   }
   let o = {
     'M+': date.getMonth() + 1,
