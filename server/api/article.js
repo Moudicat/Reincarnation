@@ -27,9 +27,9 @@ router.get('/', (req, res) => {
 
 router.get('/:id', (req, res, next) => {
   if (req.params.id.length < 20) next();
-  // TODO 这里应该还有完备的查找，先找有没有这个id 再去获取，否则要出事
   Article.getOne(req.params.id)
     .then(response => {
+      if (response.length === 0) next();
       resData.data = response;
       res.json(resData);
     })
