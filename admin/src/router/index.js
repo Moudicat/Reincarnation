@@ -48,7 +48,7 @@ export default new Router({
       path: '/status-panel',
       name: 'status',
       component: Layout,
-      redirect: '/article/update',
+      redirect: '/status-panel/update',
       children: [
         {
           path: 'update',
