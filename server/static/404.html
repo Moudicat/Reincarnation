@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="author" content="Reddy.Huang <i@0u0b.com>"/>
-    <title>说萌</title>
+    <title>404</title>
     <style>
         * {
             margin: 0;
@@ -27,8 +27,10 @@
             bottom: -15px;
             width: 100%;
             margin-top: -100px;
+            -webkit-transform: skewY(-3deg);
             transform: skewY(-3deg);
             transform-origin: center;
+            background-image: -webkit-linear-gradient(-90deg, #440d30 13%, #915474 56%, #e4abc9);
             background-image: linear-gradient(180deg, #440d30 13%, #915474 56%, #e4abc9);
         }
         .card {
@@ -36,21 +38,28 @@
             position: absolute;
             top: 50%;
             left: 50%;
+            -webkit-transform: translate3d(-400px, -250px, 0);
             transform: translate3d(-400px, -250px, 0);
-            width: 800px;
+            width: 860px;
             height: 500px;
         }
         img {
             width: 400px;
+            -webkit-animation: fly 1s;
+            animation: fly 1s;
         }
         h1 {
-            margin: 15px;
-            font-size: 80px;
+            margin: 10px;
+            font-size: 50px;
             color: #fff;
+            -webkit-animation: .6s .5s fade-in backwards;
+            animation: .6s .5s fade-in backwards;
         }
         h3 {
             text-indent: 2em;
             color: #eee;
+            -webkit-animation: .5s .9s fade-in backwards;
+            animation: .5s .9s fade-in backwards;
         }
         footer {
             position: fixed;
@@ -63,6 +72,31 @@
             text-decoration: none;
             color: #121212;
         }
+
+        @keyframes fly {
+            from {
+                -webkit-transform: translate3d(-400px, 700px, 0) rotateZ(40deg);
+                transform: translate3d(-400px, 700px, 0) rotateZ(40deg);
+                opacity: 0;
+            }
+            to {
+                -webkit-transform: translate3d(0, 0, 0) rotateZ(0);
+                transform: translate3d(0, 0, 0) rotateZ(0);
+                opacity: 1;
+            }
+        }
+        @keyframes fade-in {
+            from {
+                -webkit-transform: translate3d(90px, 0, 0);
+                transform: translate3d(90px, 0, 0);
+                opacity: 0;
+            }
+            to {
+                -webkit-transform: translate3d(0, 0, 0);
+                transform: translate3d(0, 0, 0);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -72,8 +106,8 @@
     <div class="card">
         <img src="./img/47.png" alt="一只鸟">
         <div>
-            <h1>说萌</h1>
-            <h3>API系统正常工作中~</h3>
+            <h1>404 - Not Found</h1>
+            <h3>您要找的页面不存在</h3>
         </div>
     </div>
     <footer>Copyright © 2014-2017 <a href="https://www.moudicat.com">某迪猫</a> All Rights Reserved.</footer>

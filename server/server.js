@@ -20,9 +20,9 @@ if (process.env.NODE_ENV === 'production') {
   var credentials = {key: privateKey, cert: certificate};
   var httpsServer = https.createServer(credentials, app);
 }
-
+// 加载天气插件
 const weatherGenerator = require('./services/weatherSystem');
-
+// 加载天气生成
 weatherGenerator();
 
 app.use(bodyParser.urlencoded({extended: false}));
@@ -42,10 +42,11 @@ app.use('/api', require('./api/index'));
 
 app.use('/', require('./routes'));
 
+app.use(express.static(path.join(__dirname, 'static')));
 app.use((req, res, next) => {
-  res.status(404);
   app.use(warnLogger);
-  res.send('404');
+  res.status(404);
+  res.sendfile("./static/404.html");
 });
 
 // fixed: mpromise is deprecated;
