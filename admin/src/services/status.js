@@ -4,9 +4,11 @@
 import config from '../config';
 
 export default class Status {
-  static async update() {
+  static async update(statusArr) {
     const result = await fetch(config.baseURL + '/status', {
-      headers: { 'X-MDC-Token': Store.state.token }
+      headers: { 'X-MDC-Token': Store.state.token },
+      method: 'PATCH',
+      body: JSON.stringify({status: statusArr})
     });
     if (result.ok) {
       return result.json();
