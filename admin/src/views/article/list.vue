@@ -1,7 +1,9 @@
 <template>
   <div>
+    <div class="ctrl-bar">
+      <el-button type="danger" @click="handleDeleteMark">删除标记删除的文章</el-button>
+    </div>
     <el-table :data="list" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
-
       <el-table-column width="180px" align="center" label="发布时间">
         <template scope="scope">
           <span>{{scope.row.postTime | formatDate(scope.row.postTime)}}</span>
@@ -42,7 +44,6 @@
           </el-button>
         </template>
       </el-table-column>
-
     </el-table>
   </div>
 </template>
@@ -69,22 +70,22 @@
     methods: {
       refresh() {
         Article.listAll()
-        .then(response => {
-          console.log(response);
-          this.list = response.data;
-        })
-        .catch(err => {
-          console.log(err.message);
-          if (err.message === '401') {
-            this.$message.error('登录超时！');
-            this.$store.dispatch('logout')
-              .then(() => {
-                this.$router.push('/login');
-              });
-          } else {
-            this.$message.error(err.message);
-          }
-        });
+          .then(response => {
+            console.log(response);
+            this.list = response.data;
+          })
+          .catch(err => {
+            console.log(err.message);
+            if (err.message === '401') {
+              this.$message.error('登录超时！');
+              this.$store.dispatch('logout')
+                .then(() => {
+                  this.$router.push('/login');
+                });
+            } else {
+              this.$message.error(err.message);
+            }
+          });
       },
       handleModifyStatus(article, status) {
         Article.setStatus(article._id, status)
@@ -92,6 +93,19 @@
             if (response.code) throw new Error(respnse.msg);
             this.$message({
               message: '修改成功！',
+              type: 'success'
+            });
+            this.refresh();
+          })
+          .catch(err => {
+            this.$message.error(err.message);
+          });
+      },
+      handleDeleteMark() {
+        Article.remove()
+          .then(response => {
+            this.$message({
+              message: '删除成功!',
               type: 'success'
             });
             this.refresh();
@@ -121,5 +135,7 @@
 </script>
 
 <style lang="scss" rel="stylesheet/scss" scoped>
-
+  .ctrl-bar {
+    padding: 0 20px 20px;
+  }
 </style>

@@ -62,4 +62,16 @@ export default class Article {
       throw new Error(result.status);
     }
   }
+
+  static async remove() {
+    const result = await fetch(`${config.baseURL}/article/markDel`, {
+      method: 'delete',
+      headers: {'X-MDC-Token': Store.state.token}
+    });
+    if (result.ok) {
+      return result.json();
+    } else {
+      throw new Error(result.status);
+    }
+  }
 }

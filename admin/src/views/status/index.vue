@@ -91,6 +91,28 @@
           alert('no!');
         }
       }
+    },
+    beforeMount() {
+      Status.get()
+      .then(response => {
+        if (response.data.status.length !== 0) {
+          this.values.splice(0, this.values.length);
+          this.valuesInput.splice(0, this.valuesInput.length);
+          this.valuesNumInput.splice(0, this.valuesNumInput.length);
+          response.data.status.forEach(e => {
+            this.values.push(e.name);
+            this.valuesInput.push(e.content);
+            this.valuesNumInput.push(e.num ? e.num : '');
+          });
+          this.$message('加载完毕~');
+        }
+      })
+      .catch(err => {
+        this.$message({
+          message: err.message,
+          type: 'error'
+        });
+      });
     }
   };
 </script>

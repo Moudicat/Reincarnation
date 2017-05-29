@@ -16,4 +16,15 @@ export default class Status {
       throw new Error(result.status);
     }
   }
+
+  static async get() {
+    const result = await fetch(config.baseURL + '/status', {
+      headers: { 'X-MDC-Token': Store.state.token }
+    });
+    if (result.ok) {
+      return result.json();
+    } else {
+      throw new Error(result.status);
+    }
+  }
 }
