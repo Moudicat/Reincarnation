@@ -40,7 +40,7 @@ app.use(infoLogger);
 
 app.use('/api', require('./api/index'));
 
-app.use(express.static(path.join(__dirname, 'static')));
+app.use(express.static('./static'));
 app.use('/', require('./routes'));
 
 app.use((req, res) => {
