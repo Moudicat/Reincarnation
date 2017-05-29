@@ -26,12 +26,21 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res, next) => {
-  if (req.params.id.length < 20) next();
+  if (req.params.id === 'all') {
+    next();
+  }
+  if (req.params.id.length < 20) {
+    res.sendStatus(404);
+    return;
+  }
   Article.getOne(req.params.id)
     .then(response => {
-      if (response.length === 0) next();
-      resData.data = response;
-      res.json(resData);
+      if (!response) {
+        res.sendStatus(404);
+      } else {
+        resData.data = response;
+        res.json(resData);
+      }
     })
     .catch (err => {
       console.error(err);

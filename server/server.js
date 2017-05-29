@@ -41,12 +41,12 @@ app.use(infoLogger);
 app.use('/api', require('./api/index'));
 
 app.use(express.static('./static'));
+
 app.use('/', require('./routes'));
 
 app.use((req, res) => {
   app.use(warnLogger);
-  res.status(404);
-  res.sendfile("./static/404.html");
+  res.sendStatus(404);
 });
 
 // fixed: mpromise is deprecated;
