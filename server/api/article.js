@@ -28,6 +28,7 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res, next) => {
   if (req.params.id === 'all') {
     next();
+    return;
   }
   if (req.params.id.length < 20) {
     res.sendStatus(404);
