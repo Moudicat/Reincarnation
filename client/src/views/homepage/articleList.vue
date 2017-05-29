@@ -40,6 +40,7 @@
       Article.list()
         .then(response => {
           if (response.data) {
+            if (!response.data.length) this.articleListHolder = '暂无文章~';
             this.articleList.splice(0, this.articleList.length, ...response.data);
           }
         })
