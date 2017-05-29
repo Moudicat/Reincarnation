@@ -6,7 +6,11 @@ import config from '../config';
 export default class Status {
   static async update(statusArr) {
     const result = await fetch(config.baseURL + '/status', {
-      headers: { 'X-MDC-Token': Store.state.token },
+      headers: {
+        'X-MDC-Token': Store.state.token,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
       method: 'PATCH',
       body: JSON.stringify({status: statusArr})
     });
