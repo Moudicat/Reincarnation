@@ -4,7 +4,7 @@ import router from './router';
 import elementUI from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 import store from './store/index';
-// import NProgress from 'nprogress'; // Progress 进度条
+import NProgress from 'nprogress'; // Progress 进度条
 import 'nprogress/nprogress.css';// Progress 进度条 样式
 import 'whatwg-fetch';
 

@@ -71,7 +71,9 @@
             h = t = null;
           }
         };
-        t();
+        setTimeout(() => {
+          t();
+        }, 2000);
       });
     },
     components: {

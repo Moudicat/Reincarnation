@@ -21,12 +21,14 @@
       rFooter: Footer
     },
     mounted() {
-      let path = 'M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z';
-      document.getElementById('path').setAttribute('d', path);
-      document.getElementById('loader-t').style.opacity = 0;
       setTimeout(() => {
-        document.body.removeChild(document.getElementById('loader'));
-      }, 600);
+        let path = 'M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z';
+        document.getElementById('path').setAttribute('d', path);
+        document.getElementById('loader-t').style.opacity = 0;
+        setTimeout(() => {
+          document.body.removeChild(document.getElementById('loader'));
+        }, 600);
+      }, 2000);
     }
   };
 </script>
