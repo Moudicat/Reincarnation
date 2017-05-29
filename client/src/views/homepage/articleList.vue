@@ -39,8 +39,9 @@
     beforeMount() {
       Article.list()
         .then(response => {
-          console.log(response.data);
-          this.articleList.splice(0, this.articleList.length, ...response.data);
+          if (response.data) {
+            this.articleList.splice(0, this.articleList.length, ...response.data);
+          }
         })
         .catch(() => {
           this.articleListHolder = '抱歉，获取数据失败...';

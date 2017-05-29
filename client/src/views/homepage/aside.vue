@@ -2,33 +2,31 @@
   <aside>
     <StatusPanel />
     <WeatherPanel class="margin-top"/>
-    <div class="aplayer-test padding-in">
-      昨天摸鱼了吗 <br>
-      github昨日提交： 1 commit <br>
-      TODO： 此处与github连接
-    </div>
-    <div class="aplayer-test">
-      <p style="text-align: center;">播放器与云储存服务测试</p>
-      <Aplayer :music="{
-        title: 'Fly',
-        author: 'Ludovico Einaudi',
-        url: 'http://moudicat-data.oss-cn-beijing.aliyuncs.com/music/Ludovico%20Einaudi%20-%20Fly.mp3',
-        pic: 'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=4116671072,3147142947&fm=58',
-        }" preload="none"/>
-    </div>
+    <!--<div class="aplayer-test padding-in">-->
+      <!--昨天摸鱼了吗 <br>-->
+      <!--github昨日提交： 1 commit <br>-->
+      <!--TODO： 此处与github连接-->
+    <!--</div>-->
+    <!--<div class="aplayer-test">-->
+      <!--<p style="text-align: center;">播放器与云储存服务测试</p>-->
+      <!--<Aplayer :music="{-->
+        <!--title: 'Fly',-->
+        <!--author: 'Ludovico Einaudi',-->
+        <!--url: 'http://moudicat-data.oss-cn-beijing.aliyuncs.com/music/Ludovico%20Einaudi%20-%20Fly.mp3',-->
+        <!--pic: 'https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=4116671072,3147142947&fm=58',-->
+        <!--}" preload="none"/>-->
+    <!--</div>-->
   </aside>
 </template>
 
 <script type="text/ecmascript-6">
   import StatusPanel from 'components/status-panel';
   import WeatherPanel from 'components/weather-panel';
-  import Aplayer from 'vue-aplayer';
 
   export default {
     components: {
       StatusPanel,
-      WeatherPanel,
-      Aplayer
+      WeatherPanel
     }
   };
 </script>

@@ -32,7 +32,7 @@
   .take-me-fly {
     position: fixed;
     left: 70px;
-    bottom: 0;
+    bottom: -100%;
     width: 160px;
     height: 100px;
     background: url(./img/cat_with_fish.svg) no-repeat;

@@ -4,6 +4,7 @@ import router from './router';
 import store from './store';
 import Lazyload from 'vue-lazyload';
 import 'whatwg-fetch';
+let Promise = require('es6-promise').Promise;
 
 import {Table, TableColumn} from 'element-ui';
 
