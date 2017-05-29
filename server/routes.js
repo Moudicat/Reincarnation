@@ -9,13 +9,16 @@ router.get('/', (req, res) => {
 });
 
 router.get('/admin--page', (req, res) => {
-  if (req.query.t) {
-    let time = +new Date();
-    if (parseInt(req.query.t) < time && parseInt(req.query.t) + 100000 < time) { // 确保是在1分40秒内的时间戳
-      res.sendfile("./static/index.html");
+  if (req.query.tt) {
+    let time = Math.floor(+new Date() / 1000);
+    console.log(parseInt(req.query.t), time);
+    if (parseInt(req.query.tt) < time && parseInt(req.query.tt) > time - 100) { // 确保是在1分40秒内的时间戳
+      res.sendFile("./static/index.html", {root: __dirname});
     } else {
       res.sendStatus(404);
     }
+  } else {
+    res.sendStatus(404);
   }
 });
 
