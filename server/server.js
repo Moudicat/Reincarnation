@@ -40,10 +40,10 @@ app.use(infoLogger);
 
 app.use('/api', require('./api/index'));
 
+app.use(express.static(path.join(__dirname, 'static')));
 app.use('/', require('./routes'));
 
-app.use(express.static(path.join(__dirname, 'static')));
-app.use((req, res, next) => {
+app.use((req, res) => {
   app.use(warnLogger);
   res.status(404);
   res.sendfile("./static/404.html");
