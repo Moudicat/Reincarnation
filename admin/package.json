@@ -1,6 +1,6 @@
 {
   "name": "reincarnation-admin",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A Vue.js based reincarnation admin project.",
   "author": "Moudicat <i@0u0b.com>",
   "private": true,

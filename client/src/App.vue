@@ -37,6 +37,7 @@
     flex-direction: column;
     justify-content: center;
     min-height: 100vh;
+    font-family: Helvetica, "PingFang SC", "Microsoft YaHei", "微软雅黑", "宋体", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
