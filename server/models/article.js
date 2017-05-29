@@ -38,6 +38,6 @@ articleSchema.statics.setStatus = async function (id, status) {
 // 删除标记删除的文章
 articleSchema.statics.remove = async function () {
   return await this.deleteMany({status: 'delete'});
-}
+};
 
 module.exports = mongoose.model('Article', articleSchema);

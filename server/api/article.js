@@ -89,8 +89,18 @@ router.patch('/:id', (req, res) => {
       res.json(resData);
     })
     .catch(err => {
-      resData.msg = err.message;
+      res.sendStatus(500);
+    })
+});
+
+router.delete('/markDel', (req, res) => {
+  Article.remove()
+    .then(response => {
+      resData.msg = '删除成功';
       res.json(resData);
+    })
+    .catch(err => {
+      res.sendStatus(500);
     })
 });
 
@@ -102,8 +112,7 @@ router.patch('/:id/status', (req, res) => {
       res.json(resData);
     })
     .catch(err => {
-      resData.msg = err.message;
-      res.json(resData);
+      res.sendStatus(500);
     })
 });
 
