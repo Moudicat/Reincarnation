@@ -1,6 +1,6 @@
 <template>
   <div class="weather-panel">
-    <h3>圣都月之森实时天气情况</h3>
+    <h3>圣都月之森</h3>
     <span>当地时间 <r-tag type="gray"><time>{{weather.timestamp | time}}</time></r-tag></span>
     <ul class="weather-panel-list">
       <li>
