@@ -16,7 +16,8 @@ export default new Vuex.Store({
       nickname: '',
       lastLoginTime: '',
       avatar: ''
-    }
+    },
+    articleModifyId: ''
   },
   mutations: {
     SET_TOKEN(state, token) {
@@ -27,6 +28,9 @@ export default new Vuex.Store({
       state.user.nickname = userInfo.nickname;
       state.user.lastLoginTime = userInfo.lastLoginTime;
       state.user.avatar = userInfo.avatar;
+    },
+    SET_AMI(state, id) {
+      state.articleModifyId = id;
     }
   },
   actions: {

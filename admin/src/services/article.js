@@ -50,12 +50,25 @@ export default class Article {
     }
   }
   // 更新文章
-  static async update(articleObj) {
+  static async update(id, articleObj) {
     const result = await fetch(`${config.baseURL}/article/${id}`, {
       method: 'PATCH',
-      headers: {'X-MDC-Token': Store.state.token},
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-MDC-Token': Store.state.token
+      },
       body: JSON.stringify({articleObj})
     });
+    if (result.ok) {
+      return result.json();
+    } else {
+      throw new Error(result.status);
+    }
+  }
+
+  static async getOne(id) {
+    const result = await fetch(`${config.baseURL}/article/${id}`);
     if (result.ok) {
       return result.json();
     } else {

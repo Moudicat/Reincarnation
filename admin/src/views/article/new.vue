@@ -1,7 +1,7 @@
 <template>
   <div>
-    <MDInput v-model="article.title"  placeholder="请在此处输入文章标题">标题</MDInput>
-    <MDInput v-model="article.description"  placeholder="请在此处输入文章描述">描述</MDInput>
+    <MDInput v-model="article.title" placeholder="请在此处输入文章标题">标题</MDInput>
+    <MDInput v-model="article.description" placeholder="请在此处输入文章描述">描述</MDInput>
     <MDInput v-model="article.banner" placeholder="请在此处输入banner图片地址">banner</MDInput>
     <div class='simplemde-container'>
       <textarea id='markdown-editor' ref="mde" v-model="article.content"></textarea>
@@ -57,23 +57,49 @@
       this.mde.codemirror.on('change', () => {
         this.article.content = this.mde.value();
       });
+      if (this.$store.state.articleModifyId) {
+        Article.getOne(this.$store.state.articleModifyId)
+          .then(response => {
+            this.article = response.data;
+            this.mde.value(response.data.content);
+          })
+          .catch(err => {
+            this.$message.error(err.message);
+            console.log(err);
+          });
+      }
     },
     methods: {
       handleSubmit() {
-        Article.add(this.article)
-          .then(response => {
-            if (response.code) throw new Error(response.msg);
-            this.article.title = this.article.description = this.article.banner = this.article.content = '';
-            this.mde.value('');
-            this.$message({
-              message: '操作成功！',
-              type: 'success'
+        if (this.$store.state.articleModifyId) {
+          Article.update(this.$store.state.articleModifyId, this.article)
+            .then(response => {
+              this.article.title = this.article.description = this.article.banner = this.article.content = '';
+              this.mde.value('');
+              this.$message({
+                message: response.msg,
+                type: 'success'
+              });
+            })
+            .catch(err => {
+              this.$message.error(err.message);
+              console.log(err);
             });
-          })
-          .catch(err => {
-            console.dir(err);
-            this.$message.error(err.message);
-          });
+        } else {
+          Article.add(this.article)
+            .then(response => {
+              this.article.title = this.article.description = this.article.banner = this.article.content = '';
+              this.mde.value('');
+              this.$message({
+                message: '操作成功！',
+                type: 'success'
+              });
+            })
+            .catch(err => {
+              console.dir(err);
+              this.$message.error(err.message);
+            });
+        }
       }
     },
     components: {

@@ -18,7 +18,7 @@
 
       <el-table-column label="标题">
         <template scope="scope">
-          <span class="link-type">{{scope.row.title}}</span>
+          <span class="link-type" @click="handleModify(scope.row._id)">{{scope.row.title}}</span>
         </template>
       </el-table-column>
 
@@ -113,6 +113,12 @@
           .catch(err => {
             this.$message.error(err.message);
           });
+      },
+      handleModify(id) {
+        this.$store.commit('SET_AMI', id);
+        setTimeout(() => {
+          this.$router.push('/article/new');
+        }, 1000);
       }
     },
     filters: {
