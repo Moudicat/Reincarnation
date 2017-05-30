@@ -38,7 +38,7 @@ router.get('/', (req, res, next) => {
 router.use(authorization);
 
 // content  need
-router.patch('/', (req, res, next) => {
+router.patch('/', (req, res) => {
   Hitokoto.add(req.body).then(response => {
     resData.msg = '添加成功';
     res.json(resData);
@@ -47,5 +47,22 @@ router.patch('/', (req, res, next) => {
   });
 });
 
+router.get('/all', (req, res) => {
+  Hitokoto.getAll().then(response => {
+    resData.data = response;
+    res.json(resData);
+  }).catch(err => {
+    res.sendStatus(500);
+  });
+});
+
+router.delete('/:id', (req, res) => {
+  Hitokoto.remove(req.params.id).then(response => {
+    resData.msg = '删除成功';
+    res.json(resData);
+  }).catch(err => {
+    res.sendStatus(500);
+  });
+});
 
 module.exports = router;

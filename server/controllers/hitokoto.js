@@ -11,6 +11,12 @@ class Hitokoto {
   static async get() {
     return await HitokotoModel.get();
   }
+  static async getAll() {
+    return await HitokotoModel.getAll();
+  }
+  static async remove(id) {
+    return await HitokotoModel.remove(id);
+  }
 }
 
 module.exports = Hitokoto;
