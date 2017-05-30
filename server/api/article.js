@@ -93,14 +93,22 @@ router.get('/all', (req, res) => {
 
 // 更新文章
 router.patch('/:id', (req, res) => {
-  Article.setStatus(req.params.id, req.body.articleObj)
+  if (req.body.articleObj) {
+    if (req.body.articleObj.id) {
+      req.body.articleObj.id = req.params.id;
+    } else {
+      res.sendStatus(400);
+      return;
+    }
+  }
+  Article.update(req.body.articleObj)
     .then(response => {
       resData.msg = '修改成功';
       res.json(resData);
     })
     .catch(err => {
       res.sendStatus(500);
-    })
+    });
 });
 
 router.delete('/markDel', (req, res) => {
