@@ -68,17 +68,16 @@
               };
             }
           });
-          alert(JSON.stringify(arr));
           Status.update(arr)
             .then(response => {
-              if (response.code) {
+              if (!response.code) {
                 this.$message({
-                  message: '成功更新！',
+                  message: response.msg,
                   type: 'success'
                 });
-                this.values = ['目前所在地', '最近的状态', '最近看的番'];
-                this.valuesInput = ['', '', ''];
-                this.valuesNumInput = ['', '', ''];
+                this.values = ['目前所在地', '最近的状态', '最近看的番', '当前博客版本'];
+                this.valuesInput = ['', '', '', ''];
+                this.valuesNumInput = ['', '', '', ''];
               }
             })
             .catch(err => {

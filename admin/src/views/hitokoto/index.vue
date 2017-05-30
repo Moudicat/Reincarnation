@@ -40,7 +40,7 @@
     },
     methods: {
       handleAdd() {
-        if (!this.newHitokoto) {
+        if (this.newHitokoto) {
           Hitokoto.add({content: this.newHitokoto})
             .then(response => {
               this.$message({
@@ -54,6 +54,8 @@
               console.log(err);
               this.$message.error(err.message);
             });
+        } else {
+          this.$message('啥都没填呢？');
         }
       },
       handleDelete(id) {
@@ -63,6 +65,7 @@
               message: response.msg,
               type: 'success'
             });
+            this.refresh();
           })
           .catch(err => {
             console.log(err);
