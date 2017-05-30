@@ -40,9 +40,9 @@ app.use(infoLogger);
 
 app.use('/api', require('./api/index'));
 
-app.use(express.static('./static'));
-
 app.use('/', require('./routes'));
+
+app.use(express.static('./static'));
 
 app.use((req, res) => {
   app.use(warnLogger);
