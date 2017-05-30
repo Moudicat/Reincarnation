@@ -9,9 +9,10 @@
       </el-menu-item-group>
     </el-submenu>
     <el-submenu index="2">
-      <template slot="title"><i class="el-icon-information"></i>状态板相关</template>
+      <template slot="title"><i class="el-icon-information"></i>模块相关</template>
       <el-menu-item-group>
-        <el-menu-item index="/status-panel">状态更改</el-menu-item>
+        <el-menu-item index="/status-panel">状态栏</el-menu-item>
+        <el-menu-item index="/hitokoto">一言</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
   </el-menu>

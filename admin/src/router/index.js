@@ -6,6 +6,7 @@ import Dashboard from 'views/dashboard/dashboard';
 import NewArticle from 'views/article/new';
 import ArticleList from 'views/article/list';
 import Status from 'views/status';
+import Hitokoto from 'views/hitokoto';
 
 Vue.use(Router);
 
@@ -53,6 +54,18 @@ export default new Router({
         {
           path: 'update',
           component: Status
+        }
+      ]
+    },
+    {
+      path: '/hitokoto',
+      name: 'hitokoto',
+      component: Layout,
+      redirect: '/hitokoto/index',
+      children: [
+        {
+          path: 'index',
+          component: Hitokoto
         }
       ]
     }

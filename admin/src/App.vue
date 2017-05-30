@@ -22,4 +22,10 @@
   *, *:before, *:after {
     box-sizing: border-box;
   }
+  .padding-top {
+    padding-top: 20px;
+  }
+  .margin-top {
+    margin-top: 20px;
+  }
 </style>
