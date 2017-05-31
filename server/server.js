@@ -14,11 +14,12 @@ const app = express();
 if (process.env.NODE_ENV === 'production') {
   // 只开启https服务
   var fs = require('fs');
-  var https = require('https');
-  var privateKey = fs.readFileSync('/root/ssl/sayMoe/saymoe.key', 'utf8');
-  var certificate = fs.readFileSync('/root/ssl/sayMoe/saymoe.pem', 'utf8');
-  var credentials = {key: privateKey, cert: certificate};
-  var httpsServer = https.createServer(credentials, app);
+  var spdy = require('spdy');
+  const options = {
+    key: fs.readFileSync('/root/ssl/sayMoe/saymoe.key', 'utf8'),
+    cert: fs.readFileSync('/root/ssl/sayMoe/saymoe.pem', 'utf8')
+  }
+  var httpsServer = spdy.createServer(options, app);
 }
 // 加载天气插件
 const weatherGenerator = require('./services/weatherSystem');
@@ -62,8 +63,12 @@ mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.db}`
         console.log('服务启动127.0.0.1:2777');
       });
     } else {
-      httpsServer.listen(2777, () => {
-        console.log('服务启动https://say.moe');
+      httpsServer.listen(2777, (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log('服务启动https://say.moe');
+        }
       });
     }
   }
