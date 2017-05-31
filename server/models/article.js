@@ -27,7 +27,7 @@ articleSchema.statics.add = async function (articleObj) {
 // 更新文章
 articleSchema.statics.update = async function (articleObj) {
   // TODO： need update.
-  return await this.findOneAndUpdate({_id: articleObj.id}, {title: articleObj.title, status: articleObj.status, description: articleObj.description, banner: articleObj.banner, content: articleObj.content, modifiedTime: articleObj.modifiedTime});
+  return await this.findOneAndUpdate({_id: articleObj._id}, {title: articleObj.title, status: articleObj.status, description: articleObj.description, banner: articleObj.banner, content: articleObj.content, modifiedTime: articleObj.modifiedTime});
 };
 
 // 更改发布状态

@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
   Article.list().then(response => {
     resData.data = response;
     res.json(resData);
-  }).catch (err => {
+  }).catch(err => {
     console.log(err);
     res.sendStatus(500);
   });
@@ -43,7 +43,7 @@ router.get('/:id', (req, res, next) => {
         res.json(resData);
       }
     })
-    .catch (err => {
+    .catch(err => {
       console.error(err);
       res.sendStatus(500);
     });
@@ -54,15 +54,15 @@ router.use(authorization);
 
 router.post('/', (req, res) => {
   /*
-     title: String,
-     author: String,
-     postTime: String,
-     modifiedTime: String,
-     status: String,
-     content: String,
-     description: String,
-     banner: String
-  */
+   title: String,
+   author: String,
+   postTime: String,
+   modifiedTime: String,
+   status: String,
+   content: String,
+   description: String,
+   banner: String
+   */
   let articleObj = req.body;
   if (!(articleObj.title && articleObj.author && articleObj.status && articleObj.content)) {
     res.sendStatus(400);
@@ -85,7 +85,7 @@ router.get('/all', (req, res) => {
   Article.listAll().then(response => {
     resData.data = response;
     res.json(resData);
-  }).catch (err => {
+  }).catch(err => {
     console.log(err);
     res.sendStatus(500);
   });
@@ -93,13 +93,9 @@ router.get('/all', (req, res) => {
 
 // 更新文章
 router.patch('/:id', (req, res) => {
-  if (req.body.articleObj) {
-    if (req.body.articleObj.id) {
-      req.body.articleObj.id = req.params.id;
-    } else {
-      res.sendStatus(400);
-      return;
-    }
+  if (!req.body.articleObj) {
+    res.sendStatus(400);
+    return;
   }
   Article.update(req.body.articleObj)
     .then(response => {
