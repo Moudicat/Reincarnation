@@ -15,4 +15,8 @@ animationSchema.statics.get = async function () {
   return await this.find({}).sort('-date');
 };
 
+animationSchema.statics.remove = async function (id) {
+  return await this.findOneAndRemove({_id: id});
+};
+
 module.exports = mongoose.model('Animation', animationSchema);

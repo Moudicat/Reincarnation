@@ -47,9 +47,12 @@ router.patch('/', (req, res) => {
           return;
         });
     }
+    resData.msg = '添加成功，本次添加了' + req.body.length + '条数据';
+    res.json(resData);
   } else if (typeof req.body === 'object') {
     Animation.add(req.body)
       .then(response => {
+        resData.msg = '添加成功，本次添加了1条数据';
         res.json(response);
       })
       .catch(err => {
@@ -59,11 +62,23 @@ router.patch('/', (req, res) => {
       });
   } else {
     res.sendStatus(400);
+  }
+});
+
+router.delete('/:id', (req, res) => {
+  if (req.params.id) {
+    res.sendStatus(400);
     return;
   }
-
-  resData.msg = '添加成功，本次添加了' + req.body.length + '条数据';
-  res.json(resData);
+  Animation.remove(req.params.id)
+    .then(() => {
+      resData.msg = '成功删除';
+      res.json(resData);
+    })
+    .catch(err => {
+      res.sendStatus(500);
+      console.log(err);
+    });
 });
 
 module.exports = router;

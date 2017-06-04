@@ -14,6 +14,9 @@ class Animation {
   static async get(payload) {
     return await AnimationModel.get(payload);
   }
+  static async remove(id) {
+    return await AnimationModel.remove(id);
+  }
 }
 
 module.exports = Animation;

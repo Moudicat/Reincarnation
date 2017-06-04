@@ -4,7 +4,10 @@
 const mongoose = require('mongoose');
 
 module.exports = new mongoose.Schema({
-  id: String,
+  id: {
+    type: String,
+    unique: true
+  },
   title: String,
   titleTranslate: Object,
   lang: String,
