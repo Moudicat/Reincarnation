@@ -30,4 +30,17 @@ export default class Animation {
       throw new Error(result.status);
     }
   }
+  static async remove(id) {
+    const result = await fetch(`${config.baseURL}/animation/` + id, {
+      method: 'delete',
+      headers: {
+        'X-MDC-Token': Store.state.token
+      }
+    });
+    if (result.ok) {
+      return result.json();
+    } else {
+      throw new Error(result.status);
+    }
+  }
 }

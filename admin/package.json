@@ -13,6 +13,7 @@
   "dependencies": {
     "echarts": "^3.5.4",
     "element-ui": "^1.3.3",
+    "lodash": "^4.17.4",
     "nprogress": "^0.2.0",
     "simplemde": "^1.11.2",
     "vue": "^2.3.0",

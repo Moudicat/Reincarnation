@@ -6,7 +6,7 @@
         :fetch-suggestions="querySearch"
         placeholder="请输入番剧名"
         @select="handleSelect"
-        class="input"
+        class="input p20"
       ></el-autocomplete>
       <el-input v-model="newAnimation.episode" placeholder="请输入集数" class="input"></el-input>
       <el-date-picker
@@ -68,6 +68,7 @@
   import Animation from 'services/animation';
   import Bangumi from 'services/bangumi';
   import {formatDate} from 'services/utils';
+  import debounce from 'lodash/debounce';
 
   export default {
     data() {
@@ -96,28 +97,25 @@
           }]
         },
         options: ['Y', 'N'],
-        list: []
+        list: [],
+        listLoading: true
       };
     },
     methods: {
       handleAdd() {
         if (this.newAnimation.name || this.newAnimation.episode || this.newAnimation.date) {
           this.newAnimation.date = +new Date(this.newAnimation.date);
-          console.log(JSON.stringify(this.newAnimation));
           Animation.add(this.newAnimation)
             .then(response => {
               this.$message({
                 message: response.msg,
                 type: 'success'
               });
-              this.newHitokoto = {
-                id: '',
-                name: '',
-                episode: '',
-                date: '',
-                isDone: 'N',
-                comment: ''
-              };
+              this.newAnimation.id = '';
+              this.newAnimation.name = '';
+              this.newAnimation.episode = '';
+              this.newAnimation.isDone = 'N';
+              this.newAnimation.comment = '';
               this.refresh();
             })
             .catch(err => {
@@ -129,33 +127,62 @@
         }
       },
       handleDelete(id) {
-
-      },
-      refresh() {
-        Animation.get()
+        if (!id) return;
+        Animation.remove(id)
           .then(response => {
-            if (response.data && response.data.length) {
-              this.list = response.data;
-            }
+            this.$message({
+              message: response.msg,
+              type: 'success'
+            });
           })
           .catch(err => {
             this.$message.error(err.message);
             console.log(err);
           });
+        this.refresh();
       },
-      querySearch(queryString, cb) {
-        Bangumi.search(queryString)
+      handleSelect(item) {
+        this.newAnimation.id = item.id;
+      },
+      refresh() {
+        this.listLoading = true;
+        Animation.get()
           .then(response => {
-            console.log(response);
+            if (response.data && response.data.length) {
+              this.list = response.data;
+            }
+            this.listLoading = false;
           })
           .catch(err => {
+            this.$message.error(err.message);
+            console.log(err);
+            this.listLoading = false;
+          });
+      },
+      querySearch: debounce(function (queryString, cb) {
+        if (queryString === '') {
+          cb([]);
+          return;
+        }
+        Bangumi.search(queryString)
+          .then(response => {
+            let arr = [];
+            response.data.forEach(e => {
+              e.titleTranslate['zh-Hans'].forEach(name => {
+                arr.push({value: name, id: e._id});
+              });
+            });
+            cb(arr);
+          })
+          .catch(err => {
+            this.$message.error(err.message);
             console.log(err);
           });
-      }
+      }, 1000)
     },
     filters: {
       formatDate(date) {
-        return formatDate(new Date(Number(date)), 'yyyy-MM-dd hh:mm:ss');
+        return formatDate(new Date(Number(date)), 'yyyy-MM-dd');
       }
     },
     beforeMount() {
@@ -167,5 +194,8 @@
 <style lang="scss" rel="stylesheet/scss" scoped>
   .input {
     width: 15%;
+  }
+  .p20 {
+    width: 20%;
   }
 </style>

@@ -26,6 +26,6 @@
     padding-top: 20px;
   }
   .margin-top {
-    margin-top: 20px;
+    margin-top: 20px !important;
   }
 </style>

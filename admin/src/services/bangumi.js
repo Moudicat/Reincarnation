@@ -5,7 +5,7 @@ import config from '../config';
 
 export default class Bangumi {
   static async search(q) {
-    const result = await fetch(config.baseURL + '/bangumi/q=' + q, {
+    const result = await fetch(config.baseURL + '/bangumi/search?q=' + q, {
       headers: { 'X-MDC-Token': Store.state.token }
     });
     if (result.ok) {
