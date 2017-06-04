@@ -66,7 +66,7 @@ router.patch('/', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  if (req.params.id) {
+  if (!req.params.id) {
     res.sendStatus(400);
     return;
   }
