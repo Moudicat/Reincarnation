@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.1.2',
+            date: '2017-06-05',
+            desc: '添加 番剧列表接入api 番剧查询添加'
+          },
+          {
             version: '0.1.0',
             date: '2017-05-29',
             desc: '强行上线_(:з」∠)_'
