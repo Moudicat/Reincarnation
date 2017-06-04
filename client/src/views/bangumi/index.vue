@@ -27,7 +27,7 @@
               <el-form-item label="">
                 <span></span>
               </el-form-item>
-              <el-form-item :label="`${sites[site.site].title}`" v-for="site in props.row.detail.sites">
+              <el-form-item :label="`${sites[site.site].title}`" v-for="(site, i) in props.row.detail.sites" :key="i">
                 <Tag type="red"><a :href="siteMap(site)" target="_blank" rel="nofollow external">点我打开浏览</a></Tag>
               </el-form-item>
             </el-form>
