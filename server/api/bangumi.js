@@ -13,12 +13,29 @@ router.use((req, res, next) => {
 });
 
 router.get('/search', (req, res, next) => {
-  Bangumi.search(req.query.q).then(response => {
-    resData.data = response;
-    res.json(resData);
-  }).catch (err => {
-    console.log(err);
-  });
+  Bangumi.search(req.query.q)
+    .then(response => {
+      resData.data = response;
+      res.json(resData);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
+router.get('/:id', (req, res) => {
+  if (!req.params.id) {
+    res.sendStatus(400);
+    return;
+  }
+  Bangumi.getOne(req.params.id)
+    .then(response => {
+      resData.data = response;
+      res.json(resData);
+    })
+    .catch(err => {
+      console.log(err);
+    });
 });
 
 // 以下的路由需要认证

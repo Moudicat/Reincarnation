@@ -51,9 +51,9 @@ router.patch('/', (req, res) => {
     res.json(resData);
   } else if (typeof req.body === 'object') {
     Animation.add(req.body)
-      .then(response => {
+      .then(() => {
         resData.msg = '添加成功，本次添加了1条数据';
-        res.json(response);
+        res.json(resData);
       })
       .catch(err => {
         res.sendStatus(500);

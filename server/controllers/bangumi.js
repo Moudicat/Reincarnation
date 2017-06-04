@@ -10,6 +10,9 @@ class Bangumi {
   static async search(payload) {
     return await BangumiModel.search(payload);
   }
+  static async getOne(id) {
+    return await BangumiModel.getOne(id);
+  }
 }
 
 module.exports = Bangumi;

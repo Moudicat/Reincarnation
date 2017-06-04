@@ -15,4 +15,8 @@ bangumiSchema.statics.search = async function (q) {
   return searchResult; // searchResult.map(e => e.titleTranslate['zh-Hans']);
 };
 
+bangumiSchema.statics.getOne = async function (id) {
+  return await this.findOne({_id: id});
+};
+
 module.exports = mongoose.model('Bangumi', bangumiSchema);
