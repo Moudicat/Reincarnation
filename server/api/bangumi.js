@@ -46,15 +46,12 @@ router.patch('/', (req, res, next) => {
       return;
     });
   } else {
-    res.status(400);
-    resData.code = -1;
-    resData.msg = '格式不正确';
-    res.json(resData);
+    res.sendStatus(400);
+    return;
   }
 
   resData.msg = '添加成功，本次添加了' + req.body.length + '条数据';
   res.json(resData);
 });
-
 
 module.exports = router;
