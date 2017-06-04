@@ -15,6 +15,13 @@
         <el-menu-item index="/hitokoto">一言</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
+    <el-submenu index="3">
+      <template slot="title"><i class="el-icon-information"></i>番剧相关</template>
+      <el-menu-item-group>
+        <el-menu-item index="/bangumi/list">番剧列表</el-menu-item>
+        <el-menu-item index="/bangumi/add">番剧录入</el-menu-item>
+      </el-menu-item-group>
+    </el-submenu>
   </el-menu>
 </template>
 

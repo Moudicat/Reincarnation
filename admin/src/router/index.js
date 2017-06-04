@@ -7,6 +7,8 @@ import NewArticle from 'views/article/new';
 import ArticleList from 'views/article/list';
 import Status from 'views/status';
 import Hitokoto from 'views/hitokoto';
+import BangumiList from 'views/bangumi/list';
+import BangumiAdd from 'views/bangumi/add';
 
 Vue.use(Router);
 
@@ -68,35 +70,22 @@ export default new Router({
           component: Hitokoto
         }
       ]
+    },
+    {
+      path: '/bangumi',
+      name: 'bangumi',
+      component: Layout,
+      redirect: '/bangumi/list',
+      children: [
+        {
+          path: 'list',
+          component: BangumiList
+        },
+        {
+          path: 'add',
+          component: BangumiAdd
+        }
+      ]
     }
-    // {
-    //   path: '/questionnaire',
-    //   component: Layout,
-    //   redirect: '/questionnaire/list',
-    //   children: [
-    //     {
-    //       path: 'list',
-    //       component: QuestionnaireList
-    //     },
-    //     {
-    //       path: 'new',
-    //       component: NewQuestionnaire
-    //     },
-    //     {
-    //       path: ':qid/edit',
-    //       component: NewQuestionnaire
-    //     },
-    //     {
-    //       path: ':qid/result',
-    //       component: QuestionnaireResult,
-    //       children: [
-    //         {
-    //           path: ':stuId',
-    //           component: StudentResult
-    //         }
-    //       ]
-    //     }
-    //   ]
-    // }
   ]
 });
