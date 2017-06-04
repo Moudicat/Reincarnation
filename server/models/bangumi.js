@@ -12,7 +12,7 @@ bangumiSchema.statics.add = async function (payload) {
 
 bangumiSchema.statics.search = async function (q) {
   const searchResult = await this.find({"titleTranslate.zh-Hans": {$regex: eval('/' + q + '/i')}}, 'titleTranslate');
-  return searchResult.map(e => e.titleTranslate['zh-Hans']);
+  return searchResult; // searchResult.map(e => e.titleTranslate['zh-Hans']);
 };
 
 module.exports = mongoose.model('Bangumi', bangumiSchema);
