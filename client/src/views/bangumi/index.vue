@@ -3,8 +3,7 @@
     <div slot="content" class="bangumi">
       <el-table
         :data="bangumiListData"
-        :default-sort = "{prop: 'date', order: 'descending'}"
-        border
+        :row-class-name="tableRowClassName"
         @expand="handleDetailOpen">
         <el-table-column type="expand">
           <template scope="props">
@@ -34,6 +33,10 @@
           </template>
         </el-table-column>
         <el-table-column
+          type="index"
+          width="60">
+        </el-table-column>
+        <el-table-column
           prop="name"
           label="番名"
           width="180">
@@ -45,7 +48,6 @@
         </el-table-column>
         <el-table-column
           label="最后日期"
-          sortable
           width="140">
           <template scope="scope">
             <span>{{scope.row.date | formatDate(scope.row.date)}}</span>
@@ -184,6 +186,9 @@
           return site[$1];
         });
         return tp;
+      },
+      tableRowClassName(row, index) {
+        if (index % 2) return 'gray-row';
       }
     },
     beforeMount() {
@@ -214,17 +219,21 @@
   };
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
+<style lang="scss" rel="stylesheet/scss">
   .demo-table-expand {
     font-size: 0;
   }
   .demo-table-expand label {
-    width: 90px;
+    width: 100px;
     color: #99a9bf;
   }
   .demo-table-expand .el-form-item {
     margin-right: 0;
     margin-bottom: 0;
     width: 50%;
+  }
+
+  .el-table .gray-row {
+    background: #e9f1fb;
   }
 </style>
