@@ -29,8 +29,8 @@ router.get('/', (req, res) => {
           .then(response => {
             let animationObj = {
               name: '最近看的番',
-              content: response.data.name,
-              num: response.data.episode
+              content: response.name,
+              num: response.episode
             };
             resData.data.push(animationObj);
             res.json(resData);
