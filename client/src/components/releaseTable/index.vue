@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.1.4',
+            date: '2017-06-07',
+            desc: '添加 番剧更新功能 状态板联动番剧状态 修复 若干bug'
+          },
+          {
             version: '0.1.3',
             date: '2017-06-05',
             desc: '添加 番剧列表接入api 番剧查询添加 补全 所有看过的番 修复 若干bug'
