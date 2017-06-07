@@ -27,38 +27,69 @@ router.get('/latest', (req, res) => {
     });
 });
 
+router.get('/', (req, res) => {
+  Animation.get()
+    .then(response => {
+      resData.data = response;
+      res.json(resData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.sendStatus(500);
+    });
+});
+
 router.get('/:id', (req, res) => {
-  if (req.params.id) {
-    Animation.getOne(req.params.id)
-      .then(response => {
-        resData.data = response;
-        res.json(resData);
-      })
-      .catch(err => {
-        console.log(err);
-        res.sendStatus(500);
-      });
-  } else {
-    Animation.get()
-      .then(response => {
-        resData.data = response;
-        res.json(resData);
-      })
-      .catch(err => {
-        console.log(err);
-        res.sendStatus(500);
-      });
-  }
+  Animation.getOne(req.params.id)
+    .then(response => {
+      resData.data = response;
+      res.json(resData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.sendStatus(500);
+    });
 });
 
 // 以下的路由需要认证
 router.use(authorization);
 
 router.patch('/:id', (req, res) => {
-  if (req.params.id) {
-    Animation.update(req.body)
+  Animation.update(req.body)
+    .then(() => {
+      resData.msg = '修改成功';
+      res.json(resData);
+    })
+    .catch(err => {
+      res.sendStatus(500);
+      console.log(err);
+    });
+});
+
+router.patch('/', (req, res) => {
+  if (req.body instanceof Array) {
+    const animationArr = req.body;
+    add();
+    function add() {
+      if (animationArr.length === 0) return;
+      Animation.add(animationArr[0])
+        .then(() => {
+          animationArr.shift();
+          add();
+        })
+        .catch(err => {
+          res.sendStatus(500);
+          console.log(err);
+          return;
+        });
+    }
+
+    resData.msg = '添加成功，本次添加了' + req.body.length + '条数据';
+    res.json(resData);
+  } else if (typeof req.body === 'object') {
+    Animation.add(req.body)
       .then(() => {
-        resData.msg = '修改成功';
+        resData.msg = '添加成功，本次添加了1条数据';
         res.json(resData);
       })
       .catch(err => {
@@ -66,39 +97,8 @@ router.patch('/:id', (req, res) => {
         console.log(err);
       });
   } else {
-    if (req.body instanceof Array) {
-      const animationArr = req.body;
-      add();
-      function add() {
-        if (animationArr.length === 0) return;
-        Animation.add(animationArr[0])
-          .then(() => {
-            animationArr.shift();
-            add();
-          })
-          .catch(err => {
-            res.sendStatus(500);
-            console.log(err);
-            return;
-          });
-      }
-      resData.msg = '添加成功，本次添加了' + req.body.length + '条数据';
-      res.json(resData);
-    } else if (typeof req.body === 'object') {
-      Animation.add(req.body)
-        .then(() => {
-          resData.msg = '添加成功，本次添加了1条数据';
-          res.json(resData);
-        })
-        .catch(err => {
-          res.sendStatus(500);
-          console.log(err);
-        });
-    } else {
-      res.sendStatus(400);
-    }
+    res.sendStatus(400);
   }
-
 });
 
 router.delete('/:id', (req, res) => {
