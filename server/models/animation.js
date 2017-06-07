@@ -20,7 +20,7 @@ animationSchema.statics.getOne = async function (id) {
 };
 
 animationSchema.statics.update = async function (payload) {
-  return await this.findOneAndUpdate({_id: id}, {name: payload.name, episode: payload.episode, date: payload.date, isDone: payload.isDone, comment: payload.comment});
+  return await this.findOneAndUpdate({_id: payload.id}, {name: payload.name, episode: payload.episode, date: payload.date, isDone: payload.isDone, comment: payload.comment});
 };
 
 animationSchema.statics.getLatest = async function () {
