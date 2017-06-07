@@ -33,12 +33,10 @@
           name: '目前所在地'
         }, {
           name: '最近的状态'
-        }, {
-          name: '最近看的番'
         }],
-        values: ['目前所在地', '最近的状态', '最近看的番'],
-        valuesInput: ['', '', ''],
-        valuesNumInput: ['', '', '']
+        values: ['目前所在地', '最近的状态'],
+        valuesInput: ['', ''],
+        valuesNumInput: ['', '']
       };
     },
     methods: {
@@ -75,9 +73,9 @@
                   message: response.msg,
                   type: 'success'
                 });
-                this.values = ['目前所在地', '最近的状态', '最近看的番', '当前博客版本'];
-                this.valuesInput = ['', '', '', ''];
-                this.valuesNumInput = ['', '', '', ''];
+                this.values = ['目前所在地', '最近的状态', '当前博客版本'];
+                this.valuesInput = ['', '', ''];
+                this.valuesNumInput = ['', '', ''];
               }
             })
             .catch(err => {

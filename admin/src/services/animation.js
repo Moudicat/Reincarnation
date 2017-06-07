@@ -30,6 +30,34 @@ export default class Animation {
       throw new Error(result.status);
     }
   }
+  static async getOne(id) {
+    const result = await fetch(`${config.baseURL}/animation/${id}`, {
+      headers: {
+        'X-MDC-Token': Store.state.token
+      }
+    });
+    if (result.ok) {
+      return result.json();
+    } else {
+      throw new Error(result.status);
+    }
+  }
+  static async update(contentObj) {
+    const result = await fetch(`${config.baseURL}/animation/${contentObj.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-MDC-Token': Store.state.token
+      },
+      body: JSON.stringify(contentObj)
+    });
+    if (result.ok) {
+      return result.json();
+    } else {
+      throw new Error(result.status);
+    }
+  }
   static async remove(id) {
     const result = await fetch(`${config.baseURL}/animation/` + id, {
       method: 'delete',

@@ -25,7 +25,9 @@
         </el-option>
       </el-select>
       <el-input v-model="newAnimation.comment" placeholder="评论" class="input"></el-input>
-      <el-button type="primary" @click="handleAdd">添加番剧</el-button>
+      <el-button type="primary" @click="handleAdd" v-if="!isModify">添加番剧</el-button>
+      <el-button type="primary" @click="handleModifySubmit" v-if="isModify">修改番剧</el-button>
+      <el-button type="primary" @click="handleCancelModify" v-if="isModify">取消修改</el-button>
     </ul>
     <el-table :data="list" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%"
               class="margin-top">
@@ -98,7 +100,9 @@
         },
         options: ['Y', 'N'],
         list: [],
-        listLoading: true
+        listLoading: true,
+        isModify: false,
+        modifyId: ''
       };
     },
     methods: {
@@ -125,6 +129,48 @@
         } else {
           this.$message('有东西没填呢。。');
         }
+      },
+      handleModify(id) {
+        Animation.getOne(id)
+          .then(response => {
+            this.newAnimation.id = response.data.id;
+            this.newAnimation.name = response.data.name;
+            this.newAnimation.episode = response.data.episode;
+            this.newAnimation.isDone = response.data.isDone;
+            this.newAnimation.comment = response.data.comment;
+            this.isModify = true;
+            this.modifyId = id;
+          })
+          .catch(err => {
+            console.log(err);
+            this.$message.error(err.message);
+          });
+      },
+      handleModifySubmit() {
+        this.newAnimation.date = +new Date(this.newAnimation.date);
+        this.newAnimation.id = this.modifyId;
+        Animation.update(this.newAnimation)
+          .then(response => {
+            this.$message({
+              message: response.msg,
+              type: 'success'
+            });
+            this.handleCancelModify();
+          })
+          .catch(err => {
+            console.log(err);
+            this.$message.error(err.message);
+          });
+      },
+      handleCancelModify() {
+        this.newAnimation.id = '';
+        this.newAnimation.name = '';
+        this.newAnimation.episode = '';
+        this.newAnimation.isDone = 'N';
+        this.newAnimation.comment = '';
+        this.newAnimation.date = '';
+        this.isModify = false;
+        this.refresh();
       },
       handleDelete(id) {
         if (!id) return;
