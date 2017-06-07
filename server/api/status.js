@@ -29,10 +29,10 @@ router.get('/', (req, res) => {
           .then(response => {
             let animationObj = {
               name: '最近看的番',
-              content: response.name,
-              num: response.episode
+              content: response[0].name,
+              num: parseInt(response[0].episode)
             };
-            resData.data.push(animationObj);
+            resData.data.status.push(animationObj);
             res.json(resData);
           })
           .catch(err => {
