@@ -3,6 +3,8 @@
 </template>
 
 <script>
+  import Article from 'services/article';
+
   export default {
     name: 'app',
     beforeMount() {
@@ -13,6 +15,21 @@
       if (!this.$store.state.token) {
         alert('未登录！');
         this.$router.push('/login');
+      } else {
+        Article.listAll()
+          .then(() => {})
+          .catch(err => {
+            console.log(err.message);
+            if (err.message === '401') {
+              this.$message.error('登录超时！');
+              this.$store.dispatch('logout')
+                .then(() => {
+                  this.$router.push('/login');
+                });
+            } else {
+              this.$message.error(err.message);
+            }
+          });
       }
     }
   };

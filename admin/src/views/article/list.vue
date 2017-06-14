@@ -76,15 +76,6 @@
           })
           .catch(err => {
             console.log(err.message);
-            if (err.message === '401') {
-              this.$message.error('登录超时！');
-              this.$store.dispatch('logout')
-                .then(() => {
-                  this.$router.push('/login');
-                });
-            } else {
-              this.$message.error(err.message);
-            }
           });
       },
       handleModifyStatus(article, status) {
