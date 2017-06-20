@@ -5,7 +5,11 @@ const ArticleModel = require('../models/article');
 
 class Article {
   static async add(articleObj) {
-    articleObj.postTime = articleObj.modifiedTime = +new Date();
+    if (articleObj.postTime) {
+      articleObj.modifiedTime = +new Date();
+    } else {
+      articleObj.postTime = articleObj.modifiedTime = +new Date();
+    }
     return await ArticleModel.add(articleObj);
   }
   static async list() {
