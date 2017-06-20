@@ -14,6 +14,12 @@
         :value="item.value">
       </el-option>
     </el-select>
+    <el-date-picker
+      v-model="article.postTime"
+      align="right"
+      type="datetime"
+      placeholder="可选择日期(选填)">
+    </el-date-picker>
     <el-button type="primary" @click="handleSubmit">提交</el-button>
   </div>
 </template>
@@ -33,6 +39,7 @@
           banner: '',
           content: '',
           status: 'publish',
+          postTime: '',
           author: this.$store.state.user.username
         },
         options: [{
@@ -71,10 +78,13 @@
     },
     methods: {
       handleSubmit() {
+        if (this.article.postTime) {
+          this.article.postTime = +this.article.postTime;
+        }
         if (this.$store.state.articleModifyId) {
           Article.update(this.$store.state.articleModifyId, this.article)
             .then(response => {
-              this.article.title = this.article.description = this.article.banner = this.article.content = '';
+              this.article.title = this.article.description = this.article.banner = this.article.content = this.article.postTime = '';
               this.mde.value('');
               this.$message({
                 message: response.msg,
@@ -88,10 +98,10 @@
         } else {
           Article.add(this.article)
             .then(response => {
-              this.article.title = this.article.description = this.article.banner = this.article.content = '';
+              this.article.title = this.article.description = this.article.banner = this.article.content = this.article.postTime = '';
               this.mde.value('');
               this.$message({
-                message: '操作成功！',
+                message: response.msg,
                 type: 'success'
               });
             })
