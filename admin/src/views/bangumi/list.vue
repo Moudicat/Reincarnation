@@ -207,7 +207,8 @@
       },
       querySearch: debounce(function (queryString, cb) {
         if (queryString === '') {
-          cb([]);
+          let arr = [];
+          cb(arr);
           return;
         }
         Bangumi.search(queryString)

@@ -29,6 +29,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     // 取消未定义变量报错  因为有挂在全局的东西
     'no-undef': 0,
-    'no-useless-computed-key': 0
+    'no-useless-computed-key': 0,
+    'indent': 0
   }
 }
