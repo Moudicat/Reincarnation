@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.1.5',
+            date: '2017-06-26',
+            desc: '添加 代码高亮插件 修复 bug'
+          },
+          {
             version: '0.1.4',
             date: '2017-06-07',
             desc: '添加 番剧更新功能 状态板联动番剧状态 修复 若干bug'
