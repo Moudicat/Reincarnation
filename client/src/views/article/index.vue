@@ -18,7 +18,20 @@
 <script type="text/ecmascript-6">
   import Article from 'services/article';
   import {formatDate} from 'services/utils';
-  let md = require('markdown-it')();
+  var hljs = require('highlight.js');
+
+  let md = require('markdown-it')({
+    highlight: function (str, lang) {
+      if (lang && hljs.getLanguage(lang)) {
+        try {
+          return hljs.highlight(lang, str).value;
+        } catch (__) {
+        }
+      }
+
+      return ''; // use external default escaping
+    }
+  });
 
   export default {
     name: 'Article',
@@ -44,14 +57,14 @@
         alert('非法操作');
       } else {
         Article.getOne(this.$route.params.id)
-        .then(response => {
-          this.articleObj = response.data;
-          this.article = md.render(response.data.content);
-        })
-        .catch(err => {
-          console.error(err);
-          this.article = '<h1>加载失败...请联系管理员</h1>';
-        });
+          .then(response => {
+            this.articleObj = response.data;
+            this.article = md.render(response.data.content);
+          })
+          .catch(err => {
+            console.error(err);
+            this.article = '<h1>加载失败...请联系管理员</h1>';
+          });
       }
     },
     beforeDestroy() {
@@ -826,5 +839,84 @@
 
   .markdown-body hr {
     border-bottom-color: #eee;
+  }
+
+  // highlight
+  .hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 0.5em;
+    color: #333;
+    background: #f8f8f8
+  }
+
+  .hljs-comment, .hljs-quote {
+    color: #998;
+    font-style: italic
+  }
+
+  .hljs-keyword, .hljs-selector-tag, .hljs-subst {
+    color: #333;
+    font-weight: bold
+  }
+
+  .hljs-number, .hljs-literal, .hljs-variable, .hljs-template-variable, .hljs-tag .hljs-attr {
+    color: #008080
+  }
+
+  .hljs-string, .hljs-doctag {
+    color: #d14
+  }
+
+  .hljs-title, .hljs-section, .hljs-selector-id {
+    color: #900;
+    font-weight: bold
+  }
+
+  .hljs-subst {
+    font-weight: normal
+  }
+
+  .hljs-type, .hljs-class .hljs-title {
+    color: #458;
+    font-weight: bold
+  }
+
+  .hljs-tag, .hljs-name, .hljs-attribute {
+    color: #000080;
+    font-weight: normal
+  }
+
+  .hljs-regexp, .hljs-link {
+    color: #009926
+  }
+
+  .hljs-symbol, .hljs-bullet {
+    color: #990073
+  }
+
+  .hljs-built_in, .hljs-builtin-name {
+    color: #0086b3
+  }
+
+  .hljs-meta {
+    color: #999;
+    font-weight: bold
+  }
+
+  .hljs-deletion {
+    background: #fdd
+  }
+
+  .hljs-addition {
+    background: #dfd
+  }
+
+  .hljs-emphasis {
+    font-style: italic
+  }
+
+  .hljs-strong {
+    font-weight: bold
   }
 </style>
