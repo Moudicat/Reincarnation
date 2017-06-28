@@ -23,8 +23,8 @@
             </div>
           </div>
           <nav>
-            <router-link to="/index" class="nav-link">
-              <span>文章</span>
+            <router-link to="/" class="nav-link">
+              <span>首页</span>
             </router-link>
             <router-link to="/animation" class="nav-link">
               <span>番剧列表</span>
@@ -190,9 +190,15 @@
         padding-left: 5.6%;
         .nav-link {
           display: block;
+          min-width: 64px;
           padding: 20px 20px;
           transition: .4s;
           border-bottom: 1px solid transparent;
+          &:nth-child(1) {
+            &.active {
+              border-bottom: 4px solid transparent;
+            }
+          }
           &.active {
             border-bottom: 4px solid #ff9f71;
           }
