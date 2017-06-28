@@ -1,22 +1,24 @@
 <template>
-  <div class="article-list-wrapper">
-    <div class="article-list-header">
-      <ul>
-        <li>
-          <router-link to="/index">公开文章</router-link>
-        </li>
-        <li>
-          <router-link to="/index/post-it-note" @click.native="handleClick">便利贴</router-link>
-        </li>
-      </ul>
+  <transition name="fade">
+    <div class="article-list-wrapper">
+      <div class="article-list-header">
+        <ul>
+          <li>
+            <router-link to="/index">公开文章</router-link>
+          </li>
+          <li>
+            <router-link to="/index/post-it-note" @click.native="handleClick">便利贴</router-link>
+          </li>
+        </ul>
+      </div>
+      <div class="article-list">
+        <ol v-if="articleList.length">
+          <ArticleListItem v-for="(article, index) in articleList" :key="index" :article="article" />
+        </ol>
+        <h3 class="info" v-else><i class="icon-smile"></i>{{articleListHolder}}</h3>
+      </div>
     </div>
-    <div class="article-list">
-      <ol v-if="articleList.length">
-        <ArticleListItem v-for="(article, index) in articleList" :key="index" :article="article" />
-      </ol>
-      <h3 class="info" v-else><i class="icon-smile"></i>{{articleListHolder}}</h3>
-    </div>
-  </div>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">
