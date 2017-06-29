@@ -4,7 +4,7 @@
       <div class="article-list-header">
         <ul>
           <li>
-            <router-link to="/index">公开文章</router-link>
+            <router-link to="/">公开文章</router-link>
           </li>
           <li>
             <router-link to="/index/post-it-note" @click.native="handleClick">便利贴</router-link>
@@ -35,7 +35,7 @@
     methods: {
       handleClick() {
         alert('抱歉，该功能尚未开发完毕');
-        this.$router.push('/index');
+        this.$router.push('/');
       }
     },
     beforeMount() {
@@ -58,6 +58,8 @@
 
 <style lang="scss" rel="stylesheet/scss" scoped>
   .article-list-wrapper {
+    position: relative;
+    z-index: 800;
     flex: auto;
     margin: 10px 0 5px 5px;
     .article-list-header {

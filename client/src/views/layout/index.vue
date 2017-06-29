@@ -15,6 +15,8 @@
 
 <style lang="scss" rel="stylesheet/scss" scoped>
   .layout-wrapper {
+    position: relative;
+    z-index: 800;
     display: flex;
     flex: auto;
     width: 100%;

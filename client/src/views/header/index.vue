@@ -1,13 +1,13 @@
 <template>
   <header>
     <h1>某迪猫|结束与起始之界</h1>
-    <div class="background-wrapper">
+    <div class="background-wrapper" :class="{'article-mode': articleMode}">
       <div class="hitokoto-wrapper">
         <p class="hitokoto" v-show="hitokoto">『{{ hitokoto }}』</p>
       </div>
     </div>
     <transition name="fade">
-      <Sticky v-show="!articleMode">
+      <Sticky v-if="!articleMode">
         <div class="nav-wrapper">
           <div class="nav-container">
             <div class="avatar-wrapper" :class="{mini: miniAvatarState}">
@@ -100,6 +100,24 @@
       height: 400px;
       background: url("https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/banner.png");
       background-size: cover;
+      &::after {
+        content: '';
+        display: block;
+        width: 200%;
+        height: 100%;
+        border-radius: 50%;
+        transform: translate3d(-25%, 110%, 0);
+        background-color: #f5f8fa;
+        opacity: 0;
+        transition: .9s;
+      }
+      &.article-mode {
+        &::after {
+
+          transform: translate3d(-25%, 90%, 0);
+          opacity: 1;
+        }
+      }
       .hitokoto-wrapper {
         position: absolute;
         top: 0;

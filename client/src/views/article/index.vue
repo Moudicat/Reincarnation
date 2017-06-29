@@ -45,7 +45,7 @@
       handleBack() {
         this.articleMode = false;
         setTimeout(() => {
-          this.$router.push('/');
+          this.$router.back(-1);
         }, 420);
       }
     },
@@ -67,8 +67,9 @@
             this.articleMode = true;
           })
           .catch(err => {
-            console.error(err);
-            this.article = '<h1>加载失败...请联系管理员</h1>';
+//            this.article = '<h1>加载失败...请联系管理员</h1>';
+            console.log(err);
+            this.$router.push('/404');
           });
       }
     },
