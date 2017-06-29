@@ -11,5 +11,6 @@ router.use('/user', require('./user'));
 router.use('/bangumi', require('./bangumi'));
 router.use('/animation', require('./animation'));
 router.use('/weather', require('./weather'));
+router.use('/link', require('./link'));
 
 module.exports = router;
