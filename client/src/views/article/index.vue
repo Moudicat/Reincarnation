@@ -1,5 +1,5 @@
 <template>
-  <article>
+  <article :class="{'active': articleMode}">
     <button class="go-back" @click="handleBack"></button>
     <h2 class="article-title" v-show="articleObj.title">{{articleObj.title}}</h2>
     <p class="article-time" v-show="articleObj.postTime"><i class="icon-clock"></i>
@@ -28,7 +28,6 @@
         } catch (__) {
         }
       }
-
       return ''; // use external default escaping
     }
   });
@@ -38,12 +37,16 @@
     data() {
       return {
         articleObj: {},
-        article: ''
+        article: '',
+        articleMode: false
       };
     },
     methods: {
       handleBack() {
-        this.$router.back(-1);
+        this.articleMode = false;
+        setTimeout(() => {
+          this.$router.push('/');
+        }, 420);
       }
     },
     filters: {
@@ -53,6 +56,7 @@
     },
     mounted() {
       this.$store.commit('header/SET_AVATAR', true);
+      this.$store.commit('header/SET_ARTICLEMODE', true);
       if (!this.$route.params.id) {
         alert('非法操作');
       } else {
@@ -60,6 +64,7 @@
           .then(response => {
             this.articleObj = response.data;
             this.article = md.render(response.data.content);
+            this.articleMode = true;
           })
           .catch(err => {
             console.error(err);
@@ -69,6 +74,7 @@
     },
     beforeDestroy() {
       this.$store.commit('header/SET_AVATAR', false);
+      this.$store.commit('header/SET_ARTICLEMODE', false);
     }
   };
 </script>
@@ -82,7 +88,11 @@
     margin: 20px auto;
     border-radius: 4px;
     background-color: #fff;
-    box-shadow: 0 0 0 1px #d1d1d1, 0 0 3px 2px #ccc;
+    transition: .4s;
+    overflow: hidden;
+    &.active {
+      transform: translateY(-200px);
+    }
     .go-back {
       position: absolute;
       top: 0;

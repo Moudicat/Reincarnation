@@ -6,39 +6,41 @@
         <p class="hitokoto" v-show="hitokoto">『{{ hitokoto }}』</p>
       </div>
     </div>
-    <Sticky>
-      <div class="nav-wrapper">
-        <div class="nav-container">
-          <div class="avatar-wrapper" :class="{mini: miniAvatarState}">
-            <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_400x400.jpg" alt="avatar">
-          </div>
-          <div class="profile-mini-wrapper" :class="{mini: miniAvatarState}">
-            <div class="profile-mini">
-              <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_400x400.jpg"
-                   alt="mini-avatar">
-              <div class="info">
-                <h3>某迪</h3>
-                <p>More cooperation, no competition.</p>
+    <transition name="fade">
+      <Sticky v-show="!articleMode">
+        <div class="nav-wrapper">
+          <div class="nav-container">
+            <div class="avatar-wrapper" :class="{mini: miniAvatarState}">
+              <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_400x400.jpg" alt="avatar">
+            </div>
+            <div class="profile-mini-wrapper" :class="{mini: miniAvatarState}">
+              <div class="profile-mini">
+                <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_400x400.jpg"
+                     alt="mini-avatar">
+                <div class="info">
+                  <h3>某迪</h3>
+                  <p>More cooperation, no competition.</p>
+                </div>
               </div>
             </div>
+            <nav>
+              <router-link to="/" class="nav-link">
+                <span>文章</span>
+              </router-link>
+              <router-link to="/animation" class="nav-link">
+                <span>番剧列表</span>
+              </router-link>
+              <router-link to="/links" class="nav-link">
+                <span>友情链接</span>
+              </router-link>
+              <router-link to="/about" class="nav-link">
+                <span>关于本站</span>
+              </router-link>
+            </nav>
           </div>
-          <nav>
-            <router-link to="/" class="nav-link">
-              <span>首页</span>
-            </router-link>
-            <router-link to="/animation" class="nav-link">
-              <span>番剧列表</span>
-            </router-link>
-            <router-link to="/links" class="nav-link">
-              <span>友情链接</span>
-            </router-link>
-            <router-link to="/about" class="nav-link">
-              <span>关于本站</span>
-            </router-link>
-          </nav>
         </div>
-      </div>
-    </Sticky>
+      </Sticky>
+    </transition>
   </header>
 </template>
 
@@ -55,6 +57,9 @@
     computed: {
       miniAvatarState() {
         return this.$store.state.header.miniAvatarState;
+      },
+      articleMode() {
+        return this.$store.state.header.articleModeState;
       }
     },
     beforeMount() {

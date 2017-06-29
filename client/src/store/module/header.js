@@ -3,12 +3,16 @@
  */
 
 const state = {
-  miniAvatarState: false
+  miniAvatarState: false,
+  articleModeState: false
 };
 
 const mutations = {
   SET_AVATAR(state, payload) {
     state.miniAvatarState = payload;
+  },
+  SET_ARTICLEMODE(state, payload) {
+    state.articleModeState = payload;
   }
 };
 
