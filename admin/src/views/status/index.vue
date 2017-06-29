@@ -97,7 +97,7 @@
             this.valuesInput.splice(0, this.valuesInput.length);
             this.valuesNumInput.splice(0, this.valuesNumInput.length);
             response.data.status.forEach(e => {
-              if (e.name !== '最近看的番剧') {
+              if (e.name !== '最近看的番') {
                 this.values.push(e.name);
                 this.valuesInput.push(e.content);
                 this.valuesNumInput.push(e.num ? e.num : '');
