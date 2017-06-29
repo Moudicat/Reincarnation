@@ -124,8 +124,8 @@
     padding: 20px;
     border: 1px solid #d1dbe5;
     border-radius: 4px;
-    background: url("./img/sunset.png") no-repeat;
-    background-size: cover;
+    /*background: url("./img/sunset.png") no-repeat;*/
+    /*background-size: cover;*/
     background-color: #fff;
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .11), 0 0 4px 0 rgba(0, 0, 0, .04);
     > h3 {
