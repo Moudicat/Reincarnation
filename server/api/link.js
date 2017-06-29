@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
         resData.code = -404;
         res.json(resData);
       } else {
-        resData.data = response[0];
+        resData.data = response;
         res.json(resData);
       }
     })
