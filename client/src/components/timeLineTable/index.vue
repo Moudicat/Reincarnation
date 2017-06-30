@@ -77,6 +77,10 @@
           {
             date: '2017年5月14日',
             desc: '注册域名say.moe'
+          },
+          {
+            date: '2017年5月29日',
+            desc: 'Reincarnation博客系统上线'
           }
         ]
       };

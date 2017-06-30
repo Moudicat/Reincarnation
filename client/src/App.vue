@@ -46,12 +46,15 @@
     color: #2c3e50;
     background-color: #f5f8fa;
   }
+
   .padding-top {
     padding-top: 10px;
   }
+
   .margin-top {
     margin-top: 10px;
   }
+
   .padding-in {
     padding: 20px !important;
   }
@@ -59,6 +62,7 @@
   .fade-leave, .fade-enter-active {
     transition: .5s .2s;
   }
+
   .fade-enter, .fade-leave-active {
     opacity: 0;
   }
