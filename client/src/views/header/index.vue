@@ -214,7 +214,6 @@
         .nav-link {
           display: block;
           min-width: 64px;
-          padding: 20px 20px;
           transition: .4s;
           border-bottom: 1px solid transparent;
           &:nth-child(1) {
@@ -229,6 +228,7 @@
             border-bottom: 4px solid #ffbb9d;
           }
           > span {
+            margin: 20px;
             color: #2e2f2f;
           }
         }
