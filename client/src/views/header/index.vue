@@ -228,6 +228,7 @@
             border-bottom: 4px solid #ffbb9d;
           }
           > span {
+            display: block;
             margin: 20px;
             color: #2e2f2f;
           }
