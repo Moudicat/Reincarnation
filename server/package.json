@@ -5,7 +5,7 @@
   "author": "Moudicat <i@0u0b.com>",
   "license": "MIT",
   "scripts": {
-    "start": "mongod --dbpath=./db --port=27777",
+    "start": "npm i && pm2 start pm2.json --env production --no-deamon",
     "dev": "nodemon ./server.js"
   },
   "dependencies": {

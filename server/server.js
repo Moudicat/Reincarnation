@@ -6,10 +6,18 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const config = require('./config/index');
-
+const exec = require('child_process').exec;
 const cors = require('./middleware/cors');
 const { infoLogger, warnLogger } = require('./middleware/logger');
 const app = express();
+
+exec(`mongod --dbpath ./db --port 27777`, (mongodErr, stdout, stderr) => {
+  if (!mongodErr) {
+    console.log('Mongodb opened!');
+  } else {
+    console.error(mongodErr);
+  }
+});
 
 if (process.env.NODE_ENV === 'production') {
   // 只开启https服务
@@ -73,3 +81,4 @@ mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.db}`
     }
   }
 });
+
