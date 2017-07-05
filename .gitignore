@@ -8,5 +8,4 @@ dist/
 */node_modules/
 .idea/
 */config/*
-*/mandy
-/server/blog-server
+server/logs/*.log
