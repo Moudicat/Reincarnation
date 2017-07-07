@@ -25,6 +25,16 @@ router.get('/', (req, res) => {
   });
 });
 
+router.get('/count', (req, res) => {
+  Article.count().then(response => {
+    resData.data = response;
+    res.json(resData);
+  }).catch(err => {
+    console.log(err);
+    res.sendStatus(500);
+  });
+});
+
 router.get('/:id', (req, res, next) => {
   if (req.params.id === 'all') {
     next();

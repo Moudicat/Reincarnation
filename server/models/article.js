@@ -8,6 +8,12 @@ const articleSchema = require('./schemas/article');
 articleSchema.statics.list = async function () {
   return await this.find({status: 'publish'}, '-content -status').sort('-postTime');
 };
+
+// 获取文章总个数
+articleSchema.statics.count = async function () {
+  return await this.count({status: 'publish'});
+};
+
 // 获取全部文章
 articleSchema.statics.listAll = async function () {
   return await this.find({}, '-content').sort('-postTime');
