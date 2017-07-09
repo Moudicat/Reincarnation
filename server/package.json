@@ -13,6 +13,7 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
     "jsonwebtoken": "^7.4.0",
+    "memobird": "^0.0.2",
     "mongoose": "^4.9.7",
     "node-schedule": "^1.2.3",
     "probable": "^2.1.1",
