@@ -3,7 +3,7 @@
     <div slot="aside" class="memobird-aside">
       <img src="http://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/memobird-help.png" alt="memobird-help">
     </div>
-    <div slot="content" class="memobird-wrapper" ondragstart="return false;">
+    <div slot="content" class="memobird-wrapper">
       <div class="header">
         To: 某迪
       </div>
