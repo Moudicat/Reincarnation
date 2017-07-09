@@ -69,7 +69,7 @@ router.post('/', (req, res) => {
   let checkedIP;
   if (os.platform !== 'win32') {
     try {
-      checkedIP = execSync(`curl http://ip.cn/${ip}`);
+      checkedIP = execSync(`curl -s http://ip.cn/${ip}`);
     } catch (err) {
       console.log(err);
       checkedIP = `IP: ${ip}`;
