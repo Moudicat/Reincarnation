@@ -44,7 +44,7 @@ router.use(authorization);
 router.patch('/', (req, res, next) => {
   if (req.body instanceof Array) {
     const bangumiArr = req.body;
-    add();
+
     function add() {
       if (bangumiArr.length === 0) return;
       Bangumi.add(bangumiArr[0]).then(response => {
@@ -55,13 +55,15 @@ router.patch('/', (req, res, next) => {
         return;
       });
     }
+
+    add();
   } else if (typeof req.body === 'object') {
-    Bangumi.add(req.body).then(response => {
-      res.json(response);
-    }).catch(err => {
-      res.sendStatus(500);
-      return;
-    });
+    Bangumi.add(req.body)
+      .then(response => {})
+      .catch(err => {
+        res.sendStatus(500);
+        return;
+      });
   } else {
     res.sendStatus(400);
     return;
