@@ -26,6 +26,8 @@ router.post('/', (req, res) => {
     req.connection.socket.remoteAddress;
 
   let type = req.body.type;
+  let from = req.body.from;
+  let name = req.body.name;
   let content = req.body.content;
 
   let blackList = fs.readFileSync('./config/guguBlackList').toString().split('\n');
@@ -52,10 +54,20 @@ router.post('/', (req, res) => {
     }, 1000 * 60 * 60 * 1); // 1h
   }
 
+  if (name.length > 20 || content.length > 500) {
+    res.sendStatus(400);
+    return;
+  }
+
   guguLogger.info(`[print] ${type} ${content}, IP: ${ip}`);
 
   switch (type) {
     case 'text':
+      if (from === 'blog') {
+        content = `--------------------------------\n来自博客-${name}\n${new Date().toLocaleString()}\nIP: ${ip}\n\n  ${content}\n--------------------------------\n`;
+      } else if (from === 'weibo') {
+        content = `--------------------------------\n检测到微博更新-${name}\n${new Date().toLocaleString()}\n\n  ${content}\n--------------------------------\n`;
+      }
       gugu.printText(content)
         .then(printcontentid => {
           resData.data = {
