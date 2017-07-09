@@ -1,7 +1,7 @@
 /**
  * Created by Moudicat on 2017/7/9.
  */
-const Memobird = require('Memobird');
+const Memobird = require('memobird');
 const config = require('../config');
 
 let gugu = new Memobird({
