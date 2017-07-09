@@ -3,6 +3,8 @@
  */
 const url = require('url');
 const fs = require('fs');
+const os = require('os');
+const execSync = require('child_process').execSync;
 const express = require('express');
 const router = express.Router();
 const authorization = require('../middleware/authorization');
@@ -29,6 +31,10 @@ router.post('/', (req, res) => {
   let from = req.body.from;
   let name = req.body.name;
   let content = req.body.content;
+  if (type === '' || from === '' || name === '' || content === '') {
+    res.sendStatus(400);
+    return;
+  }
 
   let blackList = fs.readFileSync('./services/guguBlackList').toString().split('\n');
   if (blackList.indexOf(ip.split(',')[0]) !== -1) {
@@ -60,11 +66,19 @@ router.post('/', (req, res) => {
   }
 
   guguLogger.info(`[print] ${type} ${content}, IP: ${ip}`);
-
+  let checkedIP;
+  if (os.platform !== 'win32') {
+    try {
+      checkedIP = execSync(`curl http://ip.cn/${ip}`);
+    } catch (err) {
+      console.log(err);
+      checkedIP = `IP: ${ip}`;
+    }
+  }
   switch (type) {
     case 'text':
       if (from === 'blog') {
-        content = `--------------------------------\n来自博客-${name}\n${new Date().toLocaleString()}\nIP: ${ip}\n\n  ${content}\n--------------------------------\n`;
+        content = `--------------------------------\n来自博客-${name}\n${new Date().toLocaleString()}\n${checkedIP}\n\n  ${content}\n--------------------------------\n`;
       } else if (from === 'weibo') {
         content = `--------------------------------\n检测到微博更新-${name}\n${new Date().toLocaleString()}\n\n  ${content}\n--------------------------------\n`;
       }
