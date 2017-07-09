@@ -78,9 +78,9 @@ router.post('/', (req, res) => {
   switch (type) {
     case 'text':
       if (from === 'blog') {
-        content = `--------------------------------\n来自博客-${name}\n${new Date().toLocaleString()}\n${checkedIP}\n\n  ${content}\n--------------------------------\n`;
+        content = `--------------------------------\n来自博客-${name}\n${new Date().toLocaleString()}\n${checkedIP}\n${content}\n--------------------------------\n`;
       } else if (from === 'weibo') {
-        content = `--------------------------------\n检测到微博更新-${name}\n${new Date().toLocaleString()}\n\n  ${content}\n--------------------------------\n`;
+        content = `--------------------------------\n检测到微博更新-${name}\n${new Date().toLocaleString()}\n\n${content}\n--------------------------------\n`;
       }
       gugu.printText(content)
         .then(printcontentid => {
