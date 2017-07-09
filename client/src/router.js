@@ -6,6 +6,7 @@ import AboutPage from 'views/about/aboutPage';
 import ReleaseTable from 'components/releaseTable';
 import Bangumi from 'views/bangumi';
 import Links from 'views/links';
+import Memoird from 'views/memobird';
 const Article = () => import('./views/article');
 import Page404 from 'views/404';
 Vue.use(Router);
@@ -39,6 +40,11 @@ export default new Router({
       path: '/links',
       name: 'Links',
       component: Links
+    },
+    {
+      path: '/memobird',
+      name: 'Memobird',
+      component: Memoird
     },
     {
       path: '/about',

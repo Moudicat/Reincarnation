@@ -33,6 +33,9 @@
               <router-link to="/links" class="nav-link">
                 <span>友情链接</span>
               </router-link>
+              <router-link to="/memobird" class="nav-link">
+                <span class="new">递小纸条</span>
+              </router-link>
               <router-link to="/about" class="nav-link">
                 <span>关于本站</span>
               </router-link>
@@ -229,8 +232,24 @@
           }
           > span {
             display: block;
+            position: relative;
             margin: 20px;
             color: #2e2f2f;
+            white-space: nowrap;
+            &.new::after {
+              content: 'new';
+              display: block;
+              position: absolute;
+              right: -10px;
+              top: -80%;
+              font-size: 12px;
+              color: #ff9f71;
+              border: 1px solid #ff9f71;
+              border-radius: 5px;
+              padding: 0 3px;
+              height: 16px;
+              line-height: 12px;
+            }
           }
         }
       }
