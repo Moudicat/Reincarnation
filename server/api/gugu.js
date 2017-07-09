@@ -30,7 +30,7 @@ router.post('/', (req, res) => {
   let name = req.body.name;
   let content = req.body.content;
 
-  let blackList = fs.readFileSync('./config/guguBlackList').toString().split('\n');
+  let blackList = fs.readFileSync('./services/guguBlackList').toString().split('\n');
   if (blackList.indexOf(ip.split(',')[0]) !== -1) {
     guguLogger.info(`Reject gugu print for black ip, IP: ${ip}`);
     res.sendStatus(403);
