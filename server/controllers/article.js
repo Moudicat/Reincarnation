@@ -12,6 +12,9 @@ class Article {
     }
     return await ArticleModel.add(articleObj);
   }
+  static async get(start, limit) {
+    return await ArticleModel.get(start, limit);
+  }
   static async list() {
     return await ArticleModel.list();
   }

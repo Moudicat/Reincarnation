@@ -4,6 +4,14 @@
 const mongoose = require('mongoose');
 const articleSchema = require('./schemas/article');
 
+// 按照页数获取文章列表
+articleSchema.statics.get = async function (start, limit) {
+  return await this.find({status: 'publish'}, '-content -status')
+    .sort('-postTime')
+    .skip(start)
+    .limit(limit);
+};
+
 // 获取文章列表
 articleSchema.statics.list = async function () {
   return await this.find({status: 'publish'}, '-content -status').sort('-postTime');

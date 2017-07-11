@@ -16,23 +16,43 @@ router.use((req, res, next) => {
 });
 
 router.get('/', (req, res) => {
-  Article.list().then(response => {
-    resData.data = response;
-    res.json(resData);
-  }).catch(err => {
-    console.log(err);
-    res.sendStatus(500);
-  });
+  // start, limit
+  let start = req.query.start || 0;
+  let limit = req.query.limit || 5;
+
+  Article.get(start, limit)
+    .then(response => {
+      resData.data = response;
+      res.json(resData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.sendStatus(500);
+    });
+});
+
+router.get('/list', (req, res) => {
+  Article.list()
+    .then(response => {
+      resData.data = response;
+      res.json(resData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.sendStatus(500);
+    });
 });
 
 router.get('/count', (req, res) => {
-  Article.count().then(response => {
-    resData.data = response;
-    res.json(resData);
-  }).catch(err => {
-    console.log(err);
-    res.sendStatus(500);
-  });
+  Article.count()
+    .then(response => {
+      resData.data = response;
+      res.json(resData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.sendStatus(500);
+    });
 });
 
 router.get('/:id', (req, res, next) => {
@@ -78,27 +98,31 @@ router.post('/', (req, res) => {
     res.sendStatus(400);
     return;
   }
-  Article.add(articleObj).then(response => {
-    if (response._id) {
-      resData.msg = '成功';
-      res.json(resData);
-    } else {
-      throw new Error('处理失败');
-    }
-  }).catch(err => {
-    res.sendStatus(500);
-  });
+  Article.add(articleObj)
+    .then(response => {
+      if (response._id) {
+        resData.msg = '成功';
+        res.json(resData);
+      } else {
+        throw new Error('处理失败');
+      }
+    })
+    .catch(err => {
+      res.sendStatus(500);
+    });
 });
 
 // 后台列出全部
 router.get('/all', (req, res) => {
-  Article.listAll().then(response => {
-    resData.data = response;
-    res.json(resData);
-  }).catch(err => {
-    console.log(err);
-    res.sendStatus(500);
-  });
+  Article.listAll()
+    .then(response => {
+      resData.data = response;
+      res.json(resData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.sendStatus(500);
+    });
 });
 
 // 更新文章
