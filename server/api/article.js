@@ -17,8 +17,8 @@ router.use((req, res, next) => {
 
 router.get('/', (req, res) => {
   // start, limit
-  let start = req.query.start || 0;
-  let limit = req.query.limit || 5;
+  let start = Number(req.query.start) || 0;
+  let limit = Number(req.query.limit) || 5;
 
   Article.get(start, limit)
     .then(response => {
