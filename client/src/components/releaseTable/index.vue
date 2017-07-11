@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.2.2',
+            date: '2017-07-11',
+            desc: '添加 文章区分页功能'
+          },
+          {
             version: '0.2.0',
             date: '2017-07-09',
             desc: '添加 咕咕机功能 | 修复⛏  bug'
