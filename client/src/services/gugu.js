@@ -9,7 +9,6 @@ export default class Gugu {
     if (guguObj.name.trim() === '' || guguObj.content.trim() === '') {
       return;
     }
-    console.log(guguObj);
     const result = await fetch(config.baseURL + '/gugu', {
       method: 'post',
       headers: {
