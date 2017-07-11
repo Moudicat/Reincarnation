@@ -18,7 +18,7 @@ articleSchema.statics.list = async function () {
 };
 
 // 获取文章总个数
-articleSchema.statics.count = async function () {
+articleSchema.statics.countArticle = async function () {
   return await this.count({status: 'publish'});
 };
 

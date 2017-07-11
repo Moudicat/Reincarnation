@@ -18,8 +18,8 @@ class Article {
   static async list() {
     return await ArticleModel.list();
   }
-  static async count() {
-    return await ArticleModel.count();
+  static async countArticle() {
+    return await ArticleModel.countArticle();
   }
   static async listAll() {
     return await ArticleModel.listAll();

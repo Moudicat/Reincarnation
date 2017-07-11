@@ -44,7 +44,7 @@ router.get('/list', (req, res) => {
 });
 
 router.get('/count', (req, res) => {
-  Article.count()
+  Article.countArticle()
     .then(response => {
       resData.data = response;
       res.json(resData);
