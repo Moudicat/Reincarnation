@@ -59,11 +59,25 @@
     padding: 20px !important;
   }
 
-  .fade-leave, .fade-enter-active {
-    transition: .5s .2s;
+  .fade-enter-active {
+    transition: .4s;
+  }
+  .fade-enter, .fade-leave-to  {
+    opacity: 0
   }
 
-  .fade-enter, .fade-leave-active {
+  .message-box-wrapper-enter-active, .message-box-wrapper-leave-active {
+    transition: .3s;
+  }
+  .message-box-wrapper-enter, .message-box-wrapper-leave-to  {
     opacity: 0;
   }
+
+  .message-box-enter-active, .message-box-leave-active {
+    transition: .3s;
+  }
+  .message-box-enter, .message-box-leave-to  {
+    transform: translate3d(0, -20px, 0) scale(1.05);
+  }
+
 </style>

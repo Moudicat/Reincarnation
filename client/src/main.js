@@ -5,12 +5,16 @@ import store from './store';
 import Lazyload from 'vue-lazyload';
 import 'whatwg-fetch';
 let Promise = require('es6-promise').Promise;
-
+if (!window.Promise) {
+  window.Promise = Promise;
+}
 import {Table, TableColumn, Form, FormItem, Pagination} from 'element-ui';
 
 import NProgress from 'nprogress'; // Progress 进度条
 import 'nprogress/nprogress.css';// Progress 进度条 样式
+import Popup from 'services/popup';
 
+Vue.use(Popup);
 Vue.use(Pagination);
 Vue.use(Lazyload);
 Vue.use(Table);

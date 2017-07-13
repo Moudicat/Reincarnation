@@ -75,6 +75,11 @@ footer, header, hgroup, main, menu, nav, section {
   display: block;
 }
 
+button {
+  background: none;
+  border: 0;
+}
+
 .clearfix:after {
   content: "";
   display: block;

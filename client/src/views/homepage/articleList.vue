@@ -49,8 +49,7 @@
     },
     methods: {
       handleClick() {
-        alert('抱歉，该功能尚未开发完毕');
-        this.$router.push('/');
+        this.$alert('抱歉，该功能尚未开发完毕');
       },
       handleCurrentChange(currentPage) {
         this.PAGE = currentPage;

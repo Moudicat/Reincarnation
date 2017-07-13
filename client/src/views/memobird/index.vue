@@ -36,11 +36,11 @@
     methods: {
       submitHandle() {
         if (this.guguObj.content === '') {
-          alert('内容未填写');
+          this.$alert('内容未填写');
           return;
         }
         if (this.guguObj.name === '') {
-          alert('你的名字未填写');
+          this.$alert('你的名字未填写');
           return;
         }
         this.guguObj.type = 'text';
@@ -48,14 +48,14 @@
           .then(response => {
             this.guguObj.name = '';
             this.guguObj.content = '';
-            alert(response.msg);
+            this.$info(response.msg);
 //            console.log(response);
           })
           .catch(err => {
             if (err.message === '403') {
-              alert('抱歉，当前无法发送： 处于频率限制或在黑名单中。 请一小时后再试。');
+              this.$alert('抱歉，当前无法发送： 处于频率限制或在黑名单中。 请一小时后再试。');
             } else if (err.message === '400') {
-              alert('参数错误');
+              this.$alert('参数错误');
             }
           });
       }
