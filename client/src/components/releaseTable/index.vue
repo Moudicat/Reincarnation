@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.2.4',
+            date: '2017-07-14',
+            desc: '添加 全局弹窗(Alert, confirm)'
+          },
+          {
             version: '0.2.2',
             date: '2017-07-11',
             desc: '添加 文章区分页功能'
