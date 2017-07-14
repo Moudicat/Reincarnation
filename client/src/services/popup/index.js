@@ -3,9 +3,11 @@
  */
 
 import MessageBox from './messageBox';
+import Message from './message';
 
 const components = [
-  MessageBox
+  MessageBox,
+  Message
 ];
 
 const install = function(Vue, opts = {}) {
@@ -18,6 +20,8 @@ const install = function(Vue, opts = {}) {
   Vue.prototype.$info = MessageBox;
   Vue.prototype.$alert = MessageBox.alert;
   Vue.prototype.$confirm = MessageBox.confirm;
+
+  Vue.prototype.$message = Message;
 };
 
 if (typeof window !== 'undefined' && window.Vue) {
@@ -26,5 +30,6 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 export default {
   install,
-  MessageBox
+  MessageBox,
+  Message
 };

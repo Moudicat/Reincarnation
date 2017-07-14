@@ -48,7 +48,7 @@
           .then(response => {
             this.guguObj.name = '';
             this.guguObj.content = '';
-            this.$info(response.msg);
+            this.$message.success(response.msg);
 //            console.log(response);
           })
           .catch(err => {
