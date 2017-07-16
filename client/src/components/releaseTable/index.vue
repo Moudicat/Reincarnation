@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.3.0',
+            date: '2017-07-16',
+            desc: '添加 主题系统Part 1'
+          },
+          {
             version: '0.2.5',
             date: '2017-07-14',
             desc: '添加 全局弹窗(Message)'
