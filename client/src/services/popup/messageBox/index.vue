@@ -69,6 +69,10 @@
     },
     mounted() {
       this.visibility = true;
+      document.body.style.overflowY = 'hidden';
+    },
+    destroyed() {
+      document.body.style.overflowY = '';
     }
   };
 </script>
