@@ -31,13 +31,40 @@
     data() {
       return {
         weather: {},
-        timer: null
+        timer: null,
+        count: 120
       };
     },
     methods: {
       calcTime() {
         this.timer = setInterval(() => {
           this.weather.timestamp += 1000;
+          this.count++;
+          if (this.count >= 120) {
+            this.count = 0;
+            let s = null;
+            let t = null;
+            let hours = new Date(this.weather.timestamp).getHours();
+            if (this.weather.season === '春季') {
+              s = 1;
+            } else if (this.weather.season === '夏季') {
+              s = 2;
+            } else if (this.weather.season === '秋季') {
+              s = 3;
+            } else {
+              s = 4;
+            }
+            if (hours > 6 && hours < 11) {
+              t = '0800';
+            } else if (hours >= 11 && hours < 17) {
+              t = '1200';
+            } else if (hours >= 17 && hours < 20) {
+              t = '1800';
+            } else {
+              t = '2200';
+            }
+            this.$store.commit('global/SET_BGURL', `${s}_${t}`);
+          }
         }, 1000);
       }
     },

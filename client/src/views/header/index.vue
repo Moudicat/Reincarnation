@@ -1,7 +1,7 @@
 <template>
   <header>
     <h1>某迪猫|结束与起始之界</h1>
-    <div class="background-wrapper" :class="{'article-mode': articleMode}">
+    <div class="background-wrapper" :class="{'article-mode': articleMode}" :style="{'background': backgroundUrl}">
       <div class="hitokoto-wrapper">
         <p class="hitokoto" v-show="hitokoto">『{{ hitokoto }}』</p>
       </div>
@@ -63,6 +63,9 @@
       },
       articleMode() {
         return this.$store.state.header.articleModeState;
+      },
+      backgroundUrl() { // 'url(' + require('../assets/images/1.jpg') + ')'
+        return `url('http://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/banner/${this.$store.state.global.bgUrl}.png') center center`;
       }
     },
     beforeMount() {
@@ -101,8 +104,7 @@
     }
     .background-wrapper {
       height: 400px;
-      background: url("https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/banner.png");
-      background-size: cover;
+      background-size: cover !important;
       &::after {
         content: '';
         display: block;
