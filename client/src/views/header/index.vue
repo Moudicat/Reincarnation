@@ -65,7 +65,7 @@
         return this.$store.state.header.articleModeState;
       },
       backgroundUrl() { // 'url(' + require('../assets/images/1.jpg') + ')'
-        return `url('http://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/banner/${this.$store.state.global.bgUrl}.png') center center`;
+        return `url('https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/banner/${this.$store.state.global.bgUrl}.png') center center`;
       }
     },
     beforeMount() {
