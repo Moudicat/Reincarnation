@@ -36,18 +36,24 @@
     },
     methods: {
       handleClose() {
+        if (typeof this.resolve === 'function') {
+          this.resolve();
+        }
         this.visibility = false;
-        this.resolve();
         this.$el.addEventListener('transitionend', this.destroyElement);
       },
       handleConfirm() {
+        if (typeof this.resolve === 'function') {
+          this.resolve();
+        }
         this.visibility = false;
-        this.resolve();
         this.$el.addEventListener('transitionend', this.destroyElement);
       },
       handleCancel() {
+        if (typeof this.reject === 'function') {
+          this.reject();
+        }
         this.visibility = false;
-        this.reject();
         this.$el.addEventListener('transitionend', this.destroyElement);
       },
       destroyElement() {

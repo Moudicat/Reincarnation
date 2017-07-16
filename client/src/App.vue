@@ -60,7 +60,7 @@
   }
 
   .fade-enter-active {
-    transition: .4s;
+    transition: .5s;
   }
   .fade-enter, .fade-leave-to  {
     opacity: 0
@@ -80,4 +80,11 @@
     transform: translate3d(0, -20px, 0) scale(1.05);
   }
 
+  .message-enter-active, .message-leave-active {
+    transition: .4s;
+  }
+  .message-enter, .message-leave-to {
+    opacity: 0;
+    transform: translate3d(0, -20px, 0);
+  }
 </style>
