@@ -63,7 +63,7 @@
       font-size: 28px;
       font-weight: 500;
       color: rgba(0, 0, 0, .8);
-      transition: .4s .3s;
+      transition: .3s;
       cursor: pointer;
       &::before, &::after {
         content: "";
@@ -87,10 +87,12 @@
       }
       &:hover {
         background-color: rgba(255, 174, 186, 0.1);
+        color: #ef3d13;
+        box-shadow: 1px 3px 5px 2px #eee;
         > span::before, > span::after {
-          height: 100%;
+          height: 50%;
           background-color: #ff9f71;
-          transition: .3s .5s;
+          transition: .2s;
         }
       }
       > span {
