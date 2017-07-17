@@ -5,10 +5,9 @@ const mongoose = require('mongoose');
 const bangumiSchema = require('./schemas/bangumi');
 
 bangumiSchema.statics.add = async function (payload) {
-  const searchResult = await this.find({_id: payload.id});
-  console.log(searchResult);
+  const searchResult = await this.find({id: payload.id});
   if (searchResult.length) {
-    return await this.findOneAndUpdate({_id: payload.id}, payload)
+    return await this.findOneAndUpdate({id: payload.id}, payload)
   } else {
     const bangumi = new this(payload);
     await bangumi.save();

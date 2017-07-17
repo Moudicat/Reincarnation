@@ -46,14 +46,20 @@ router.patch('/', (req, res, next) => {
     const bangumiArr = req.body;
 
     function add() {
-      if (bangumiArr.length === 0) return;
-      Bangumi.add(bangumiArr[0]).then(response => {
-        bangumiArr.shift();
-        add();
-      }).catch(err => {
-        res.sendStatus(500);
+      if (bangumiArr.length === 0) {
+        resData.msg = '添加成功，本次添加了' + req.body.length + '条数据';
+        res.json(resData);
         return;
-      });
+      }
+      Bangumi.add(bangumiArr[0])
+        .then(response => {
+          bangumiArr.shift();
+          add();
+        })
+        .catch(err => {
+          res.sendStatus(500);
+          return;
+        });
     }
 
     add();
@@ -72,9 +78,6 @@ router.patch('/', (req, res, next) => {
     res.sendStatus(400);
     return;
   }
-
-  resData.msg = '添加成功，本次添加了' + req.body.length + '条数据';
-  res.json(resData);
 });
 
 module.exports = router;
