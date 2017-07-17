@@ -1,6 +1,6 @@
 {
   "name": "Reincarnation",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "main": "server.js",
   "author": "Moudicat <i@0u0b.com>",
   "license": "MIT",
