@@ -1,7 +1,7 @@
 <template>
   <Layout>
     <div slot="aside" class="memobird-aside">
-      <img src="http://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/memobird-help.png" alt="memobird-help">
+      <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/memobird-help.png" alt="memobird-help">
     </div>
     <div slot="content" class="memobird-wrapper">
       <div class="header">
