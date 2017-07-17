@@ -26,7 +26,6 @@
       <template slot="title"><i class="el-icon-information"></i>友链相关</template>
       <el-menu-item-group>
         <el-menu-item index="/links/list">友链列表</el-menu-item>
-        <el-menu-item index="/bangumi/add">番剧录入</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
   </el-menu>

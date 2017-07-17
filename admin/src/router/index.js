@@ -9,6 +9,7 @@ import Status from 'views/status';
 import Hitokoto from 'views/hitokoto';
 import BangumiList from 'views/bangumi/list';
 import BangumiAdd from 'views/bangumi/add';
+import Link from 'views/link';
 
 Vue.use(Router);
 
@@ -33,7 +34,7 @@ export default new Router({
     },
     {
       path: '/article',
-      name: '文章',
+      name: 'Article',
       component: Layout,
       redirect: '/article/list',
       children: [
@@ -84,6 +85,18 @@ export default new Router({
         {
           path: 'add',
           component: BangumiAdd
+        }
+      ]
+    },
+    {
+      path: '/links',
+      name: 'links',
+      component: Layout,
+      redirect: '/links/list',
+      children: [
+        {
+          path: 'list',
+          component: Link
         }
       ]
     }
