@@ -40,13 +40,25 @@ router.patch('/', (req, res) => {
   }
     Link.add(req.body)
       .then(response => {
-        resData.data = response;
+        resData.msg = '添加成功';
         res.json(resData);
       })
       .catch(err => {
         console.log(err);
         res.sendStatus(500);
       })
+});
+
+router.delete('/:id', (req, res) => {
+  Link.remove(req.params.id)
+    .then(() => {
+      resData.msg = '成功删除';
+      res.json(resData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.sendStatus(500);
+    })
 });
 
 
