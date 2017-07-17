@@ -59,7 +59,11 @@ router.patch('/', (req, res, next) => {
     add();
   } else if (typeof req.body === 'object') {
     Bangumi.add(req.body)
-      .then(response => {})
+      .then(response => {
+        resData.msg = '添加成功，本次添加/更新了1条数据';
+        res.json(resData);
+        return;
+      })
       .catch(err => {
         res.sendStatus(500);
         return;
