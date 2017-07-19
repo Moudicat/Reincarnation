@@ -1,0 +1,144 @@
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 0;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.item {
+  position: relative;
+  float: left;
+  width: 20px;
+  height: 20px;
+  margin-top: 20px;
+  animation: rainbow 3.5s infinite alternate;
+  border-radius: 2px;
+  background: #e7e6dd;
+  background-size: cover;
+  text-align: center;
+}
+
+#loader-t {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  width: 180px;
+  height: 30px;
+  z-index: 99999;
+  transition: .4s opacity;
+  opacity: 1;
+}
+
+@keyframes rainbow {
+  0% {
+    opacity: 0;
+    transform: scale(1, 1) translate3d(0, 100%, 0);
+    background-color: #a1d18d;
+  }
+  20% {
+    background-color: #ffa995;
+    opacity: 1;
+    transform-origin: 25% 25%;
+    transform: scale(1, 1) translate3d(0, -25%, 0);
+    filter: blur(0px);
+  }
+  40% {
+    background-color: #ffebaf;
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1, 1.1) translate3d(0, 25%, 0);
+  }
+  60% {
+    background-color: #a09ecd;
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.1, 1.1) translate3d(0, -25%, 0);
+  }
+  80% {
+    background-color: #1dc0ff;
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+    transform: scale(1.1, 1.1) translate3d(0, 25%, 0);
+  }
+  100% {
+    background-color: #c9a7c6;
+    opacity: 1;
+    transform: scale(1, 1) translate3d(0, -25%, 0);
+  }
+}
+
+.item:nth-of-type(7n+2) {
+  -moz-animation-delay: 100ms;
+  -webkit-animation-delay: 100ms;
+  animation-delay: 100ms;
+}
+
+.item:nth-of-type(7n+3) {
+  -moz-animation-delay: 200ms;
+  -webkit-animation-delay: 200ms;
+  animation-delay: 200ms;
+}
+
+.item:nth-of-type(7n+4) {
+  -moz-animation-delay: 300ms;
+  -webkit-animation-delay: 300ms;
+  animation-delay: 300ms;
+}
+
+.item:nth-of-type(7n+5) {
+  -moz-animation-delay: 400ms;
+  -webkit-animation-delay: 400ms;
+  animation-delay: 400ms;
+}
+
+.item:nth-of-type(7n+6) {
+  -moz-animation-delay: 500ms;
+  -webkit-animation-delay: 500ms;
+  animation-delay: 500ms;
+}
+
+.item:nth-of-type(7n+7) {
+  -moz-animation-delay: 600ms;
+  -webkit-animation-delay: 600ms;
+  animation-delay: 600ms;
+}
+
+.pageload-overlay {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  z-index: 9999;
+}
+
+.pageload-overlay.show {
+  visibility: visible;
+}
+
+.pageload-overlay svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  transition: .5s;
+}
+
+.pageload-overlay svg path {
+  fill: #FFF4F0;
+  transition: .5s;
+}
