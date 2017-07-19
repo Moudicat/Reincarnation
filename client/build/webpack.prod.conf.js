@@ -8,6 +8,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+var SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
 
 var env = config.build.env
 
@@ -22,7 +23,8 @@ var webpackConfig = merge(baseWebpackConfig, {
   output: {
     path: config.build.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
-    chunkFilename: utils.assetsPath('js/[name].[chunkhash].js')
+    chunkFilename: utils.assetsPath('js/[name].[chunkhash].js'),
+    publicPath: '/'
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
@@ -90,9 +92,26 @@ var webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    new SWPrecacheWebpackPlugin({
+      cacheId: 'Reincarnation',
+      filename: 'service-worker.js',
+      staticFileGlobs: ['dist/**/*.{js,html,css,svg,png,jpg}'],
+      minify: true,
+      stripPrefix: 'dist/',
+      runtimeCaching: [
+        {
+          urlPattern: /^https:\/\/say\.moe\/api\/.*/,
+          handler: 'networkFirst'
+        },
+        {
+          urlPattern: /^https:\/\/moudicat-data\.oss-cn-beijing\.aliyuncs\.com\/cdn\/.*/,
+          handler: 'cacheFirst'
+        }
+      ]
+    })
   ]
-})
+});
 
 if (config.build.productionGzip) {
   var CompressionWebpackPlugin = require('compression-webpack-plugin')

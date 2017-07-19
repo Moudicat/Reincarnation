@@ -27,6 +27,11 @@
         document.getElementById('loader-t').style.opacity = 0;
         setTimeout(() => {
           document.body.removeChild(document.getElementById('loader'));
+          this.$message({
+            type: 'warning',
+            message: '本网站sw处于试运行阶段，若发现任何问题，请刷新或在控制台注销',
+            duration: 5000
+          });
         }, 600);
       }, 2000);
     }
