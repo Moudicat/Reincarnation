@@ -52,6 +52,7 @@
       display: inline-block;
       min-width: 300px;
       height: 50px;
+      padding: 0 20px;
       line-height: 50px;
       background-color: #fff;
       box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.11), 2px 2px 7px 1px rgba(0, 0, 0, 0.27);
