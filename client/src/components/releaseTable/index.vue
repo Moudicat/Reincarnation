@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.4.0',
+            date: '2017-07-19',
+            desc: '添加 ServiceWorker'
+          },
+          {
             version: '0.3.1',
             date: '2017-07-18',
             desc: '优化 后端部分api 友链投入使用 修复 bug'
