@@ -8,22 +8,22 @@
   "start_url": "index.html",
   "icons": [
     {
-      "src": "img/moudicat512x512.png",
+      "src": "static/img/moudicat512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "img/moudicat192x192.png",
+      "src": "static/img/moudicat192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "img/moudicat144x144.png",
+      "src": "static/img/moudicat144x144.png",
       "sizes": "144x144",
       "type": "image/png"
     },
     {
-      "src": "img/moudicat72x72.png",
+      "src": "static/img/moudicat72x72.png",
       "sizes": "72x72",
       "type": "image/png"
     }

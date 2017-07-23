@@ -93,8 +93,7 @@ var webpackConfig = merge(baseWebpackConfig, {
         ignore: ['.*']
       },
       {
-        from: path.resolve(__dirname, '../manifest.json'),
-        to: config.build.assetsSubDirectory
+        from: path.resolve(__dirname, '../manifest.json')
       }
     ]),
     new SWPrecacheWebpackPlugin({
