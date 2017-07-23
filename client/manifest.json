@@ -1,0 +1,24 @@
+{
+  "background_color": "#fff5e5",
+  "name": "某迪猫 - 结束与起始之界",
+  "short_name": "某迪猫",
+  "description": "某迪猫的个人博客，记录一些好玩的有趣的东西。",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "static/img/moudicat192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "static/img/moudicat144x144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "static/img/moudicat72x72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    }
+  ]
+}

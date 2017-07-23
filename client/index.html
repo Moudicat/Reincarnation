@@ -6,7 +6,8 @@
   <meta name="keywords" content="某迪猫,moudicat,前端,技术">
   <meta name="description" content="某迪猫的个人博客，记录一些好玩的有趣的东西。">
   <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <link rel="manifest" href="./static/manifest.json">
   <link rel="dns-prefetch" href="//www.moudicat.com">
   <link rel="dns-prefetch" href="//moudicat-data.oss-cn-beijing.aliyuncs.com">
   <link rel="icon" href="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/2016/07/Moudicat3-75x75.jpg"
@@ -40,17 +41,17 @@
   </div>
 </div>
 <script>
-//  if ('serviceWorker' in navigator) {
-//    navigator.serviceWorker.register('/service-worker.js')
-//      .then(function (registration) {
-//        console.log('%cServiceWorker registration successful 🍭', 'color: #4CFF80');
-//      })
-//      .catch(function (err) {
-//        console.log('ServiceWorker registration failed: ', err);
-//      });
-//  } else {
-//    console.log('%cServiceWorker is not supported 😢', 'color: red');
-//  }
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(function (registration) {
+        console.log('%cServiceWorker registration successful 🍭', 'color: #4CFF80');
+      })
+      .catch(function (err) {
+        console.log('ServiceWorker registration failed: ', err);
+      });
+  } else {
+    console.log('%cServiceWorker is not supported 😢', 'color: red');
+  }
 </script>
 
 </body>
