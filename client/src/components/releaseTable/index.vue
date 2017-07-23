@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.5.0',
+            date: '2017-07-23',
+            desc: '添加 移动端适配+PWA'
+          },
+          {
             version: '0.4.0',
             date: '2017-07-19',
             desc: '添加 ServiceWorker'

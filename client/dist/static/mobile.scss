@@ -1,0 +1,144 @@
+@media screen and (max-width: 1189px) {
+  body {
+    overflow-y: scroll !important;
+  }
+  aside {
+    display: none !important;
+  }
+  header {
+    flex: 0 0 240px !important;
+    height: 240px !important;
+    .avatar-wrapper {
+      display: none !important;
+    }
+    .background-wrapper {
+      height: 180px !important;
+    }
+    .nav-container {
+      justify-content: center;
+      nav {
+        overflow-x: auto !important;
+        padding-left: 0 !important;
+        .nav-link {
+          span {
+            font-size: 14px !important;
+            margin: 20px 10px !important;
+          }
+        }
+      }
+      .profile-mini-wrapper {
+        display: none !important;
+      }
+    }
+    .hitokoto {
+      font-size: 20px !important;
+      text-align: center !important;
+    }
+  }
+
+  #app,
+  .homepage-wrapper {
+    min-width: 0;
+  }
+  section {
+    .layout-content {
+      max-width: 100% !important;
+    }
+    .links-list {
+      li {
+        flex: 0 0 100% !important;
+      }
+    }
+    .take-me-fly {
+      left: auto !important;
+      right: 0;
+      width: 70px !important;
+      height: 60px !important;
+    }
+    .article-list-wrapper {
+      margin: 10px 0 0 0 !important;
+    }
+    .article-list-item {
+      background: none !important;
+      padding: 20px 10px !important;
+      h3 {
+        font-size: 20px !important;
+      }
+      time {
+        font-size: 12px !important;
+      }
+      .desc {
+        font-size: 14px !important;
+        line-height: 20px !important;
+      }
+      .pic-wrapper {
+        max-width: 100% !important;
+      }
+    }
+  }
+  footer {
+    background: none;
+    padding: 10px 0;
+    font-size: 12px;
+    flex: 0 0 115px;
+    height: 115px;
+    p {
+      font-size: 12px;
+    }
+  }
+  .message-box-wrapper {
+    .message-box {
+      width: 90% !important;
+    }
+  }
+  .message-wrapper {
+    top: 10px !important;
+    .message {
+      min-width: 0 !important;
+      width: 95% !important;
+      height: auto !important;
+      padding: 5px 10px !important;
+      line-height: 14px !important;
+      font-size: 12px;
+    }
+  }
+  .p404 {
+    padding: 0 !important;
+    h5 {
+      font-size: 20px !important;
+    }
+  }
+  .layout-content {
+    margin: 0 !important;
+  }
+  .memobird-wrapper {
+    .header {
+      font-size: 22px !important;
+    }
+    .footer {
+      .name {
+        input {
+          width: 100px !important;
+          font-size: 14px !important;
+        }
+      }
+      button {
+        position: absolute;
+        right: 15px;
+      }
+    }
+  }
+
+  article {
+    &.active {
+      transform: translateY(-100px) !important;
+    }
+    .article-title {
+      font-size: 22px !important;
+    }
+  }
+
+  #loader-t {
+    top: -200px;
+  }
+}
