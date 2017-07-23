@@ -1,6 +1,7 @@
 <template>
   <aside>
     <StatusPanel />
+    <BangumiPanel />
     <WeatherPanel class="margin-top"/>
     <!--<div class="aplayer-test padding-in">-->
       <!--昨天摸鱼了吗 <br>-->
@@ -21,11 +22,13 @@
 
 <script type="text/ecmascript-6">
   import StatusPanel from 'components/status-panel';
+  import BangumiPanel from 'components/bangumi-panel';
   import WeatherPanel from 'components/weather-panel';
 
   export default {
     components: {
       StatusPanel,
+      BangumiPanel,
       WeatherPanel
     }
   };

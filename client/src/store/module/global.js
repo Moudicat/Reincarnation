@@ -3,7 +3,8 @@
  */
 const state = {
   version: '',
-  bgUrl: '1_0800'
+  bgUrl: '1_0800',
+  status: []
 };
 
 const mutations = {
@@ -12,6 +13,9 @@ const mutations = {
   },
   SET_BGURL(state, payload) {
     state.bgUrl = payload;
+  },
+  SET_STATUS(state, payload) {
+    state.status = payload;
   }
 };
 

@@ -18,14 +18,22 @@
     data() {
       return {
         typeMap: ['orange', 'green', 'red', 'blue', 'gray'],
-        status: []
+        status: [],
+        hiddenStatus: ['最近看的番']
       };
     },
     mounted() {
       Status.get()
         .then(response => {
           if (response.data && response.data.status) {
-            this.status.splice(0, this.status.length, ...response.data.status);
+            this.$store.commit('global/SET_STATUS', response.data.status);
+            this.hiddenStatus.forEach(e => {
+              response.data.status.forEach((state, i) => {
+                if (state.name !== e) {
+                  this.status.push(state);
+                }
+              });
+            });
           } else {
             this.status.push({
               name: '获取数据失败',
