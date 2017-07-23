@@ -100,8 +100,8 @@ var webpackConfig = merge(baseWebpackConfig, {
     new SWPrecacheWebpackPlugin({
       cacheId: 'Reincarnation',
       filename: 'service-worker.js',
-      staticFileGlobs: ['dist/**/*.{js,html,css,svg,png,jpg}'],
       minify: true,
+      navigateFallback: 'https://www.moudicat.com/index.html',
       stripPrefix: 'dist/',
       runtimeCaching: [
         {
