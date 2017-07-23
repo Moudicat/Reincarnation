@@ -31,6 +31,7 @@
 <style lang="scss" rel="stylesheet/scss" scoped>
   .take-me-fly {
     position: fixed;
+    z-index: 999;
     left: 70px;
     bottom: -100%;
     width: 160px;

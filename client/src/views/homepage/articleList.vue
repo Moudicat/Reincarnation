@@ -8,7 +8,7 @@
               <router-link to="/">公开文章</router-link>
             </li>
             <li>
-              <router-link to="/index/post-it-note" @click.native="handleClick">便利贴</router-link>
+              <router-link to="/post-it-note" @click.native="handleClick">便利贴</router-link>
             </li>
           </ul>
         </div>

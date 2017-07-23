@@ -219,7 +219,9 @@
         .nav-link {
           display: block;
           min-width: 64px;
+          height: 60px;
           transition: .4s;
+          text-align: center;
           border-bottom: 1px solid transparent;
           &:nth-child(1) {
             &.active {

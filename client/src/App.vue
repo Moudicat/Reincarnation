@@ -13,6 +13,7 @@
 <script>
   import Header from 'views/header';
   import Footer from 'views/footer';
+  import '../static/mobile.scss';
 
   export default {
     name: 'app',

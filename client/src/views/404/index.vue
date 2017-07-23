@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="p404">
     <div class="pic-404"></div>
     <h5>404 页面不存在</h5>
   </section>
@@ -10,9 +10,10 @@
 </script>
 
 <style lang="scss" rel="stylesheet/scss" scoped>
-  section {
+  .p404 {
     display: flex;
     flex: 1 1 320px;
+    align-items: center;
     padding: 50px 15% 50px 30%;
     width: 100%;
     background: #f2ccc4;

@@ -24,8 +24,6 @@ Vue.use(TableColumn);
 
 Vue.config.productionTip = false;
 
-import '../static/reset.css';
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
