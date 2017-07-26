@@ -5,6 +5,7 @@
       <div class="hitokoto-wrapper">
         <p class="hitokoto" v-show="hitokoto">『{{ hitokoto }}』</p>
       </div>
+      <canvas id="weather"></canvas>
     </div>
     <transition name="fade">
       <Sticky v-if="!articleMode">
@@ -34,7 +35,7 @@
                 <span>友情链接</span>
               </router-link>
               <router-link to="/memobird" class="nav-link">
-                <span class="new">递小纸条</span>
+                <span>递小纸条</span>
               </router-link>
               <router-link to="/about" class="nav-link">
                 <span>关于本站</span>
@@ -87,6 +88,8 @@
         }, 2000);
       });
     },
+    mounted() {
+    },
     components: {
       Sticky
     }
@@ -101,6 +104,10 @@
       display: none;
       font-size: 0;
       text-indent: -9999px;
+    }
+    #weather {
+      width: 100%;
+      height: 100%;
     }
     .background-wrapper {
       height: 400px;
