@@ -168,7 +168,7 @@
       line-height: 48px;
       .tag {
         position: absolute;
-        margin-top: 6px;
+        margin-top: 12px;
         left: 50%;
       }
     }
