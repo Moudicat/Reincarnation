@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.5.1',
+            date: '2017-07-26',
+            desc: '修复⛏  bug'
+          },
+          {
             version: '0.5.0',
             date: '2017-07-23',
             desc: '添加 移动端适配+PWA'
@@ -24,7 +29,7 @@
           {
             version: '0.3.1',
             date: '2017-07-18',
-            desc: '优化 后端部分api 友链投入使用 修复 bug'
+            desc: '优化 后端部分api 友链投入使用 | 修复⛏  bug'
           },
           {
             version: '0.3.0',
