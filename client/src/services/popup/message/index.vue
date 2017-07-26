@@ -42,7 +42,7 @@
 <style lang="scss" rel="stylesheet/scss" scoped>
 
   .message-wrapper {
-    position: absolute;
+    position: fixed;
     top: 50px;
     left: 0;
     right: 0;
