@@ -66,6 +66,18 @@
             this.$store.commit('global/SET_BGURL', `${s}_${t}`);
           }
         }, 1000);
+      },
+      checkWeather() {
+        switch (this.weather.type) {
+          case '小雨':
+          case '大雨':
+            this.$emit('weatherChange', 'rain');
+            break;
+          case '小雪':
+          case '大雪':
+            this.$emit('weatherChange', 'snow');
+            break;
+        }
       }
     },
     computed: {
@@ -117,6 +129,7 @@
           if (response.data) {
             this.weather = response.data;
             this.calcTime();
+            this.checkWeather();
           } else {
             throw new Error('内部错误');
           }
@@ -147,30 +160,40 @@
 
 <style lang="scss" rel="stylesheet/scss" scoped>
   .weather-panel {
-    position: relative;
-    padding: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 5px;
     border: 1px solid #d1dbe5;
     border-radius: 4px;
-    /*background: url("./img/sunset.png") no-repeat;*/
-    /*background-size: cover;*/
-    background-color: #fff;
-    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .11), 0 0 4px 0 rgba(0, 0, 0, .04);
+    border-top: 0;
+    line-height: 22px;
+    text-shadow: #aaaaaa 1px 1px 1px;
+    transition: .4s;
+    background-color: rgba(255, 255, 255, .4);
+    color: #242424;
+    user-select: none;
     > h3 {
-      font-size: 18px;
+      font-weight: 500;
     }
     > span {
       display: block;
-      font-size: 12px;
-      text-align: center;
-      margin: 5px 0 10px 0;
+      margin-left: 20px;
     }
     .weather-panel-list {
-      line-height: 48px;
-      .tag {
-        position: absolute;
-        margin-top: 12px;
-        left: 50%;
+      display: flex;
+      margin-left: 20px;
+      li {
+        margin-right: 10px;
       }
+    }
+    &:hover {
+      background-color:  rgba(255, 255, 255, .8);
     }
   }
 </style>

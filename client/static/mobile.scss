@@ -142,3 +142,9 @@
     top: -200px;
   }
 }
+
+@media screen and (max-width: 730px) {
+  .weather-panel {
+    display: none !important;
+  }
+}

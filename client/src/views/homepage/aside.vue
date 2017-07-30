@@ -2,7 +2,6 @@
   <aside>
     <StatusPanel />
     <BangumiPanel />
-    <WeatherPanel class="margin-top"/>
     <!--<div class="aplayer-test padding-in">-->
       <!--昨天摸鱼了吗 <br>-->
       <!--github昨日提交： 1 commit <br>-->

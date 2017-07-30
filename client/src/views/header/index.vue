@@ -1,7 +1,8 @@
 <template>
   <header>
     <h1>某迪猫|结束与起始之界</h1>
-    <div class="background-wrapper" :class="{'article-mode': articleMode}" :style="{'background': backgroundUrl}">
+    <div class="background-wrapper" ref="backgroundWrapper" :class="{'article-mode': articleMode}" :style="{'background': backgroundUrl}">
+      <WeatherPanel @weatherChange="weatherChange"/>
       <div class="hitokoto-wrapper">
         <p class="hitokoto" v-show="hitokoto">『{{ hitokoto }}』</p>
       </div>
@@ -51,12 +52,35 @@
 <script type="text/ecmascript-6">
   import Sticky from 'components/Sticky';
   import Hitokoto from 'services/hitokoto';
+  import WeatherPanel from 'components/weather-panel';
+  import Rain from 'services/weatherSystem/Rain';
+  import Snow from 'services/weatherSystem/Snow';
 
   export default {
     data() {
       return {
         hitokoto: ''
       };
+    },
+    methods: {
+      weatherChange(name) {
+        cancelAnimationFrame(window.cavasRAF);
+        this.$refs.backgroundWrapper.removeChild(document.getElementById('weather'));
+        let canvas = document.createElement('canvas');
+        canvas.id = 'weather';
+        this.$refs.backgroundWrapper.appendChild(canvas);
+        let weather = null;
+        switch (name) {
+          case 'snow':
+            weather = new Snow();
+            weather.init();
+            break;
+          case 'rain':
+            weather = new Rain();
+            weather.init();
+            break;
+        }
+      }
     },
     computed: {
       miniAvatarState() {
@@ -88,10 +112,9 @@
         }, 2000);
       });
     },
-    mounted() {
-    },
     components: {
-      Sticky
+      Sticky,
+      WeatherPanel
     }
   };
 </script>
@@ -110,6 +133,7 @@
       height: 100%;
     }
     .background-wrapper {
+      position: relative;
       height: 400px;
       background-size: cover !important;
       &::after {
@@ -118,15 +142,14 @@
         width: 200%;
         height: 100%;
         border-radius: 50%;
-        transform: translate3d(-25%, 110%, 0);
+        transform: translate3d(-25%, 0%, 0);
         background-color: #f5f8fa;
         opacity: 0;
         transition: .9s;
       }
       &.article-mode {
         &::after {
-
-          transform: translate3d(-25%, 90%, 0);
+          transform: translate3d(-25%, -10%, 0);
           opacity: 1;
         }
       }
@@ -140,9 +163,9 @@
         height: inherit;
         width: 100%;
         .hitokoto {
-          text-shadow: #aaaaaa 1px 1px 1px;
+          text-shadow: #575757 1px 1px 1px;
           font-size: 32px;
-          color: rgba(255, 255, 255, .8);
+          color: rgba(255, 255, 255, .85);
           transition: .4s;
           &:hover {
             color: rgba(255, 255, 255, 1);

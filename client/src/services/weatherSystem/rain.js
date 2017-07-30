@@ -115,7 +115,7 @@ class Rain {
     this.updateParticles();
 
     this.drawParticles();
-    window.requestAnimationFrame(this.loop.bind(this));
+    window.cavasRAF = requestAnimationFrame(this.loop.bind(this));
   }
 
   removeParticle() {

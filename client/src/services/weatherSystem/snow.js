@@ -77,7 +77,7 @@ class Snow {
     if (this.time < this.speed) {
       this.time++;
     }
-    this.timer = setTimeout(this.move.bind(this), 1000 / this.rate);
+    window.cavasRAF = setTimeout(this.move.bind(this), 1000 / this.rate);
   }
 }
 
