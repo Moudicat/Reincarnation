@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.5.3',
+            date: '2017-07-31',
+            desc: '添加 主题系统Part 3'
+          },
+          {
             version: '0.5.2',
             date: '2017-07-30',
             desc: '添加 主题系统Part 2'
