@@ -77,6 +77,27 @@
           case '大雪':
             this.$emit('weatherChange', 'snow');
             break;
+          default:
+            switch (this.weather.season) {
+              case '夏季':
+                // 晚间萤火虫
+                if (this.$store.state.global.bgUrl.indexOf('2200') > -1) {
+                  this.$emit('weatherChange', 'fireflies');
+                }
+                break;
+              case '秋季':
+                // 晚间星空
+                if (this.$store.state.global.bgUrl.indexOf('2200') > -1) {
+                  this.$emit('weatherChange', 'star');
+                }
+                break;
+              case '冬季':
+                // 晚间星空
+                if (this.$store.state.global.bgUrl.indexOf('2200') > -1) {
+                  this.$emit('weatherChange', 'star');
+                }
+                break;
+            }
         }
       }
     },

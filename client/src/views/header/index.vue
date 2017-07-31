@@ -55,6 +55,8 @@
   import WeatherPanel from 'components/weather-panel';
   import Rain from 'services/weatherSystem/Rain';
   import Snow from 'services/weatherSystem/Snow';
+  import Star from 'services/weatherSystem/Star';
+  import Fireflies from 'services/weatherSystem/Fireflies';
 
   export default {
     data() {
@@ -77,6 +79,14 @@
             break;
           case 'rain':
             weather = new Rain();
+            weather.init();
+            break;
+          case 'star':
+            weather = new Star();
+            weather.init();
+            break;
+          case 'fireflies':
+            weather = new Fireflies();
             weather.init();
             break;
         }
