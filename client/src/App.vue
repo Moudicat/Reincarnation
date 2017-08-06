@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <r-header/>
-    <transition name="fade">
+    <transition name="fade" mode="out-in">
       <keep-alive exclude="Article">
         <router-view/>
       </keep-alive>
@@ -65,11 +65,12 @@
     padding: 20px !important;
   }
 
-  .fade-enter-active {
-    transition: .5s;
+  .fade-enter-active, .fade-leave-active {
+    transition: .3s;
   }
   .fade-enter, .fade-leave-to  {
-    opacity: 0
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
   }
 
   .message-box-wrapper-enter-active, .message-box-wrapper-leave-active {

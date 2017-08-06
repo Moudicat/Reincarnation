@@ -7,29 +7,31 @@
         @expand="handleDetailOpen">
         <el-table-column type="expand">
           <template scope="props">
-            <el-form label-position="left" inline class="demo-table-expand" v-if="props.row.detail">
-              <el-form-item label="原番名">
-                <span>{{ props.row.detail.title }}</span>
-              </el-form-item>
-              <el-form-item label="中文番名">
-                <span>{{ props.row.detail.titleTranslate['zh-Hans'].toString()}}</span>
-              </el-form-item>
-              <el-form-item label="番组开始时间">
-                <Tag>{{ props.row.detail.begin  | formatDate1}}</Tag>
-              </el-form-item>
-              <el-form-item label="番组完结时间">
-                <Tag>{{ props.row.detail.end ? props.row.detail.end : '未确定' | formatDate1}}</Tag>
-              </el-form-item>
-              <el-form-item label="官方网站">
-                <span>{{ props.row.detail.officialSite }}</span>
-              </el-form-item>
-              <el-form-item label="">
-                <span></span>
-              </el-form-item>
-              <el-form-item :label="`${sites[site.site].title}`" v-for="(site, i) in props.row.detail.sites" :key="i">
-                <Tag type="red"><a :href="siteMap(site)" target="_blank" rel="nofollow external">点我打开浏览</a></Tag>
-              </el-form-item>
-            </el-form>
+            <transition name="fade">
+              <el-form label-position="left" inline class="demo-table-expand" v-if="props.row.detail">
+                <el-form-item label="原番名">
+                  <span>{{ props.row.detail.title }}</span>
+                </el-form-item>
+                <el-form-item label="中文番名">
+                  <span>{{ props.row.detail.titleTranslate['zh-Hans'].toString()}}</span>
+                </el-form-item>
+                <el-form-item label="番组开始时间">
+                  <Tag>{{ props.row.detail.begin  | formatDate1}}</Tag>
+                </el-form-item>
+                <el-form-item label="番组完结时间">
+                  <Tag>{{ props.row.detail.end ? props.row.detail.end : '未确定' | formatDate1}}</Tag>
+                </el-form-item>
+                <el-form-item label="官方网站">
+                  <span>{{ props.row.detail.officialSite }}</span>
+                </el-form-item>
+                <el-form-item label="">
+                  <span></span>
+                </el-form-item>
+                <el-form-item :label="`${sites[site.site].title}`" v-for="(site, i) in props.row.detail.sites" :key="i">
+                  <Tag type="red"><a :href="siteMap(site)" target="_blank" rel="nofollow external">点我打开浏览</a></Tag>
+                </el-form-item>
+              </el-form>
+            </transition>
           </template>
         </el-table-column>
         <el-table-column
