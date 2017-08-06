@@ -146,6 +146,12 @@
   #loader-t {
     top: -200px;
   }
+
+  .background-wrapper {
+    &::after {
+      display: none !important;
+    }
+  }
 }
 
 @media screen and (max-width: 730px) {
