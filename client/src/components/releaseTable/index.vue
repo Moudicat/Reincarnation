@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.5.4',
+            date: '2017-08-06',
+            desc: '修复 页面过渡效果'
+          },
+          {
             version: '0.5.3',
             date: '2017-07-31',
             desc: '添加 主题系统Part 3'
