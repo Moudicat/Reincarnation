@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.5.6',
+            date: '2017-08-10',
+            desc: '修改 版本号'
+          },
+          {
             version: '0.5.5',
             date: '2017-08-10',
             desc: '添加 自动更新功能'
