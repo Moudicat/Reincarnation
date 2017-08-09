@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.5.5',
+            date: '2017-08-10',
+            desc: '添加 自动更新功能'
+          },
+          {
             version: '0.5.4',
             date: '2017-08-06',
             desc: '修复 页面过渡效果'
