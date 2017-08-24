@@ -145,7 +145,7 @@
   }
 
   .markdown-body {
-    padding: 20px;
+    padding: 20px 180px;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
     line-height: 1.5;

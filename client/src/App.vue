@@ -11,9 +11,9 @@
 </template>
 
 <script>
+  import '../static/responsive.scss';
   import Header from 'views/header';
   import Footer from 'views/footer';
-  import '../static/mobile.scss';
   import pkg from '../package.json';
   import SStorage from 'services/sstorage';
 
