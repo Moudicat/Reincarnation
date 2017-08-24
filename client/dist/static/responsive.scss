@@ -141,6 +141,9 @@
     .article-title {
       font-size: 22px !important;
     }
+    .markdown-body {
+      padding: 20px !important;
+    }
   }
 
   #loader-t {
@@ -157,5 +160,13 @@
 @media screen and (max-width: 730px) {
   .weather-panel {
     display: none !important;
+  }
+}
+
+@media screen and (min-width: 1760px) {
+  .homepage-wrapper,
+  .layout-wrapper,
+  .article {
+    max-width: 1300px;
   }
 }
