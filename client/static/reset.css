@@ -175,9 +175,6 @@ i {
   content: "\eab0";
 }
 
-
-// loader
-
 *, *::after, *::before {
   box-sizing: border-box;
 }

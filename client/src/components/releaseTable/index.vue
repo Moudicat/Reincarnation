@@ -12,7 +12,7 @@
       return {
         releaseData: [
           {
-            version: '0.5.8',
+            version: '0.5.9',
             date: '2017-08-24',
             desc: '修改 部分响应式、文章区'
           },
