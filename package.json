@@ -1,0 +1,14 @@
+{
+  "name": "reincarnation",
+  "version": "0.6.0",
+  "description": "A blog system.",
+  "main": "start.js",
+  "repository": "git@github.com:moudicat/Reincarnation.git",
+  "author": "Moudicat <i@0u0b.com>",
+  "license": "MIT",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-latest-node": "^0.4.0",
+    "babel-preset-stage-3": "^6.24.1"
+  }
+}

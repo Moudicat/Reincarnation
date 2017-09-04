@@ -1,13 +1,15 @@
 /**
  * Created by Moudi on 2017/5/3.
  */
-const express = require('express');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
+import express from 'express';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+
 const mongoose = require('mongoose');
 const config = require('./config/index');
 const cors = require('./middleware/cors');
 const { infoLogger, warnLogger } = require('./middleware/logger');
+
 const app = express();
 
 if (process.env.NODE_ENV === 'production') {
