@@ -3,7 +3,18 @@
  */
 const mongoose = require('mongoose');
 
-module.exports = new mongoose.Schema({
+const statusSchema = new mongoose.Schema({
   status: Array,
-  date: String
+  date: {
+    type: Date,
+    default: Date.now()
+  }
 }, {versionKey: false});
+
+statusSchema.pre('save', function (next) {
+  if (this.isNew) {
+    this.date = Date.now();
+  }
+});
+
+mongoose.model('Status', statusSchema);

@@ -4,14 +4,25 @@
 
 const mongoose = require('mongoose');
 
-module.exports = new mongoose.Schema({
+const animationSchema = new mongoose.Schema({
   id: String,
   name: {
     type: String,
     unique: true
   },
   episode: String,
-  date: String,
+  date: {
+    type: Date,
+    default: Date.now()
+  },
   isDone: String,
   comment: String
 }, {versionKey: false});
+
+animationSchema.pre('save', function (next) {
+  if (this.isNew) {
+    this.date = Date.now();
+  }
+});
+
+mongoose.model('Animation', animationSchema);

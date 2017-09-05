@@ -3,7 +3,7 @@
  */
 const mongoose = require('mongoose');
 
-module.exports = new mongoose.Schema({
+const bangumiSchema = new mongoose.Schema({
   id: {
     type: String,
     unique: true
@@ -17,3 +17,5 @@ module.exports = new mongoose.Schema({
   comment: String,
   sites: Array
 }, {versionKey: false});
+
+mongoose.model('Bangumi', bangumiSchema);
