@@ -1,77 +1,60 @@
 /**
  * Created by Moudi on 2017/5/3.
  */
+import fs from 'fs';
+import https from 'https';
 import express from 'express';
-import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
+import config from './config/';
+import { resolve } from 'path';
 
-const mongoose = require('mongoose');
-const config = require('./config/index');
-const cors = require('./middleware/cors');
-const { infoLogger, warnLogger } = require('./middleware/logger');
+global.isProd = config.env === 'production';
 
-const app = express();
+const r = path => resolve(__dirname, path);
 
-if (process.env.NODE_ENV === 'production') {
-  // 只开启https服务
-  var fs = require('fs');
-  var spdy = require('spdy');
-  const options = {
-    key: fs.readFileSync('/root/ssl/sayMoe/saymoe.key', 'utf8'),
-    cert: fs.readFileSync('/root/ssl/sayMoe/saymoe.pem', 'utf8')
+class ApiServer {
+  constructor() {
+    this.app = express();
+
+    this.MIDDLEWARE = ['cors', 'bodyParser', 'cookieParser', 'custom', 'apiServerRoutes'];
+    this.SERVICES = ['database', 'weatherSystem'];
+
+    this.registerMiddleware(this.app);
+    this.registerServices();
   }
-  var httpsServer = spdy.createServer(options, app);
-}
-// 加载天气插件
-const weatherGenerator = require('./services/weatherSystem');
-// 加载天气生成
-weatherGenerator();
 
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+  registerMiddleware(app) {
+    this.MIDDLEWARE.forEach(middlewareName => {
+      require(`${r(`./middlewares/${middlewareName}`)}`)['default'](app);
+    });
+  }
 
-app.use((req, res, next) => {
-  res.setHeader('X-Powered-By', `${config.app.appName}/${config.app.version}`);
-  next();
-});
-// 跨域中间件
-app.use(cors);
-app.use(cookieParser());
+  registerServices() {
+    this.SERVICES.forEach(servicesName => {
+      require(`${r(`./services/${servicesName}`)}`)['default']();
+    });
+  }
 
-app.use(infoLogger);
+  getHttpsServer() {
+    const options = {
+      key: fs.readFileSync(config.saymoe.key, 'utf8'),
+      cert: fs.readFileSync(config.saymoe.cert, 'utf8')
+    };
+    return https.createServer(options, this.app);
+  }
 
-app.use('/api', require('./api/index'));
-
-app.use('/', require('./routes'));
-
-app.use(express.static('./static'));
-
-app.use((req, res) => {
-  app.use(warnLogger);
-  res.sendStatus(404);
-});
-
-// fixed: mpromise is deprecated;
-mongoose.Promise = global.Promise;
-
-mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.db}`, (err) => {
-  if (err) {
-    console.log(err.message);
-  } else {
-    console.log('已成功连接到数据库');
-    if (process.env.NODE_ENV !== 'production') {
-      app.listen(2777, () => {
-        console.log('服务启动127.0.0.1:2777');
-      });
+  start() {
+    if (isProd) {
+      this.getHttpsServer()
+        .listen(config.app.port, () => {
+          console.log(`线上模式: 端口${config.app.port}`);
+        });
     } else {
-      httpsServer.listen(2777, (err) => {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log('服务启动https://say.moe');
-        }
+      this.app.listen(config.app.port, () => {
+        console.log(`本地开发模式: 端口${config.app.port}`);
       });
     }
   }
-});
+}
 
+const apiServer = new ApiServer();
+apiServer.start();

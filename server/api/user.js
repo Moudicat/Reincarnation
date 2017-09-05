@@ -2,8 +2,8 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 const User = require('../controllers/user');
-const config = require('../config');
-const authorization = require('../middleware/authorization');
+import config from '../config';
+import authorization from '../middlewares/authorization';
 
 let resData;
 router.use((req, res, next) => {

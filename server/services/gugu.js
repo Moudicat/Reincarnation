@@ -2,7 +2,7 @@
  * Created by Moudicat on 2017/7/9.
  */
 const Memobird = require('memobird');
-const config = require('../config');
+import config from '../config';
 
 let gugu = new Memobird({
   ak: config.gugu.ak,

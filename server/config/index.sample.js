@@ -9,21 +9,21 @@ const defaultConf = {
   app: {
     appName: pkg.name,
     version: pkg.version,
-    port: 2777
+    port: 6666
   },
   jwt: {
-    secret: 'reincarnation!@#$%^&*'
+    secret: 'your secret key'
   },
   db: {
     host: 'localhost',
-    port: '27777',
-    db: 'reincarnation',
-    path: './db'
+    port: '27088',
+    db: 'your db name',
+    path: 'path/to/your/db'
   },
   gugu: {
-    ak: '7c940ee62e5348bf9752fa9c90ed1c61',
-    memobirdID: '6828b35bf8befa35',
-    useridentifying: '706870',
+    ak: 'your ak code',
+    memobirdID: 'your id',
+    useridentifying: 'your uid',
     frequency: 2
   }
 };

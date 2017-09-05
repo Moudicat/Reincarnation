@@ -268,4 +268,4 @@ let weatherGenerator = () => {
   });
 };
 
-module.exports = weatherGenerator;
+export default weatherGenerator;

@@ -4,7 +4,7 @@
 const express = require('express');
 const router = express.Router();
 const Animation = require('../controllers/animation');
-const authorization = require('../middleware/authorization');
+import authorization from '../middlewares/authorization';
 
 let resData;
 router.use((req, res, next) => {

@@ -1,10 +1,10 @@
 /**
  * Created by Moudi on 2017/5/11.
  */
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 const Hitokoto = require('../controllers/hitokoto');
-const authorization = require('../middleware/authorization');
+import authorization from '../middlewares/authorization';
 
 let resData;
 router.use((req, res, next) => {

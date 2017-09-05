@@ -7,10 +7,10 @@ const os = require('os');
 const execSync = require('child_process').execSync;
 const express = require('express');
 const router = express.Router();
-const authorization = require('../middleware/authorization');
+import authorization from '../middlewares/authorization';
 const gugu = require('../services/gugu');
 const guguLogger = require('../services/guguLogger');
-const config = require('../config');
+import config from '../config';
 
 let resData, ipList = {};
 router.use((req, res, next) => {
