@@ -18,8 +18,8 @@ class ApiServer {
     this.MIDDLEWARE = ['cors', 'bodyParser', 'cookieParser', 'custom', 'apiServerRoutes'];
     this.SERVICES = ['database', 'weatherSystem'];
 
-    this.registerMiddleware(this.app);
     this.registerServices();
+    this.registerMiddleware(this.app);
   }
 
   registerMiddleware(app) {

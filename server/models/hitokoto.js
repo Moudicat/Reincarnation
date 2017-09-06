@@ -1,24 +1,24 @@
 /**
- * Created by Moudi on 2017/5/11.
+ * Created by Moudi on 2017/5/10.
  */
 const mongoose = require('mongoose');
-const hitokotoSchema = require('./schemas/hitokoto');
 
-hitokotoSchema.statics.add = async function (payload) {
-  const hitokoto = new this(payload);
-  await hitokoto.save();
-  return hitokoto;
-};
+const hitokotoSchema = new mongoose.Schema({
+  content: String,
+  date: {
+    type: Date,
+    default: Date.now()
+  },
+  isActive: {
+    type: Boolean,
+    default: true
+  }
+}, {versionKey: false});
 
-hitokotoSchema.statics.get = async function () {
-  return await this.aggregate({$sample: {size: 1}});
-};
+hitokotoSchema.pre('save', function (next) {
+  if (this.isNew) {
+    this.date = Date.now();
+  }
+});
 
-hitokotoSchema.statics.getAll = async function () {
-  return await this.find({});
-};
-
-hitokotoSchema.statics.remove = async function (id) {
-  return await this.findOneAndRemove({_id: id});
-};
-module.exports = mongoose.model('Hitokoto', hitokotoSchema);
+mongoose.model('Hitokoto', hitokotoSchema);

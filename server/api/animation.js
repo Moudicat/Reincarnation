@@ -1,120 +1,29 @@
 /**
  * Created by Moudi on 2017/6/4.
  */
-const express = require('express');
-const router = express.Router();
-const Animation = require('../controllers/animation');
-import authorization from '../middlewares/authorization';
+import mongoose from 'mongoose';
+const AnimationModel = mongoose.model('Animation');
 
-let resData;
-router.use((req, res, next) => {
-  resData = {
-    code: 0,
-    msg: ''
-  };
-  next();
-});
-
-router.get('/latest', (req, res) => {
-  Animation.getLatest()
-    .then(response => {
-      resData.data = response;
-      res.json(resData);
-    })
-    .catch(err => {
-      console.log(err);
-      res.sendStatus(500);
-    });
-});
-
-router.get('/', (req, res) => {
-  Animation.get()
-    .then(response => {
-      resData.data = response;
-      res.json(resData);
-    })
-    .catch(err => {
-      console.log(err);
-      res.sendStatus(500);
-    });
-});
-
-router.get('/:id', (req, res) => {
-  Animation.getOne(req.params.id)
-    .then(response => {
-      resData.data = response;
-      res.json(resData);
-    })
-    .catch(err => {
-      console.log(err);
-      res.sendStatus(500);
-    });
-});
-
-// 以下的路由需要认证
-router.use(authorization);
-
-router.patch('/:id', (req, res) => {
-  Animation.update(req.body)
-    .then(() => {
-      resData.msg = '修改成功';
-      res.json(resData);
-    })
-    .catch(err => {
-      res.sendStatus(500);
-      console.log(err);
-    });
-});
-
-router.patch('/', (req, res) => {
-  if (req.body instanceof Array) {
-    const animationArr = req.body;
-    add();
-    function add() {
-      if (animationArr.length === 0) return;
-      Animation.add(animationArr[0])
-        .then(() => {
-          animationArr.shift();
-          add();
-        })
-        .catch(err => {
-          res.sendStatus(500);
-          console.log(err);
-          return;
-        });
-    }
-
-    resData.msg = '添加成功，本次添加了' + req.body.length + '条数据';
-    res.json(resData);
-  } else if (typeof req.body === 'object') {
-    Animation.add(req.body)
-      .then(() => {
-        resData.msg = '添加成功，本次添加了1条数据';
-        res.json(resData);
-      })
-      .catch(err => {
-        res.sendStatus(500);
-        console.log(err);
-      });
-  } else {
-    res.sendStatus(400);
+class AnimationApi {
+  static async insert(payload) {
+    const animation = new AnimationModel(payload);
+    return await animation.save();
   }
-});
-
-router.delete('/:id', (req, res) => {
-  if (!req.params.id) {
-    res.sendStatus(400);
-    return;
+  static async get() {
+    return await AnimationModel.find({}).sort('-date');
   }
-  Animation.remove(req.params.id)
-    .then(() => {
-      resData.msg = '成功删除';
-      res.json(resData);
-    })
-    .catch(err => {
-      res.sendStatus(500);
-      console.log(err);
-    });
-});
+  static async getOne(id) {
+    return await AnimationModel.findOne({_id: id});
+  }
+  static async update(payload) {
+    return await AnimationModel.findOneAndUpdate({_id: payload.id}, {name: payload.name, episode: payload.episode, date: payload.date, isDone: payload.isDone, comment: payload.comment});
+  }
+  static async getLatest() {
+    return await AnimationModel.find({}).sort('-date').limit(1);
+  }
+  static async remove(id) {
+    return await AnimationModel.findOneAndRemove({_id: id});
+  }
+}
 
-module.exports = router;
+export default AnimationApi;

@@ -1,68 +1,24 @@
 /**
  * Created by Moudi on 2017/5/11.
  */
-import express from 'express';
-const router = express.Router();
-const Hitokoto = require('../controllers/hitokoto');
-import authorization from '../middlewares/authorization';
+import mongoose from 'mongoose';
+const HitokotoModel = mongoose.model('Hitokoto');
 
-let resData;
-router.use((req, res, next) => {
-  resData = {
-    code: 0,
-    msg: ''
-  };
-  next();
-});
+class HitokotoApi {
+  static async insert(payload) {
+    const hitokoto = new HitokotoModel(payload);
+    await hitokoto.save();
+    return hitokoto;
+  }
+  static async get() {
+    return await HitokotoModel.aggregate({$sample: {size: 1}});
+  }
+  static async getAll() {
+    return await HitokotoModel.find({});
+  }
+  static async remove(id) {
+    return await HitokotoModel.findOneAndRemove({_id: id});
+  }
+}
 
-router.get('/', (req, res, next) => {
-  Hitokoto.get().then(response => {
-    if (response.length === 0) {
-      resData.msg = '无数据';
-      resData.code = -404;
-      res.json(resData);
-    } else {
-      delete(response[0]._id);
-      resData.data = response[0];
-      res.json(resData);
-    }
-  }).catch(err => {
-    console.error(err);
-    resData.msg = err;
-    resData.code = -500;
-    res.json(resData);
-  });
-});
-
-// 以下的路由需要认证
-router.use(authorization);
-
-// content  need
-router.patch('/', (req, res) => {
-  Hitokoto.add(req.body).then(response => {
-    resData.msg = '添加成功';
-    res.json(resData);
-  }).catch(err => {
-    res.sendStatus(500);
-  });
-});
-
-router.get('/all', (req, res) => {
-  Hitokoto.getAll().then(response => {
-    resData.data = response;
-    res.json(resData);
-  }).catch(err => {
-    res.sendStatus(500);
-  });
-});
-
-router.delete('/:id', (req, res) => {
-  Hitokoto.remove(req.params.id).then(response => {
-    resData.msg = '删除成功';
-    res.json(resData);
-  }).catch(err => {
-    res.sendStatus(500);
-  });
-});
-
-module.exports = router;
+export default HitokotoApi;

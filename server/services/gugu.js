@@ -1,7 +1,7 @@
 /**
  * Created by Moudicat on 2017/7/9.
  */
-const Memobird = require('memobird');
+import Memobird from 'memobird';
 import config from '../config';
 
 let gugu = new Memobird({
@@ -12,4 +12,4 @@ let gugu = new Memobird({
 
 gugu.init();
 
-module.exports = gugu;
+export default gugu;

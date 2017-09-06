@@ -1,5 +1,14 @@
 import mongoose from 'mongoose';
+import fs from 'fs';
+import { resolve } from 'path';
 import config from '../config';
+
+const modelsPath = resolve(__dirname, '../models');
+
+// 注册数据库模型
+fs.readdirSync(modelsPath)
+  .filter(file => ~file.search(/^[^\.].*js$/))
+  .forEach(file => require(resolve(modelsPath, file)));
 
 export default () => {
   // fix: mpromise is deprecated;

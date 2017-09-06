@@ -1,22 +1,66 @@
 /**
  * Created by Moudi on 2017/5/11.
  */
-const HitokotoModel = require('../models/hitokoto');
+import HitokotoApi from '../api/hitokoto';
+import BaseRouterController from './base/baseRouterController';
+import { controller, get, patch, del } from '../decorators/router';
+import authorization from '../middlewares/authorization';
+import rplMiddleware from '../middlewares/rplMiddleware';
 
-class Hitokoto {
-  static async add(payload) {
-    payload.date = +new Date();
-    return await HitokotoModel.add(payload);
+@controller('/hitokoto', rplMiddleware)
+export default class Hitokoto extends BaseRouterController {
+  @get('')
+  get(req, res, next) {
+    HitokotoApi.get()
+      .then(response => {
+        if (response.length === 0) {
+          res.resData.msg = '无数据';
+          res.json(res.resData);
+        } else {
+          delete(response[0]._id);
+          res.resData.data = response[0];
+          res.json(res.resData);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        res.sendStatus(500);
+      });
   }
-  static async get() {
-    return await HitokotoModel.get();
+
+  @patch('', authorization)
+  insert(req, res) {
+    HitokotoApi.insert(req.body)
+      .then(response => {
+        res.resData.msg = '添加成功';
+        res.json(res.resData);
+      })
+      .catch(err => {
+        res.sendStatus(500);
+      });
   }
-  static async getAll() {
-    return await HitokotoModel.getAll();
+
+  @get('all', authorization)
+  getAll(req, res) {
+    HitokotoApi.getAll()
+      .then(response => {
+        res.resData.data = response;
+        res.json(res.resData);
+      })
+      .catch(err => {
+        res.sendStatus(500);
+      });
   }
-  static async remove(id) {
-    return await HitokotoModel.remove(id);
+
+  @del(':id', authorization)
+  remove(req, res) {
+    HitokotoApi.remove(req.params.id)
+      .then(response => {
+        res.resData.msg = '删除成功';
+        res.json(res.resData);
+      })
+      .catch(err => {
+        res.sendStatus(500);
+      });
   }
 }
-
-module.exports = Hitokoto;
