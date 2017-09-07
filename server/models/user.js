@@ -21,6 +21,7 @@ userSchema.pre('save', function (next) {
   } else {
     this.createTime = Date.now();
   }
+  next();
 });
 
 mongoose.model('User', userSchema);

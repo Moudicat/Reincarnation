@@ -10,26 +10,26 @@ import rplMiddleware from '../middlewares/rplMiddleware';
 @controller('/user', rplMiddleware)
 export default class User extends BaseRouterController {
 
-  // @post('')
-  // register(req, res, next) {
-  //   UserApi.register(req.body)
-  //     .then(user => {
-  //       const token = jwt.sign({
-  //         uid: user._id,
-  //         name: user.username,
-  //         exp: Math.floor(+new Date / 1000) + 60 * 2 // 2 min
-  //       }, config.jwt.secret);
-  //       res.resData.token = token;
-  //       res.resData.msg = '注册成功';
-  //       res.json(res.resData);
-  //     })
-  //     .catch(err => {
-  //       aelog(req, res, err);
-  //       res.sendStatus(500);
-  //     });
-  // }
+  @post('/register')
+  register(req, res, next) {
+    UserApi.register(req.body)
+      .then(user => {
+        const token = jwt.sign({
+          uid: user._id,
+          name: user.username,
+          exp: Math.floor(+new Date / 1000) + 60 * 2 // 2 min
+        }, config.jwt.secret);
+        res.resData.token = token;
+        res.resData.msg = '注册成功';
+        res.json(res.resData);
+      })
+      .catch(err => {
+        aelog(req, res, err);
+        res.sendStatus(500);
+      });
+  }
 
-  @post('login')
+  @post('/login')
   login(req, res, next) {
     UserApi.login(req.body)
       .then(response => {
@@ -57,7 +57,7 @@ export default class User extends BaseRouterController {
       });
   }
 
-  @get('', authorization)
+  @get('/', authorization)
   getInfo(req, res, next) {
     UserApi.getInfo(req.username)
       .then(response => {

@@ -10,7 +10,7 @@ import rplMiddleware from '../middlewares/rplMiddleware';
 
 @controller('/status', rplMiddleware)
 export default class Status extends BaseRouterController {
-  @get('')
+  @get('/')
   get(req, res) {
     StatusApi.get()
       .then(response => {
@@ -19,6 +19,7 @@ export default class Status extends BaseRouterController {
           res.json(res.resData);
         } else {
           res.resData.data = response[0];
+          // TODO: need remove 
           AnimationApi.getLatest()
             .then(response => {
               let animationObj = {
@@ -42,7 +43,7 @@ export default class Status extends BaseRouterController {
       });
   }
 
-  @patch('', authorization)
+  @patch('/', authorization)
   insert(req, res) {
     if (!req.body.status && req.body.StatusApi.length === 0 && !(req.body.status instanceof Array)) {
       res.sendStatus(400);

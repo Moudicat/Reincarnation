@@ -19,6 +19,7 @@ hitokotoSchema.pre('save', function (next) {
   if (this.isNew) {
     this.date = Date.now();
   }
+  next();
 });
 
 mongoose.model('Hitokoto', hitokotoSchema);

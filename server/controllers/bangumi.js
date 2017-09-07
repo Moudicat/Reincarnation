@@ -7,7 +7,7 @@ import rplMiddleware from '../middlewares/rplMiddleware';
 
 @controller('/bangumi', rplMiddleware)
 export default class Bangumi extends BaseRouterController {
-  @get('search')
+  @get('/search')
   search(req, res, next) {
     BangumiApi.search(req.query.q)
       .then(response => {
@@ -20,7 +20,7 @@ export default class Bangumi extends BaseRouterController {
       });
   }
 
-  @get(':id')
+  @get('/:id')
   getOne(req, res) {
     if (!req.params.id) {
       res.sendStatus(400);
@@ -37,10 +37,10 @@ export default class Bangumi extends BaseRouterController {
       });
   }
 
-  @patch('', authorization)
+  @patch('/', authorization)
   insert(req, res, next) {
     if (req.body instanceof Array) {
-      const bangumiArr = req.body;
+      const bangumiArr = req.body.concat();
 
       function insert() {
         if (bangumiArr.length === 0) {

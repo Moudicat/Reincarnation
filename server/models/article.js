@@ -21,11 +21,12 @@ const articleSchema = new mongoose.Schema({
 }, {versionKey: false});
 
 articleSchema.pre('save', function (next) {
-  if (this.isNew) {
+  if (this.isNew && !this.postTime) {
     this.postTime = this.modifiedTime = Date.now();
   } else {
     this.modifiedTime = Date.now();
   }
+  next();
 });
 
 mongoose.model('Article', articleSchema);

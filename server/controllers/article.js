@@ -12,7 +12,7 @@ import rplMiddleware from '../middlewares/rplMiddleware';
 @controller('/article', rplMiddleware)
 export default class Article extends BaseRouterController {
 
-  @get('')
+  @get('/')
   get(req, res) {
     // start, limit
     let start = Number(req.query.start) || 0;
@@ -29,7 +29,7 @@ export default class Article extends BaseRouterController {
       });
   }
 
-  @get('list')
+  @get('/list')
   list(req, res) {
     ArticleApi.list()
       .then(response => {
@@ -42,7 +42,7 @@ export default class Article extends BaseRouterController {
       });
   }
 
-  @get('count')
+  @get('/count')
   count(req, res) {
     ArticleApi.countArticle()
       .then(response => {
@@ -55,7 +55,7 @@ export default class Article extends BaseRouterController {
       });
   }
 
-  @get(':id')
+  @get('/:id')
   getOne(req, res, next) {
     if (req.params.id === 'all') {
       next();
@@ -80,7 +80,7 @@ export default class Article extends BaseRouterController {
       });
   }
 
-  @post('', authorization)
+  @post('/', authorization)
   insert(req, res) {
     /*
      title: String,
@@ -112,7 +112,7 @@ export default class Article extends BaseRouterController {
       });
   }
 
-  @get('all')
+  @get('/all', authorization)
   getAll(req, res) {
     ArticleApi.listAll()
       .then(response => {
@@ -126,7 +126,7 @@ export default class Article extends BaseRouterController {
   }
 
   // 更新文章
-  @patch(':id')
+  @patch('/:id', authorization)
   modify(req, res) {
     if (!req.body.articleObj) {
       res.sendStatus(400);
@@ -143,7 +143,7 @@ export default class Article extends BaseRouterController {
       });
   }
 
-  @del('markDel')
+  @del('/markDel', authorization)
   remove(req, res) {
     ArticleApi.remove()
       .then(response => {
@@ -156,7 +156,7 @@ export default class Article extends BaseRouterController {
       })
   }
 
-  @patch(':id/status')
+  @patch('/:id/status', authorization)
   setStatus(req, res) {
     ArticleApi.setStatus(req.params.id, req.body.status)
       .then(response => {

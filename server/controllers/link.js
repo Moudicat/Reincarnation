@@ -7,7 +7,7 @@ import rplMiddleware from '../middlewares/rplMiddleware';
 @controller('/link', rplMiddleware)
 export default class Link extends BaseRouterController {
 
-  @get('')
+  @get('/')
   list(req, res) {
     LinkApi.list()
       .then(response => {
@@ -25,13 +25,13 @@ export default class Link extends BaseRouterController {
       });
   }
 
-  @patch('', authorization)
+  @patch('/', authorization)
   insert(req, res) {
     if (!req.body.name || !req.body.address || !req.body.owner) {
       res.sendStatus(400);
       return;
     }
-    LinkApi.add(req.body)
+    LinkApi.insert(req.body)
       .then(response => {
         res.resData.msg = '添加成功';
         res.json(res.resData);
@@ -42,7 +42,7 @@ export default class Link extends BaseRouterController {
       });
   }
 
-  @del(':id', authorization)
+  @del('/:id', authorization)
   remove(req, res) {
     LinkApi.remove(req.params.id)
       .then(() => {

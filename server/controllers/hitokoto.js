@@ -9,7 +9,7 @@ import rplMiddleware from '../middlewares/rplMiddleware';
 
 @controller('/hitokoto', rplMiddleware)
 export default class Hitokoto extends BaseRouterController {
-  @get('')
+  @get('/')
   get(req, res, next) {
     HitokotoApi.get()
       .then(response => {
@@ -28,7 +28,7 @@ export default class Hitokoto extends BaseRouterController {
       });
   }
 
-  @patch('', authorization)
+  @patch('/', authorization)
   insert(req, res) {
     HitokotoApi.insert(req.body)
       .then(response => {
@@ -41,7 +41,7 @@ export default class Hitokoto extends BaseRouterController {
       });
   }
 
-  @get('all', authorization)
+  @get('/all', authorization)
   getAll(req, res) {
     HitokotoApi.getAll()
       .then(response => {
@@ -54,7 +54,20 @@ export default class Hitokoto extends BaseRouterController {
       });
   }
 
-  @del(':id', authorization)
+  @patch('/:id', authorization)
+  setActive(req, res) {
+    HitokotoApi.setActive(req.params.id, req.body.isActive)
+      .then(response => {
+        res.resData.msg = '操作成功';
+        res.json(res.resData);
+      })
+      .catch(err => {
+        aelog(req, res, err);
+        res.sendStatus(500);
+      })
+  }
+
+  @del('/:id', authorization)
   remove(req, res) {
     HitokotoApi.remove(req.params.id)
       .then(response => {

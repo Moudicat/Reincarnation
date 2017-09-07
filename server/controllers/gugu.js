@@ -23,7 +23,7 @@ let ipList = {};
 @controller('/gugu', rplMiddleware)
 export default class Gugu extends BaseRouterController {
 
-  @post('', authorization)
+  @post('/', authorization)
   print(req, res) {
     let ip = req.headers['x-forwarded-for'] ||
       req.connection.remoteAddress ||
@@ -39,7 +39,7 @@ export default class Gugu extends BaseRouterController {
       return;
     }
 
-    let blackList = fs.readFileSync('./services/guguBlackList').toString().split('\n');
+    let blackList = fs.readFileSync(config.gugu.blacklist).toString().split('\n');
     if (blackList.indexOf(ip.split(',')[0]) !== -1) {
       guguLogger.info(`Reject gugu print for black ip, IP: ${ip}`);
       res.sendStatus(403);

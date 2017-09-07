@@ -11,10 +11,13 @@ class HitokotoApi {
     return hitokoto;
   }
   static async get() {
-    return await HitokotoModel.aggregate({$sample: {size: 1}});
+    return await HitokotoModel.aggregate([{$match: {isActive: true}}, {$sample: {size: 1}}]);
   }
   static async getAll() {
     return await HitokotoModel.find({});
+  }
+  static async setActive(id, isActive) {
+    return await HitokotoModel.update({_id: id}, {$set: {isActive: isActive}});
   }
   static async remove(id) {
     return await HitokotoModel.findOneAndRemove({_id: id});

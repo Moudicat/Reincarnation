@@ -3,9 +3,9 @@ const LinkModel = mongoose.model('Link');
 
 class LinkApi {
   static async list() {
-    return await linkModel.find({});
+    return await LinkModel.find({});
   }
-  static async add(linkInfo) {
+  static async insert(linkInfo) {
     const link = new LinkModel(linkInfo);
     await link.save();
     return link;

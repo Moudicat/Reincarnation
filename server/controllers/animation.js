@@ -10,7 +10,7 @@ import rplMiddleware from '../middlewares/rplMiddleware';
 @controller('/animation', rplMiddleware)
 export default class Animation extends BaseRouterController {
 
-  @get('')
+  @get('/')
   get(req, res) {
     AnimationApi.get()
       .then(response => {
@@ -23,7 +23,7 @@ export default class Animation extends BaseRouterController {
       });
   }
 
-  @get('latest')
+  @get('/latest')
   latest(req, res) {
    AnimationApi.getLatest()
      .then(response => {
@@ -36,7 +36,7 @@ export default class Animation extends BaseRouterController {
      });
  }
 
- @get(':id')
+ @get('/:id')
  getOne(req, res) {
    AnimationApi.getOne(req.params.id)
      .then(response => {
@@ -49,7 +49,7 @@ export default class Animation extends BaseRouterController {
      });
  }
 
- @patch('', authorization)
+ @patch('/', authorization)
  insert(req, res) {
    if (req.body instanceof Array) {
      const animationArr = req.body;
@@ -70,7 +70,7 @@ export default class Animation extends BaseRouterController {
      res.resData.msg = '添加成功，本次添加了' + req.body.length + '条数据';
      res.json(res.resData);
    } else if (typeof req.body === 'object') {
-     AnimationApi.add(req.body)
+     AnimationApi.insert(req.body)
        .then(() => {
          res.resData.msg = '添加成功，本次添加了1条数据';
          res.json(res.resData);
@@ -84,7 +84,7 @@ export default class Animation extends BaseRouterController {
    }
  }
 
- @patch(':id', authorization)
+ @patch('/:id', authorization)
  update(req, res) {
    AnimationApi.update(req.body)
      .then(() => {
@@ -97,7 +97,7 @@ export default class Animation extends BaseRouterController {
      });
  }
 
-  @del(':id', authorization)
+  @del('/:id', authorization)
   del(req, res) {
     if (!req.params.id) {
       res.sendStatus(400);

@@ -1,9 +1,10 @@
 import * as pkg from '../package.json';
 import { resolve } from 'path';
+const r = path => resolve(__dirname, path);
 
 const host = process.env.HOST || 'localhost';
 const env = process.env.NODE_ENV || 'development';
-const conf = require(resolve(__dirname, `./${env}.json`));
+const conf = require(r(`./${env}.json`));
 
 const defaultConf = {
   app: {
@@ -24,7 +25,8 @@ const defaultConf = {
     ak: 'your ak code',
     memobirdID: 'your id',
     useridentifying: 'your uid',
-    frequency: 2
+    frequency: 2,
+    blacklist: r('../services/guguBlackList')
   },
   api: {
     prefix: '/api'

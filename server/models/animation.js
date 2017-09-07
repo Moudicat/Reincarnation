@@ -15,7 +15,7 @@ const animationSchema = new mongoose.Schema({
     type: Date,
     default: Date.now()
   },
-  isDone: String,
+  isDone: Boolean,
   comment: String
 }, {versionKey: false});
 
@@ -23,6 +23,7 @@ animationSchema.pre('save', function (next) {
   if (this.isNew) {
     this.date = Date.now();
   }
+  next();
 });
 
 mongoose.model('Animation', animationSchema);
