@@ -1,4 +1,3 @@
-import { infoLogger, warnLogger } from '../services/logger';
 import { resolve } from 'path';
 import fs from 'fs';
 import config from '../config';
@@ -6,7 +5,7 @@ import config from '../config';
 const controllersPath = resolve(__dirname, '../controllers');
 
 export default app => {
-  app.use(infoLogger);
+  app.use(apiInfoLoggerMiddleware);
 
   // loading controllers
   fs.readdirSync(controllersPath)
@@ -15,7 +14,7 @@ export default app => {
     .forEach(routerFuc => app.use(config.api.prefix, routerFuc));
 
   app.use((req, res) => {
-    app.use(warnLogger);
+    app.use(apiWarnLoggerMiddleware);
     res.sendStatus(404);
   });
 };

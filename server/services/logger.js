@@ -1,33 +1,46 @@
-const winston = require('winston');
+import winston from 'winston';
+import { resolve } from 'path';
 
-const Logger = new winston.Logger({
+const r = path => resolve(__dirname, path);
+
+const apiLogger = new winston.Logger({
   transports: [
     new (winston.transports.Console)({
       colorize: true,
       level: 'info'
     }),
     new (winston.transports.File) ({
-      name: 'warn-file',
-      filename: './logs/filelog-warn.log',
+      name: 'api-warn',
+      filename: r('../logs/api-warn.log'),
       level: 'warn',
       json: true
     }),
     new (winston.transports.File) ({
-      name: 'error-file',
-      filename: './logs/filelog-error.log',
+      name: 'api-error',
+      filename: r('../logs/api-error.log'),
       level: 'error',
       json: true
     })
   ]
 });
 
-const infoLogger = function (req, res, next) {
-  Logger.info(`[${req.method}] - ${req.url} - ${req.headers['x-real-ip'] ? req.headers['x-real-ip'] : req.ip} - ${req.headers['user-agent']} - ${new Date().toString()}`);
+const guguLogger = new winston.Logger({
+  transports: [
+    new (winston.transports.File)({
+      name: 'gugu-info',
+      filename: r('../logs/gugu-info.log'),
+      level: 'info'
+    })
+  ]
+});
+
+const apiInfoLogger = function (req, res, next) {
+  apiLogger.info(`[${req.method}] - ${req.url} - ${req.headers['x-real-ip'] ? req.headers['x-real-ip'] : req.ip} - ${req.headers['user-agent']} - ${new Date().toString()}`);
   next();
 };
 
-const warnLogger = function (req, res, next) {
-  Logger.warn({
+const apiWarnLogger = function (req, res, next) {
+  apiLogger.warn({
     method: req.method,
     url: req.url,
     ip: req.headers['x-real-ip'] ? req.headers['x-real-ip'] : req.ip,
@@ -38,20 +51,37 @@ const warnLogger = function (req, res, next) {
   next();
 };
 
-const errorLogger = function (req, res, next) {
-  Logger.error({
-    method: req.method,
-    url: req.url,
-    ip: req.headers['x-real-ip'] ? req.headers['x-real-ip'] : req.ip,
-    ips: req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : req.ips,
-    statusCode: res.statusCode,
-    headers: req.headers
-  });
-  next();
-};
+const apiErrorLogger = function (req, res, err) {
+  if (err) {
+    apiLogger.error({
+      method: req.method,
+      url: req.url,
+      ip: req.headers['x-real-ip'] ? req.headers['x-real-ip'] : req.ip,
+      ips: req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : req.ips,
+      statusCode: res.statusCode,
+      headers: req.headers,
+      error: {
+        name: err.name,
+        message: err.message,
+        stack: err.stack
+      }
+    });
+  } else {
+    apiLogger.error({
+      method: req.method,
+      url: req.url,
+      ip: req.headers['x-real-ip'] ? req.headers['x-real-ip'] : req.ip,
+      ips: req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : req.ips,
+      statusCode: res.statusCode,
+      headers: req.headers
+    });
+  }
+}
+
 
 export {
-  infoLogger,
-  warnLogger,
-  errorLogger
+  apiInfoLogger,
+  apiWarnLogger,
+  apiErrorLogger,
+  guguLogger
 };

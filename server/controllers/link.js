@@ -20,7 +20,7 @@ export default class Link extends BaseRouterController {
         }
       })
       .catch(err => {
-        console.error(err);
+        aelog(req, res, err);
         res.sendStatus(500);
       });
   }
@@ -37,7 +37,7 @@ export default class Link extends BaseRouterController {
         res.json(res.resData);
       })
       .catch(err => {
-        console.log(err);
+        aelog(req, res, err);
         res.sendStatus(500);
       });
   }
@@ -50,7 +50,7 @@ export default class Link extends BaseRouterController {
         res.json(res.resData);
       })
       .catch(err => {
-        console.log(err);
+        aelog(req, res, err);
         res.sendStatus(500);
       })
   }

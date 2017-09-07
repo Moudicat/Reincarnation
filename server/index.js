@@ -6,6 +6,12 @@ import https from 'https';
 import express from 'express';
 import config from './config/';
 import { resolve } from 'path';
+import { apiInfoLogger as apiInfoLoggerMiddleware, apiWarnLogger as apiWarnLoggerMiddleware, apiErrorLogger as aelog, guguLogger } from './services/logger';
+
+global.aelog = aelog;
+global.guguLogger = guguLogger;
+global.apiInfoLoggerMiddleware = apiInfoLoggerMiddleware;
+global.apiWarnLoggerMiddleware = apiWarnLoggerMiddleware;
 
 global.isProd = config.env === 'production';
 

@@ -1,5 +1,9 @@
 /**
  * Created by Moudicat on 2017/7/9.
+ *
+ * reference:
+ *    MIT © DIYgod
+ *    https://github.com/DIYgod/gugu-node-api
  */
 const url = require('url');
 const fs = require('fs');
@@ -12,7 +16,6 @@ import authorization from '../middlewares/authorization';
 import rplMiddleware from '../middlewares/rplMiddleware';
 
 import gugu from '../services/gugu';
-import guguLogger from '../services/guguLogger';
 import config from '../config';
 
 let ipList = {};
@@ -90,8 +93,8 @@ export default class Gugu extends BaseRouterController {
             res.resData.msg = '成功发送打印请求';
             res.json(res.resData);
           })
-          .catch(e => {
-            console.log(e);
+          .catch(err => {
+            aelog(req, res, err);
             res.sendStatus(500);
           });
         break;
@@ -104,8 +107,8 @@ export default class Gugu extends BaseRouterController {
             res.resData.msg = '成功发送打印请求';
             res.json(res.resData);
           })
-          .catch(e => {
-            console.log(e);
+          .catch(err => {
+            aelog(err)
             res.sendStatus(500);
           });
         break;

@@ -15,7 +15,8 @@ export default class Bangumi extends BaseRouterController {
         res.json(res.resData);
       })
       .catch(err => {
-        console.log(err);
+        aelog(req, res, err);
+        res.sendStatus(500);
       });
   }
 
@@ -31,7 +32,8 @@ export default class Bangumi extends BaseRouterController {
         res.json(res.resData);
       })
       .catch(err => {
-        console.log(err);
+        aelog(req, res, err);
+        res.sendStatus(500);
       });
   }
 
@@ -52,6 +54,7 @@ export default class Bangumi extends BaseRouterController {
             insert();
           })
           .catch(err => {
+            aelog(req, res, err);
             res.sendStatus(500);
             return;
           });
@@ -66,6 +69,7 @@ export default class Bangumi extends BaseRouterController {
           return;
         })
         .catch(err => {
+          aelog(req, res, err);
           res.sendStatus(500);
           return;
         });

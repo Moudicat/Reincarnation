@@ -18,7 +18,7 @@ export default class Animation extends BaseRouterController {
         res.json(res.resData);
       })
       .catch(err => {
-        console.log(err);
+        aelog(req, res, err);
         res.sendStatus(500);
       });
   }
@@ -31,7 +31,7 @@ export default class Animation extends BaseRouterController {
        res.json(res.resData);
      })
      .catch(err => {
-       console.log(err);
+       aelog(req, res, err);
        res.sendStatus(500);
      });
  }
@@ -44,7 +44,7 @@ export default class Animation extends BaseRouterController {
        res.json(res.resData);
      })
      .catch(err => {
-       console.log(err);
+       aelog(req, res, err);
        res.sendStatus(500);
      });
  }
@@ -63,7 +63,7 @@ export default class Animation extends BaseRouterController {
          })
          .catch(err => {
            res.sendStatus(500);
-           console.log(err);
+           aelog(req, res, err);
            return;
          });
      }
@@ -77,7 +77,7 @@ export default class Animation extends BaseRouterController {
        })
        .catch(err => {
          res.sendStatus(500);
-         console.log(err);
+         aelog(req, res, err);
        });
    } else {
      res.sendStatus(400);
@@ -93,7 +93,7 @@ export default class Animation extends BaseRouterController {
      })
      .catch(err => {
        res.sendStatus(500);
-       console.log(err);
+       aelog(req, res, err);
      });
  }
 
@@ -110,7 +110,7 @@ export default class Animation extends BaseRouterController {
       })
       .catch(err => {
         res.sendStatus(500);
-        console.log(err);
+        aelog(req, res, err);
       });
   }
 }

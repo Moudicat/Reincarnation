@@ -37,7 +37,7 @@ export default class Status extends BaseRouterController {
         }
       })
       .catch(err => {
-        console.error(err);
+        aelog(req, res, err);
         res.sendStatus(500);
       });
   }
@@ -53,6 +53,7 @@ export default class Status extends BaseRouterController {
           res.json(res.resData);
         })
         .catch(err => {
+          aelog(req, res, err);
           res.sendStatus(500);
         });
     }
