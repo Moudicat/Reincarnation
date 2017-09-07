@@ -3,13 +3,13 @@
  */
 
 import BaseRouterController from './base/baseRouterController';
-import { controller, get, patch, del } from '../decorators/router';
+import { controller, get  } from '../decorators/router';
 import rplMiddleware from '../middlewares/rplMiddleware';
 
 @controller('/weather', rplMiddleware)
 export default class Weather extends BaseRouterController {
   @get('')
-  get(req, res) => {
+  get(req, res) {
     global.weather.timestamp = +new Date() - 1495199400000;
     res.resData.data = global.weather;
     res.json(res.resData);

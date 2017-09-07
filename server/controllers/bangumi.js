@@ -36,7 +36,7 @@ export default class Bangumi extends BaseRouterController {
   }
 
   @patch('', authorization)
-  insert(req, res, next) => {
+  insert(req, res, next) {
     if (req.body instanceof Array) {
       const bangumiArr = req.body;
 

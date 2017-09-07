@@ -25,6 +25,9 @@ const defaultConf = {
     memobirdID: 'your id',
     useridentifying: 'your uid',
     frequency: 2
+  },
+  api: {
+    prefix: '/api'
   }
 };
 

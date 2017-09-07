@@ -1,8 +1,8 @@
 /**
  * Created by Moudi on 2017/5/23.
  */
-import Status from '../api/status';
-import Animation from '../api/animation';
+import StatusApi from '../api/status';
+import AnimationApi from '../api/animation';
 import BaseRouterController from './base/baseRouterController';
 import { controller, get, patch, del } from '../decorators/router';
 import authorization from '../middlewares/authorization';

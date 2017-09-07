@@ -1,9 +1,9 @@
 
 import jwt from 'jsonwebtoken';
 import config from '../config';
-import User from '../api/user';
+import UserApi from '../api/user';
 import BaseRouterController from './base/baseRouterController';
-import { controller, get, patch, del } from '../decorators/router';
+import { controller, get, post } from '../decorators/router';
 import authorization from '../middlewares/authorization';
 import rplMiddleware from '../middlewares/rplMiddleware';
 
