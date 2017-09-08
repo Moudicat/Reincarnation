@@ -2,7 +2,6 @@
  * Created by Moudi on 2017/5/23.
  */
 import StatusApi from '../api/status';
-import AnimationApi from '../api/animation';
 import BaseRouterController from './base/baseRouterController';
 import { controller, get, patch, del } from '../decorators/router';
 import authorization from '../middlewares/authorization';
@@ -19,22 +18,7 @@ export default class Status extends BaseRouterController {
           res.json(res.resData);
         } else {
           res.resData.data = response[0];
-          // TODO: need remove 
-          AnimationApi.getLatest()
-            .then(response => {
-              let animationObj = {
-                name: '最近看的番',
-                content: response[0].name,
-                num: parseInt(response[0].episode)
-              };
-              res.resData.data.StatusApi.push(animationObj);
-              res.json(res.resData);
-            })
-            .catch(err => {
-              console.error(err);
-              res.sendStatus(500);
-              return;
-            });
+          res.json(res.resData);
         }
       })
       .catch(err => {
