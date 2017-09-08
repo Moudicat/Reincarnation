@@ -1,10 +1,6 @@
 {
-  "saymoe": {
-    "key": "/root/ssl/saymoe/saymoe.key",
-    "cert": "/root/ssl/saymoe/saymoe.pem"
-  },
-  "moudicat": {
-    "key": "/root/ssl/moudicat/moudicat.key",
-    "cert": "/root/ssl/moudicat/moudicat.pem"
-  },
+  "your website": {
+    "key": "path/to/your/key",
+    "cert": "path/to/your/cert"
+  }
 }
