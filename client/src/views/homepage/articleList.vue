@@ -1,25 +1,21 @@
 <template>
-  <div>
-    <transition name="fade">
-      <div class="article-list-wrapper">
-        <div class="article-list-header">
-          <ul>
-            <li>
-              <router-link to="/">公开文章</router-link>
-            </li>
-            <li>
-              <router-link to="/post-it-note" @click.native="handleClick">便利贴</router-link>
-            </li>
-          </ul>
-        </div>
-        <div class="article-list">
-          <ol v-if="articleList.length">
-            <ArticleListItem v-for="(article, index) in articleList" :key="index" :article="article" />
-          </ol>
-          <h3 class="info" v-else><i class="icon-smile"></i>{{articleListHolder}}</h3>
-        </div>
-      </div>
-    </transition>
+  <div class="article-list-wrapper">
+    <div class="article-list-header">
+      <ul>
+        <li>
+          <router-link to="/">公开文章</router-link>
+        </li>
+        <li>
+          <router-link to="/post-it-note" @click.native="handleClick">便利贴</router-link>
+        </li>
+      </ul>
+    </div>
+    <div class="article-list">
+      <ol v-if="articleList.length">
+        <ArticleListItem v-for="(article, index) in articleList" :key="index" :article="article" />
+      </ol>
+      <h3 class="info" v-else><i class="icon-smile"></i>{{articleListHolder}}</h3>
+    </div>
     <div class="pagination-wrapper">
       <el-pagination
         layout="total, prev, pager, next"
@@ -29,7 +25,6 @@
       </el-pagination>
     </div>
   </div>
-
 </template>
 
 <script type="text/ecmascript-6">
