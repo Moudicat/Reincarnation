@@ -40,18 +40,9 @@ class ApiServer {
     });
   }
 
-  getHttpsServer() {
-    const options = {
-      key: fs.readFileSync(config.saymoe.key, 'utf8'),
-      cert: fs.readFileSync(config.saymoe.cert, 'utf8')
-    };
-    return https.createServer(options, this.app);
-  }
-
   start() {
     if (isProd) {
-      this.getHttpsServer()
-        .listen(config.app.port, () => {
+      this.app.listen(config.app.port, () => {
           console.log(`线上模式: 端口${config.app.port}`);
         });
     } else {
