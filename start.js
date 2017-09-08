@@ -6,8 +6,6 @@ require('babel-core/register')({
   'plugins': ['transform-decorators-legacy']
 });
 
-require
-
 require('babel-polyfill');
 
 require('./server');
