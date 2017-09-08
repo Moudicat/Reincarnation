@@ -4,10 +4,6 @@
   "main": "server.js",
   "author": "Moudicat <i@0u0b.com>",
   "license": "MIT",
-  "scripts": {
-    "start": "npm i && pm2 start pm2.json --env production --no-deamon",
-    "dev": "nodemon ./server.js"
-  },
   "dependencies": {
     "body-parser": "^1.17.1",
     "cookie-parser": "^1.4.3",

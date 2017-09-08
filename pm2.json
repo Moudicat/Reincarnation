@@ -1,0 +1,12 @@
+{
+  "name": "Reincatnation-server",
+  "script": "start.js",
+  "error_file": "./server/logs/pm2/pm2-err.log",
+  "out_file": "./server/logs/pm2/pm2-out.log",
+  "env_dev": {
+    "NODE_ENV": "development"
+  },
+  "env_production": {
+    "NODE_ENV": "production"
+  }
+}
