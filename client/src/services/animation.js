@@ -8,4 +8,9 @@ export default class Animation {
     const result = await fetch(config.baseURL + '/animation');
     return result.json();
   }
+
+  static async getLatest() {
+    const result = await fetch(config.baseURL + '/animation/latest');
+    return result.json();
+  }
 }

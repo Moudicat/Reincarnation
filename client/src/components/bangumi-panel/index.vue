@@ -1,28 +1,31 @@
 <template>
   <div class="bangumi-panel">
     <h3>最近看的番</h3>
-    <r-tag type="blue" :num="bangumi.num" v-if="bangumi.name"><router-link to="/animation">{{bangumi.content}}</router-link></r-tag>
+    <r-tag type="blue" :num="Number(latest.episode)" v-if="latest.name"><router-link to="/animation">{{latest.name}}</router-link></r-tag>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import Animation from 'services/animation';
   import Tag from 'components/tag';
 
   export default {
-    computed: {
-      bangumi() {
-        let b = {};
-        if (this.$store.state.global.status) {
-          this.$store.state.global.status.some(e => {
-            if (e.name === '最近看的番') {
-              b = e;
-              return true;
-            }
-          });
-          return b;
-        }
-      }
+    data() {
+      return {
+        latest: {}
+      };
     },
+
+    beforeMount() {
+      Animation.getLatest()
+        .then(res => {
+          this.latest = res.data[0];
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
     components: {
       rTag: Tag
     }

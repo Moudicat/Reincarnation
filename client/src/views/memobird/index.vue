@@ -49,10 +49,9 @@
             this.guguObj.name = '';
             this.guguObj.content = '';
             this.$message.success(response.msg);
-//            console.log(response);
           })
           .catch(err => {
-            if (err.message === '403') {
+            if (err.message === '403' || err.message === '401') {
               this.$alert('抱歉，当前无法发送： 处于频率限制或在黑名单中。 请一小时后再试。');
             } else if (err.message === '400') {
               this.$alert('参数错误');

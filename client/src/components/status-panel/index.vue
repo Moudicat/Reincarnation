@@ -18,8 +18,7 @@
     data() {
       return {
         typeMap: ['orange', 'green', 'red', 'blue', 'gray'],
-        status: [],
-        hiddenStatus: ['最近看的番']
+        status: []
       };
     },
     mounted() {
@@ -27,13 +26,7 @@
         .then(response => {
           if (response.data && response.data.status) {
             this.$store.commit('global/SET_STATUS', response.data.status);
-            this.hiddenStatus.forEach(e => {
-              response.data.status.forEach((state, i) => {
-                if (state.name !== e) {
-                  this.status.push(state);
-                }
-              });
-            });
+            this.status = response.data.status;
           } else {
             this.status.push({
               name: '获取数据失败',

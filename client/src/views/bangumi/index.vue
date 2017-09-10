@@ -206,7 +206,7 @@
     },
     filters: {
       formatDate(date) {
-        return formatDate(new Date(Number(date)), 'yyyy-MM-dd');
+        return formatDate(new Date(date), 'yyyy-MM-dd');
       },
       formatDate1(date) {
         if (date === '') return '';

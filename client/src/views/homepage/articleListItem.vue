@@ -36,7 +36,7 @@
     },
     filters: {
       time(data) {
-        return formatDate(new Date(Number(data)), 'yyyy-MM-dd hh:mm:ss');
+        return formatDate(new Date(data), 'yyyy-MM-dd hh:mm:ss');
       }
     }
   };
