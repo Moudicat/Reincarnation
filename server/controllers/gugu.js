@@ -23,7 +23,7 @@ let ipList = {};
 @controller('/gugu', rplMiddleware)
 export default class Gugu extends BaseRouterController {
 
-  @post('/', authorization)
+  @post('/')
   print(req, res) {
     let ip = req.headers['x-forwarded-for'] ||
       req.connection.remoteAddress ||
