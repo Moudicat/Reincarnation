@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.6.0',
+            date: '2017-09-11',
+            desc: '休整服务器 后端重构'
+          },
+          {
             version: '0.5.9',
             date: '2017-08-24',
             desc: '修改 部分响应式、文章区'
