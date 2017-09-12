@@ -19,8 +19,8 @@
 
       <el-table-column  align="center" label="操作" width="200">
         <template scope="scope">
-          <el-button size="small" type="danger" @click="handleDelete(scope.row._id)">删除
-          </el-button>
+          <el-button size="small" :type="scope.row.isActive ? 'info' : 'warning'" @click="handleActive(scope.row._id, scope.row.isActive)">{{ scope.row.isActive ? '已激活' : '已禁用' }}</el-button>
+          <el-button size="small" type="danger" @click="handleDelete(scope.row._id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -35,7 +35,8 @@
     data() {
       return {
         newHitokoto: '',
-        list: []
+        list: [],
+        listLoading: true
       };
     },
     methods: {
@@ -72,22 +73,38 @@
             this.$message.error(err.message);
           });
       },
+      handleActive(id, isActive) {
+        Hitokoto.setActive(id, !isActive)
+          .then(response => {
+            this.$message({
+              message: response.msg,
+              type: 'success'
+            });
+            this.refresh();
+          })
+          .catch(err => {
+            console.log(err);
+            this.$message.error(err.message);
+          });
+      },
       refresh() {
         Hitokoto.getAll()
           .then(response => {
             if (response.data && response.data.length) {
               this.list = response.data;
+              this.listLoading = false;
             }
           })
           .catch(err => {
             this.$message.error(err.message);
             console.log(err);
+            this.listLoading = false;
           });
       }
     },
     filters: {
       formatDate(date) {
-        return formatDate(new Date(Number(date)), 'yyyy-MM-dd hh:mm:ss');
+        return formatDate(new Date(date), 'yyyy-MM-dd hh:mm:ss');
       }
     },
     beforeMount() {

@@ -81,7 +81,6 @@
       handleModifyStatus(article, status) {
         Article.setStatus(article._id, status)
           .then(response => {
-            if (response.code) throw new Error(respnse.msg);
             this.$message({
               message: '修改成功！',
               type: 'success'
@@ -122,7 +121,7 @@
         return statusMap[status];
       },
       formatDate(date) {
-        return formatDate(new Date(Number(date)), 'yyyy-MM-dd hh:mm:ss');
+        return formatDate(new Date(date), 'yyyy-MM-dd hh:mm:ss');
       }
     },
     mounted() {

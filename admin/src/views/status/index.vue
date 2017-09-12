@@ -68,15 +68,13 @@
           });
           Status.update(arr)
             .then(response => {
-              if (!response.code) {
-                this.$message({
-                  message: response.msg,
-                  type: 'success'
-                });
-                this.values = ['目前所在地', '最近的状态', '当前博客版本'];
-                this.valuesInput = ['', '', ''];
-                this.valuesNumInput = ['', '', ''];
-              }
+              this.$message({
+                message: response.msg,
+                type: 'success'
+              });
+              this.values = ['目前所在地', '最近的状态', '当前博客版本'];
+              this.valuesInput = ['', '', ''];
+              this.valuesNumInput = ['', '', ''];
             })
             .catch(err => {
               this.$message({
@@ -97,11 +95,9 @@
             this.valuesInput.splice(0, this.valuesInput.length);
             this.valuesNumInput.splice(0, this.valuesNumInput.length);
             response.data.status.forEach(e => {
-              if (e.name !== '最近看的番') {
-                this.values.push(e.name);
-                this.valuesInput.push(e.content);
-                this.valuesNumInput.push(e.num ? e.num : '');
-              }
+              this.values.push(e.name);
+              this.valuesInput.push(e.content);
+              this.valuesNumInput.push(e.num ? e.num : '');
             });
             this.$message('加载完毕~');
           }
