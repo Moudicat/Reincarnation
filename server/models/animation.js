@@ -15,7 +15,7 @@ const animationSchema = new mongoose.Schema({
     type: Date,
     default: Date.now()
   },
-  isDone: Boolean,
+  isDone: String,
   comment: String
 }, {versionKey: false});
 
