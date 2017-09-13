@@ -62,7 +62,7 @@ export default class Bangumi extends BaseRouterController {
 
       insert();
     } else if (typeof req.body === 'object') {
-      BangumiApi.add(req.body)
+      BangumiApi.insert(req.body)
         .then(response => {
           res.resData.msg = '添加成功，本次添加/更新了1条数据';
           res.json(res.resData);
