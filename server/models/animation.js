@@ -21,7 +21,9 @@ const animationSchema = new mongoose.Schema({
 
 animationSchema.pre('save', function (next) {
   if (this.isNew) {
-    this.date = Date.now();
+    if (!this.date) {
+      this.date = Date.now();
+    }
   }
   next();
 });
