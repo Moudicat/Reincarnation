@@ -15,7 +15,7 @@ class BangumiApi {
       return bangumi;
     }
   }
-  static async search(payload) {
+  static async search(q) {
     const searchResult = await BangumiModel.find({"titleTranslate.zh-Hans": {$regex: eval('/' + q + '/i')}}, 'titleTranslate');
     return searchResult;
   }
