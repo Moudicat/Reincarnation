@@ -44,13 +44,41 @@ exports.cssLoaders = function (options) {
     }
   }
 
+  // for scss global var
+  function generateScssLaders() {
+    var loaders = [cssLoader]
+    loaders.push({
+      loader: 'sass-loader',
+      options: Object.assign({}, {
+        sourceMap: options.sourceMap
+      })
+    })
+    loaders.push({
+      loader: 'sass-resources-loader',
+      options: {
+        resources: [path.resolve(__dirname, '../static/var.scss')]
+      }
+    })
+
+    // Extract CSS when that option is specified
+    // (which is the case during production build)
+    if (options.extract) {
+      return ExtractTextPlugin.extract({
+        use: loaders,
+        fallback: 'vue-style-loader'
+      })
+    } else {
+      return ['vue-style-loader'].concat(loaders)
+    }
+  }
+
   // https://vue-loader.vuejs.org/en/configurations/extract-css.html
   return {
     css: generateLoaders(),
     postcss: generateLoaders(),
     less: generateLoaders('less'),
     sass: generateLoaders('sass', { indentedSyntax: true }),
-    scss: generateLoaders('sass'),
+    scss: generateScssLaders(),
     stylus: generateLoaders('stylus'),
     styl: generateLoaders('stylus')
   }

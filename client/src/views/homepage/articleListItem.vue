@@ -60,9 +60,8 @@
     > h3 {
       position: relative;
       padding: 10px;
-      font-size: 28px;
-      font-weight: 500;
-      color: rgba(0, 0, 0, .8);
+      font-size: 30px;
+      color: $primary-text;
       transition: .3s;
       cursor: pointer;
       &::before, &::after {
@@ -86,7 +85,7 @@
         transition: .3s;
       }
       &:hover {
-        background-color: rgba(255, 174, 186, 0.1);
+        background-color:$primary-background;
         color: #ef3d13;
         box-shadow: 1px 3px 5px 2px #eee;
         > span::before, > span::after {

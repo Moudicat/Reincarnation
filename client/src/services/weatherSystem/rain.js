@@ -11,7 +11,7 @@ class Particle {
 
   setParticle() {
     this.position = {
-      x: 40 + (Math.random() * (this.canvas.width - 40)),
+      x: (Math.random() * (this.canvas.width - 40)),
       y: -10 - (Math.random() * 50),
       z: (Math.random() * 10)
     };
@@ -30,8 +30,8 @@ class Particle {
 }
 
 class Rain {
-  constructor() {
-    this.maxParticles = 200;
+  constructor(isHeavyRain) {
+    this.maxParticles = isHeavyRain ? 500 : 120;
     this.numParticles = 0;
     this.particles = [];
     this.collisionDamper = 0.1;
@@ -106,7 +106,7 @@ class Rain {
   loop() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    let filteredParticles = this.particles.filter(p => !this.removeParticle);
+    let filteredParticles = this.particles.filter(p => !p.removeParticle);
     if (filteredParticles.length < this.numParticles) {
       this.newParticle();
     } else if (filteredParticles.length > this.numParticles) {
@@ -131,9 +131,6 @@ class Rain {
         this.numParticles++;
       } else {
         clearInterval(setInt);
-        setTimeout(() => {
-          this.stopRain();
-        }, 8000);
       }
     }, 20);
   }
@@ -144,9 +141,6 @@ class Rain {
         this.numParticles--;
       } else {
         clearInterval(setInt);
-        setTimeout(() => {
-          this.startRain();
-        }, 5000);
       }
     }, 50);
   }

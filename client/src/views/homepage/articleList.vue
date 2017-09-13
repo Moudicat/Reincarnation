@@ -98,8 +98,11 @@
           padding: 15px 20px;
           font-size: 16px;
           line-height: 1;
+          a {
+            color: $secondary-text;
+          }
           a.active {
-            color: #ff9f71;
+            color: $primary-text;
           }
         }
       }

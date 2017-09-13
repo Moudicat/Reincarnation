@@ -67,7 +67,7 @@
       margin-top: 20px;
       border-radius: 10px;
       background-color: rgba(59, 60, 61, 0.5);
-      transition: .3s;
+      transition: .2s;
       cursor: pointer;
       .links {
         display: flex;
@@ -104,8 +104,8 @@
       }
       &:hover {
         background-color: rgba(0, 0, 0, .6);
-        transform: scale(1.1);
-        box-shadow: 0 0 10px 1px #ffae12;
+        transform: scale(1.02);
+        box-shadow: $primary-boxshadow;
       }
     }
   }

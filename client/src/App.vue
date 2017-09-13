@@ -88,18 +88,18 @@
   };
 </script>
 
-<style>
+<style lang="scss">
   #app {
     display: flex;
     flex-direction: column;
     justify-content: center;
     min-height: 100vh;
     min-width: 1080px;
-    font-family: "PingFang SC", "Microsoft YaHei", Helvetica, "宋体", sans-serif;
+    font-family: "Roboto", "PingFang SC", "Microsoft YaHei", Helvetica, "宋体", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: #2c3e50;
     background-color: #f5f8fa;
+    color: $secondary-text;
   }
 
   .padding-top {
@@ -147,4 +147,8 @@
     opacity: 0;
     transform: translate3d(0, -20px, 0);
   }
+</style>
+
+<style>
+
 </style>

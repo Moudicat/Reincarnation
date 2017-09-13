@@ -70,8 +70,10 @@
       checkWeather() {
         switch (this.weather.type) {
           case '小雨':
-          case '大雨':
             this.$emit('weatherChange', 'rain');
+            break;
+          case '大雨':
+            this.$emit('weatherChange', 'heavyRain');
             break;
           case '小雪':
           case '大雪':
@@ -190,13 +192,14 @@
     justify-content: center;
     margin: 0 auto;
     padding: 5px;
-    border: 1px solid #d1dbe5;
-    border-radius: 4px;
+    border: 1px solid $primary-background;
+    border-radius: 0 0 4px 4px;
     border-top: 0;
+    box-shadow: $primary-boxshadow;
     line-height: 22px;
     text-shadow: #aaaaaa 1px 1px 1px;
     transition: .4s;
-    background-color: rgba(255, 255, 255, .4);
+    background-color: $primary-background;
     color: #242424;
     user-select: none;
     > h3 {

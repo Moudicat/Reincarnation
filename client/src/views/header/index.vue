@@ -20,7 +20,7 @@
                 <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_400x400.jpg"
                      alt="mini-avatar">
                 <div class="info">
-                  <h3>某迪</h3>
+                  <h3>结束与起始之界</h3>
                   <p>More cooperation, no competition.</p>
                 </div>
               </div>
@@ -78,7 +78,11 @@
             weather.init();
             break;
           case 'rain':
-            weather = new Rain();
+            weather = new Rain(false);
+            weather.init();
+            break;
+          case 'heavyRain':
+            weather = new Rain(true);
             weather.init();
             break;
           case 'star':
@@ -130,6 +134,7 @@
 </script>
 
 <style lang="scss" rel="stylesheet/scss" scoped>
+
   header {
     flex: 0 0 460px;
     height: 460px;
@@ -184,8 +189,8 @@
       }
     }
     .nav-wrapper {
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
-      background-color: #fff;
+      box-shadow: $secondary-boxshadow;
+      background-color: $primary-background;
     }
     .nav-container {
       display: flex;
@@ -193,7 +198,7 @@
       height: 60px;
       max-width: 1190px;
       margin: 0 auto;
-      background-color: #fff;
+      background-color: $primary-background;
       .avatar-wrapper {
         position: absolute;
         top: -95px;
@@ -231,16 +236,17 @@
           > img {
             width: 40px;
             height: 40px;
+            margin-right: 10px;
             border-radius: 5px;
           }
           .info {
             > h3 {
               color: #14171a;
               font-size: 18px;
-              font-weight: 700;
+              font-weight: 400;
             }
             > p {
-              color: #FF705F;
+              color: $secondary-text;
               font-size: 12px;
               white-space: nowrap;
             }
@@ -266,19 +272,28 @@
           &:nth-child(1) {
             &.active {
               border-bottom: 4px solid transparent;
+              span {
+                color: $secondary-text;
+              }
             }
           }
           &.active {
-            border-bottom: 4px solid #ff9f71;
+            border-bottom: 4px solid $primary-divider-color;
+            span {
+              color: $primary-text;
+            }
           }
           &:hover {
-            border-bottom: 4px solid #ffbb9d;
+            border-bottom: 4px solid $divider-color;
+            span {
+              color: $primary-text;
+            }
           }
           > span {
             display: block;
             position: relative;
             margin: 20px;
-            color: #2e2f2f;
+            color: $secondary-text;
             white-space: nowrap;
             &.new::after {
               content: 'new';
@@ -287,8 +302,8 @@
               right: -10px;
               top: -80%;
               font-size: 12px;
-              color: #ff9f71;
-              border: 1px solid #ff9f71;
+              color: $divider-color;
+              border: 1px solid $divider-color;
               border-radius: 5px;
               padding: 0 3px;
               height: 16px;
