@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.6.2',
+            date: '2017-09-15',
+            desc: '优化 前端界面'
+          },
+          {
             version: '0.6.1',
             date: '2017-09-13',
             desc: '优化 前端界面 修复 天气系统(下雨)中的bug'
