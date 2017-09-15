@@ -49,13 +49,11 @@
     justify-content: space-between;
     min-height: 150px;
     padding: 20px 30px;
+    transition: .3s;
     border-bottom: 1px solid #e6ecf0;
-    background: url('./img/cat_hidden.svg') right bottom -13px no-repeat;
-    transition: .4s cubic-bezier(.75,.22,.24,.94);
     text-align: center;
     &:hover {
-      background-color: #f8f9ff;
-      background-position: right bottom;
+      background-color: $secondary-background;
     }
     > h3 {
       position: relative;

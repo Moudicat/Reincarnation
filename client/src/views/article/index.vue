@@ -12,6 +12,10 @@
     <div class="markdown-body content" v-show="!article">
       <h1>加载中~</h1>
     </div>
+
+    <div class="copyright">
+      
+    </div>
   </article>
 </template>
 
@@ -145,7 +149,7 @@
   }
 
   .markdown-body {
-    padding: 20px 180px;
+    padding: 20px 180px 100px;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
     line-height: 1.5;

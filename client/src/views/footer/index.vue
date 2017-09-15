@@ -14,13 +14,11 @@
     flex: 0 0 170px;
     padding: 40px;
     text-align: center;
-    background: url('./img/blackcat_with_chicken.svg') 10px 10px no-repeat;
-    background-size: 30% 90%;
     p {
       font-size: 14px;
       padding: 5px 0;
       a {
-        color: #bccaff;
+        color: $primary-text;
       }
     }
   }

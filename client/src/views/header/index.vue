@@ -221,7 +221,6 @@
         }
       }
       .profile-mini-wrapper {
-        width: 20%;
         height: 60px;
         margin-left: 10px;
         padding-top: 60px;

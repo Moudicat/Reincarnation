@@ -20,7 +20,7 @@
       <el-pagination
         layout="total, prev, pager, next"
         :page-size="PAGE_LIMIT"
-        :total="total"
+        :total="100"
         @current-change="handleCurrentChange">
       </el-pagination>
     </div>
@@ -124,5 +124,12 @@
   .pagination-wrapper {
     margin: 30px 10px;
     text-align: right;
+  }
+</style>
+
+<style lang="scss">
+  .el-pager li.active {
+    border-color: $primary-divider-color;
+    background-color: $primary-divider-color;
   }
 </style>
