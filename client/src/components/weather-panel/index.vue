@@ -152,7 +152,9 @@
           if (response.data) {
             this.weather = response.data;
             this.calcTime();
-            this.checkWeather();
+            setTimeout(() => {
+              this.checkWeather();
+            }, 2000);
           } else {
             throw new Error('内部错误');
           }
