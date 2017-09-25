@@ -20,7 +20,7 @@
       <el-pagination
         layout="total, prev, pager, next"
         :page-size="PAGE_LIMIT"
-        :total="100"
+        :total="total"
         @current-change="handleCurrentChange">
       </el-pagination>
     </div>
