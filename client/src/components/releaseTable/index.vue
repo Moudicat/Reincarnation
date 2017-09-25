@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.6.4',
+            date: '2017-09-25',
+            desc: '修复 分页总数显示异常'
+          },
+          {
             version: '0.6.3',
             date: '2017-09-18',
             desc: '修复 天气系统bug'
