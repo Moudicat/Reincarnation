@@ -74,7 +74,7 @@ export default class Gugu extends BaseRouterController {
       try {
         checkedIP = execSync(`curl -s http://ip.cn/${ip}`);
       } catch (err) {
-        console.log(err);
+        aelog(err);
         checkedIP = `IP: ${ip}`;
       }
     }
@@ -108,7 +108,7 @@ export default class Gugu extends BaseRouterController {
             res.json(res.resData);
           })
           .catch(err => {
-            aelog(err)
+            aelog(err);
             res.sendStatus(500);
           });
         break;
