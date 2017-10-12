@@ -12,14 +12,14 @@
     methods: {
       takeMeFly() {
         const body = document.body;
-        let scrollTop = document.body.scrollTop;
+        let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
         const top = () => {
           scrollTop = scrollTop + (-scrollTop) / 6;
           if (scrollTop < 1) {
             body.scrollTop = 0;
             return;
           }
-          body.scrollTop = scrollTop;
+          body.scrollTop = document.documentElement.scrollTop = scrollTop;
           requestAnimationFrame(top);
         };
         top();
