@@ -23,5 +23,8 @@
   aside {
     flex: 0 0 25.2%;
     margin: 10px 10px 5px 0;
+    div:nth-child(n) {
+      margin-bottom: 10px;
+    }
   }
 </style>
