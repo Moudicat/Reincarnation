@@ -13,11 +13,11 @@
         <div class="nav-wrapper">
           <div class="nav-container">
             <div class="avatar-wrapper" :class="{mini: miniAvatarState}">
-              <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_400x400.jpg" alt="avatar">
+              <img src="http://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_240x240.png" alt="avatar">
             </div>
             <div class="profile-mini-wrapper" :class="{mini: miniAvatarState}">
               <div class="profile-mini">
-                <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_400x400.jpg"
+                <img src="http://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_240x240.png"
                      alt="mini-avatar">
                 <div class="info">
                   <h3>结束与起始之界</h3>
@@ -201,19 +201,18 @@
       background-color: $primary-background;
       .avatar-wrapper {
         position: absolute;
-        top: -95px;
-        left: 10px;
+        top: -90px;
+        left: 30px;
         z-index: 1001;
-        width: 190px;
-        height: 190px;
-        border: 5px solid #fff;
+        width: 150px;
+        height: 150px;
         border-radius: 12px;
         box-shadow: 0 1px 1px rgba(136, 153, 166, 0.15);
         overflow: hidden;
         transition: .6s;
         > img {
-          width: 180px;
-          height: 180px;
+          width: 150px;
+          height: 150px;
         }
         &.mini {
           height: 0;

@@ -22,6 +22,6 @@
 <style lang="scss" rel="stylesheet/scss" scoped>
   aside {
     flex: 0 0 25.2%;
-    margin: 45px 10px 5px 0;
+    margin: 10px 10px 5px 0;
   }
 </style>

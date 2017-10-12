@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout :hasAside="true">
     <div slot="aside" class="memobird-aside">
       <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/memobird-help.png" alt="memobird-help">
     </div>
