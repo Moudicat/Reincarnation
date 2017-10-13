@@ -54,6 +54,7 @@
         newValue = newValue[0].content;
         if (newValue) {
           let nowVersion = newValue.split('@')[1].split('.').map(e => Number(e));
+          console.log(`%c当前版本号：${nowVersion.join('.')}, 最新版本号: ${window.__version__.join('.')}`, 'color: red');
           if (nowVersion[0] > window.__version__[0] || nowVersion[1] > window.__version__[1] || nowVersion[2] > window.__version__[2]) {
             if (SStorage.get('updateRetry')) {
               let retry = SStorage.get('updateRetry');
