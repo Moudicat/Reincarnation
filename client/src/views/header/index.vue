@@ -13,11 +13,11 @@
         <div class="nav-wrapper">
           <div class="nav-container">
             <div class="avatar-wrapper" :class="{mini: miniAvatarState}">
-              <img src="http://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_240x240.png" alt="avatar">
+              <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_240x240.png" alt="avatar">
             </div>
             <div class="profile-mini-wrapper" :class="{mini: miniAvatarState}">
               <div class="profile-mini">
-                <img src="http://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_240x240.png"
+                <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_240x240.png"
                      alt="mini-avatar">
                 <div class="info">
                   <h3>结束与起始之界</h3>
