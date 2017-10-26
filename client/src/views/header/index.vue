@@ -210,6 +210,7 @@
         box-shadow: 0 1px 1px rgba(136, 153, 166, 0.15);
         overflow: hidden;
         transition: .6s;
+        user-select: none;
         > img {
           width: 150px;
           height: 150px;
@@ -260,6 +261,7 @@
       nav {
         display: flex;
         padding-left: 5.6%;
+        user-select: none;
         .nav-link {
           display: block;
           min-width: 64px;
