@@ -3,7 +3,7 @@
     <aside class="layout-aside" v-if="hasAside">
       <slot name="aside"></slot>
     </aside>
-    <div class="layout-content" :class="{'center': !hasAside}">
+    <div class="layout-content" :class="{'center': !hasAside, 'full': isFullScreen}">
       <slot name="content"></slot>
     </div>
   </section>
@@ -13,6 +13,10 @@
   export default {
     props: {
       hasAside: {
+        default: false,
+        type: Boolean
+      },
+      isFullScreen: {
         default: false,
         type: Boolean
       }
@@ -37,6 +41,9 @@
       margin: 10px 0 5px 5px;
       flex: 1;
       max-width: 73.6%;
+      &.full {
+        max-width: 100%;
+      }
       &.center {
         margin: 10px auto;
       }

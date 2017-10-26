@@ -1,5 +1,5 @@
 <template>
-  <Layout>
+  <Layout :isFullScreen="true">
     <div slot="content" class="links-wrapper">
       <ul class="links-list">
         <li v-for="(link, index) in linkList" :key="index" @click.stop="handleOpen(link.address)">
@@ -62,8 +62,8 @@
     padding-bottom: 20px;
     background-size: contain;
     li {
-      flex: 0 0 45%;
-      padding: 10px;
+      flex: 0 0 30%;
+      padding: 7px;
       margin-top: 20px;
       border-radius: 10px;
       background-color: rgba(59, 60, 61, 0.5);
@@ -74,14 +74,14 @@
         width: 100%;
         height: 100%;
         margin: 0;
-        border: 20px solid;
+        border: 14px solid;
         border-image: url('./img/border-image.png') 42;
         color: #fff; // rgba
         dt {
           flex: 0 0 100px;
           width: 100px;
           height: 100px;
-          margin-left: 20px;
+          margin-left: 10px;
           overflow: hidden;
           border-radius: 50%;
           img {
@@ -99,6 +99,9 @@
           }
           h4 {
             display: none;
+          }
+          p {
+            font-size: 14px;
           }
         }
       }
