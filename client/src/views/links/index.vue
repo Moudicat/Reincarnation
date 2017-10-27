@@ -16,6 +16,15 @@
             </dd>
           </dl>
         </li>
+        <li @click.stop="handleAdd()">
+          <dl class="links">
+            <dd>
+              <h3>点此添加友链</h3>
+              <h4></h4>
+              <p>可以在这里留下你的信息</p>
+            </dd>
+          </dl>
+        </li>
       </ul>
     </div>
   </Layout>
@@ -34,6 +43,12 @@
     methods: {
       handleOpen(addr) {
         window.open(addr);
+      },
+
+      handleAdd() {
+        this.$alert({
+          message: '该功能开发中'
+        });
       }
     },
     beforeMount() {

@@ -7,12 +7,14 @@
             <div class="title">{{ title }}</div>
             <button class="close" @click="handleClose" v-show="showClose">x</button>
           </div>
-          <div class="content">
-            {{ message }}
-          </div>
-          <div class="btns">
-            <button class="confirm" @click="handleConfirm">{{confirmText}}</button>
-            <button class="cancel" @click="handleCancel" v-show="type === 'confirm'">{{cancelText}}</button>
+          <div class="content-wrapper">
+            <div class="content">
+              {{ message }}
+            </div>
+            <div class="btns">
+              <button class="confirm" @click="handleConfirm">{{confirmText}}</button>
+              <button class="cancel" @click="handleCancel" v-show="type === 'confirm'">{{cancelText}}</button>
+            </div>
           </div>
         </div>
       </transition>
@@ -100,17 +102,19 @@
       width: 420px;
       border-radius: 4px;
       font-size: 18px;
-      background-color: #fff;
       text-align: left;
       box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.11), 5px 1px 15px 3px rgba(0, 0, 0, 0.04);
       backface-visibility: hidden;
+      overflow: hidden;
       .header {
         position: relative;
         color: #000;
-        padding: 15px 20px 0 20px;
+        padding: 10px 20px 10px 20px;
+        background-color: #fff;
         .title {
           padding-left: 10px;
           border-left: 3px solid #43c3ff;
+          user-select: none;
         }
         .close {
           position: absolute;
@@ -118,6 +122,10 @@
           top: 12px;
           font-size: 18px;
         }
+      }
+
+      .content-wrapper {
+        background-color: #f9f9f9;
       }
 
       .content {
@@ -134,6 +142,7 @@
           font-size: 14px;
           transition: .4s;
           cursor: pointer;
+          user-select: none;
         }
         .confirm {
           &:hover {
