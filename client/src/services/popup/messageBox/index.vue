@@ -38,30 +38,32 @@
     },
     methods: {
       handleClose() {
+        this.$el.addEventListener('transitionend', this.destroyElement);
+        this.visibility = false;
+
         if (typeof this.resolve === 'function') {
           this.resolve();
         }
-        this.visibility = false;
-        this.$el.addEventListener('transitionend', this.destroyElement);
       },
       handleConfirm() {
+        this.$el.addEventListener('transitionend', this.destroyElement);
+        this.visibility = false;
+
         if (typeof this.resolve === 'function') {
           this.resolve();
         }
-        this.visibility = false;
-        this.$el.addEventListener('transitionend', this.destroyElement);
       },
       handleCancel() {
+        this.visibility = false;
+        this.$el.addEventListener('transitionend', this.destroyElement);
         if (typeof this.reject === 'function') {
           this.reject();
         }
-        this.visibility = false;
-        this.$el.addEventListener('transitionend', this.destroyElement);
       },
       destroyElement() {
         this.$el.removeEventListener('transitionend', this.destroyElement);
-        this.$destroy();
         this.$el.parentNode.removeChild(this.$el);
+        this.$destroy();
       }
     },
     computed: {
@@ -72,6 +74,8 @@
     mounted() {
       this.visibility = true;
       document.body.style.overflowY = 'hidden';
+
+      console.log(this.visibility);
     },
     destroyed() {
       document.body.style.overflowY = '';

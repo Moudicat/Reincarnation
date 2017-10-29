@@ -32,13 +32,15 @@
       return {
         weather: {},
         timer: null,
-        count: 120
+        count: 120,
+        disableChange: false
       };
     },
     methods: {
       calcTime() {
         this.timer = setInterval(() => {
           this.weather.timestamp += 1000;
+          if (this.disableChange) return;
           this.count++;
           if (this.count >= 120) {
             this.count = 0;
@@ -101,6 +103,45 @@
                 break;
             }
         }
+      },
+      checkFestival() {
+        let festivalMap = [{
+          time: ['/10/29', '/10/30', '/10/31', '/11/01', '/11/02'],
+          name: '万圣节',
+          code: 'Halloween',
+          banner: 'Halloween-1',
+          tip: {
+            title: 'Trick or Treat!',
+            message: 'The sky is blue, the grass is green, may we have our Halloween. (不给糖就捣蛋!)',
+            confirmText: '好好好(40秒背景音乐注意)',
+            cancelText: '无视'
+          },
+          musicUrl: 'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/music/TRICK%20or%20TREAT.mp3',
+          avatarUrl: 'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_Halloween.png'
+        }];
+
+        let isFestival = false;
+        let festival = null;
+        festivalMap.forEach((fastival) => {
+          fastival.time.forEach(time => {
+            if (new Date().toLocaleDateString().indexOf(time) > -1) {
+              isFestival = true;
+              festival = {
+                name: fastival.name,
+                code: fastival.code,
+                banner: fastival.banner,
+                tip: fastival.tip,
+                musicUrl: fastival.musicUrl,
+                avatarUrl: fastival.avatarUrl
+              };
+            }
+          });
+        });
+
+        return {
+          isFestival,
+          festival
+        };
       }
     },
     computed: {
@@ -168,6 +209,31 @@
             warning: err.message
           };
         });
+
+      let festivalObj = this.checkFestival();
+
+      if (festivalObj.isFestival) {
+        this.disableChange = true;
+
+        this.$store.commit('global/SET_BGURL', festivalObj.festival.banner);
+        this.$store.commit('header/SET_AVATARURL', festivalObj.festival.avatarUrl);
+
+        setTimeout(() => {
+          this.$confirm({
+            title: festivalObj.festival.tip.title,
+            message: festivalObj.festival.tip.message,
+            confirmText: festivalObj.festival.tip.confirmText,
+            cancelText: festivalObj.festival.tip.cancelText
+          }).then(() => {
+            let audioElement = document.createElement('audio');
+            audioElement.autoplay = 'autoplay';
+            let sourceElement = document.createElement('source');
+            sourceElement.src = festivalObj.festival.musicUrl;
+            sourceElement.type = 'audio/mp3';
+            audioElement.appendChild(sourceElement);
+          }).catch(() => {});
+        }, 0);
+      }
     },
     beforeDestroy() {
       clearInterval(this.timer);

@@ -4,7 +4,8 @@
 
 const state = {
   miniAvatarState: false,
-  articleModeState: false
+  articleModeState: false,
+  avatarUrl: 'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_240x240.png'
 };
 
 const mutations = {
@@ -13,6 +14,9 @@ const mutations = {
   },
   SET_ARTICLEMODE(state, payload) {
     state.articleModeState = payload;
+  },
+  SET_AVATARURL(state, payload) {
+    state.avatarUrl = payload;
   }
 };
 

@@ -13,11 +13,11 @@
         <div class="nav-wrapper">
           <div class="nav-container">
             <div class="avatar-wrapper" :class="{mini: miniAvatarState}">
-              <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_240x240.png" alt="avatar">
+              <img :src="avatarUrl" alt="avatar">
             </div>
             <div class="profile-mini-wrapper" :class="{mini: miniAvatarState}">
               <div class="profile-mini">
-                <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_240x240.png"
+                <img :src="avatarUrl"
                      alt="mini-avatar">
                 <div class="info">
                   <h3>结束与起始之界</h3>
@@ -102,6 +102,9 @@
       },
       articleMode() {
         return this.$store.state.header.articleModeState;
+      },
+      avatarUrl() {
+        return this.$store.state.header.avatarUrl;
       },
       backgroundUrl() { // 'url(' + require('../assets/images/1.jpg') + ')'
         return `url('https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/banner/${this.$store.state.global.bgUrl}.png') center center`;
