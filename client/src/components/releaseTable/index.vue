@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.6.8',
+            date: '2017-10-30',
+            desc: '添加 基础节日系统 优化 用户界面'
+          },
+          {
             version: '0.6.6',
             date: '2017-10-27',
             desc: '优化 用户界面 修复 bug'
