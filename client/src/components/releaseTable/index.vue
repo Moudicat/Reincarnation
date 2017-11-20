@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.6.10',
+            date: '2017-11-20',
+            desc: '调整 自适应宽度'
+          },
+          {
             version: '0.6.9',
             date: '2017-11-20',
             desc: '添加 markdown设置'
