@@ -22,7 +22,7 @@
 <script type="text/ecmascript-6">
   import Article from 'services/article';
   import {formatDate} from 'services/utils';
-  var hljs = require('highlight.js');
+  let hljs = require('highlight.js');
 
   let md = require('markdown-it')({
     highlight: function (str, lang) {
@@ -36,6 +36,22 @@
     },
     html: true // Enable HTML tags in source
   });
+
+  let defaultRender = md.renderer.rules.link_open || function(tokens, idx, options, env, self) {
+    return self.renderToken(tokens, idx, options);
+  };
+
+  md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
+    let aIndex = tokens[idx].attrIndex('target');
+
+    if (aIndex < 0) {
+      tokens[idx].attrPush(['target', '_blank']);
+    } else {
+      tokens[idx].attrs[aIndex][1] = '_blank';
+    }
+
+    return defaultRender(tokens, idx, options, env, self);
+  };
 
   export default {
     name: 'Article',
