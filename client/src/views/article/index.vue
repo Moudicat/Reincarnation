@@ -33,7 +33,8 @@
         }
       }
       return ''; // use external default escaping
-    }
+    },
+    html: true // Enable HTML tags in source
   });
 
   export default {
