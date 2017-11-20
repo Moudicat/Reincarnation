@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.6.9',
+            date: '2017-11-20',
+            desc: '添加 markdown设置'
+          },
+          {
             version: '0.6.8',
             date: '2017-10-30',
             desc: '添加 基础节日系统 优化 用户界面'
