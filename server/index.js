@@ -11,7 +11,7 @@ import {
   guguLogger
 } from './services/logger';
 
-import WebSocketServer from 'services/websocket';
+import WebSocketServer from './services/websocket';
 
 global.aelog = aelog;
 global.guguLogger = guguLogger;
