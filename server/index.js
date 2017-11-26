@@ -27,7 +27,7 @@ class ApiServer {
     this.app = express();
 
     //ws
-    this.wss = new WebSocketServer(this.app);
+    this.wss = new WebSocketServer();
 
     this.MIDDLEWARE = ['cors', 'bodyParser', 'cookieParser', 'custom', 'apiServerRoutes'];
     this.SERVICES = ['database', 'weatherSystem'];

@@ -1,14 +1,12 @@
 /**
  * Created by Moudicat on 2017/11/26.
  */
-import http from 'http';
 import WebSocket from 'ws';
 
 export default class WebSocketServer {
-  constructor(expressServer) {
+  constructor() {
     this.online = 0;
-    const server = http.createServer(expressServer);
-    this.wss = new WebSocket.Server({server});
+    this.wss = new WebSocket.Server({port: 2778});
     this.init();
   }
 
