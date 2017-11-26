@@ -1,6 +1,6 @@
 const schedule = require('node-schedule');
 const probable = require('probable');
-const formatDate = require('./utils');
+import { formatDate } from './utils';
 /**
   type
     0 晴
