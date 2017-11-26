@@ -51,7 +51,7 @@
 
       initWSS() {
         if (window.WebSocket) {
-          this.ws = new WebSocket('ws://moudicat.com:2333');
+          this.ws = new WebSocket('wss://moudicat.com:2333');
 
           this.ws.onopen = (evt) => {
           //  console.log('[open]');
@@ -158,13 +158,13 @@
     transform: translate3d(20px, 0, 0);
   }
 
-  .fade-slow-enter-active, .fade-slow-leave-active {
+  .fade-top-enter-active, .fade-top-leave-active {
     transition: 1s;
   }
 
-  .fade-slow-enter, .fade-slow-leave-to {
+  .fade-top-enter, .fade-top-leave-to {
     opacity: 0;
-    transform: scale(1.2) translateZ(1px);
+    transform: translate3d(0, -30px, 0);
   }
 
   .component-fade-enter-active, .component-fade-leave-active {
