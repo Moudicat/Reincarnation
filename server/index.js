@@ -1,12 +1,17 @@
 /**
  * Created by Moudi on 2017/5/3.
  */
-import fs from 'fs';
-import https from 'https';
 import express from 'express';
 import config from './config/';
 import { resolve } from 'path';
-import { apiInfoLogger as apiInfoLoggerMiddleware, apiWarnLogger as apiWarnLoggerMiddleware, apiErrorLogger as aelog, guguLogger } from './services/logger';
+import {
+  apiInfoLogger as apiInfoLoggerMiddleware,
+  apiWarnLogger as apiWarnLoggerMiddleware,
+  apiErrorLogger as aelog,
+  guguLogger
+} from './services/logger';
+
+import WebSocketServer from 'services/websocket';
 
 global.aelog = aelog;
 global.guguLogger = guguLogger;
@@ -20,6 +25,9 @@ const r = path => resolve(__dirname, path);
 class ApiServer {
   constructor() {
     this.app = express();
+
+    //ws
+    this.wss = new WebSocketServer(this.app);
 
     this.MIDDLEWARE = ['cors', 'bodyParser', 'cookieParser', 'custom', 'apiServerRoutes'];
     this.SERVICES = ['database', 'weatherSystem'];
