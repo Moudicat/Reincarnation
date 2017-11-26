@@ -11,9 +11,9 @@
       </ul>
     </div>
     <div class="article-list">
-      <ol v-if="articleList.length">
-        <ArticleListItem v-for="(article, index) in articleList" :key="index" :article="article" />
-      </ol>
+      <transition-group name="fade-slow" tag="ol" v-if="articleList.length">
+        <ArticleListItem v-for="(article, index) in articleList" v-if="articleListAnimationIndex >= index" :key="index" :article="article" />
+      </transition-group>
       <h3 class="info" v-else><i class="icon-smile"></i>{{articleListHolder}}</h3>
     </div>
     <div class="pagination-wrapper">
@@ -39,7 +39,8 @@
         PAGE: 1,
         articleList: [],
         articleListHolder: '抓取数据中...',
-        total: 0
+        total: 0,
+        articleListAnimationIndex: -1
       };
     },
     methods: {
@@ -72,6 +73,13 @@
       Article.count()
         .then(response => {
           response.data && (this.total = response.data);
+
+          let animationIndexTimer = setInterval(() => {
+            this.articleListAnimationIndex++;
+            if (this.articleListAnimationIndex >= this.PAGE_LIMIT) {
+              clearInterval(animationIndexTimer);
+            }
+          }, 300);
         });
       this.fetchArticle();
     },
@@ -124,12 +132,5 @@
   .pagination-wrapper {
     margin: 30px 10px;
     text-align: right;
-  }
-</style>
-
-<style lang="scss">
-  .el-pager li.active {
-    border-color: $primary-divider-color;
-    background-color: $primary-divider-color;
   }
 </style>

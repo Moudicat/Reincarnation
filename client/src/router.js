@@ -3,12 +3,12 @@ import Router from 'vue-router';
 import Homepage from 'views/homepage';
 import About from 'views/about';
 import AboutPage from 'views/about/aboutPage';
-import ReleaseTable from 'components/releaseTable';
+import ReleaseTable from 'views/about/releaseNote';
 import Bangumi from 'views/bangumi';
 import Links from 'views/links';
 import Memoird from 'views/memobird';
-const Article = () => import('./views/article');
 import Page404 from 'views/404';
+const Article = () => import('./views/article');
 Vue.use(Router);
 
 export default new Router({

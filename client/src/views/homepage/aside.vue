@@ -1,8 +1,8 @@
 <template>
-  <aside>
-    <StatusPanel />
-    <BangumiPanel />
-  </aside>
+  <transition-group name="component-fade" tag="aside">
+    <StatusPanel v-if="asideAnimationIndex >= 0" key="statusPanel"/>
+    <BangumiPanel v-if="asideAnimationIndex >= 1" key="bangumiPanel"/>
+  </transition-group>
 </template>
 
 <script type="text/ecmascript-6">
@@ -15,7 +15,21 @@
       StatusPanel,
       BangumiPanel,
       WeatherPanel
+    },
+    data() {
+      return {
+        asideAnimationIndex: -1
+      };
+    },
+    mounted() {
+      let animationIndexTimer = setInterval(() => {
+        this.asideAnimationIndex++;
+        if (this.asideAnimationIndex >= 2) {
+          clearInterval(animationIndexTimer);
+        }
+      }, 250);
     }
+
   };
 </script>
 

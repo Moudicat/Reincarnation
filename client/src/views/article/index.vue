@@ -14,7 +14,7 @@
     </div>
 
     <div class="copyright">
-      
+
     </div>
   </article>
 </template>
@@ -88,7 +88,7 @@
             this.articleMode = true;
           })
           .catch(err => {
-//            this.article = '<h1>加载失败...请联系管理员</h1>';
+            // this.article = '<h1>加载失败...请联系管理员</h1>';
             console.log(err);
             this.$router.push('/404');
           });
@@ -602,7 +602,7 @@
   .markdown-body blockquote {
     padding: 0 1em;
     color: #6a737d;
-    border-left: 0.25em solid #dfe2e5;
+    border-left: 0.25em solid $divider-color;
   }
 
   .markdown-body blockquote > :first-child {

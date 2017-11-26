@@ -4,7 +4,8 @@
 const state = {
   version: '',
   bgUrl: '1_0800',
-  status: []
+  status: [],
+  isLoaded: false
 };
 
 const mutations = {
@@ -16,6 +17,9 @@ const mutations = {
   },
   SET_STATUS(state, payload) {
     state.status = payload;
+  },
+  SET_ISLOADED(state, payload) {
+    state.isLoaded = payload;
   }
 };
 

@@ -29,6 +29,8 @@
         } else {
           wrapper.style.maxHeight = targetHeight;
         }
+
+        console.log(this.$Lazyload);
       },
       handleOpenArticle() {
         this.$router.push('/article/' + this.article._id);

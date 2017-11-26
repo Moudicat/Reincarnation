@@ -7,11 +7,11 @@
       <div class="header">
         To: 某迪
       </div>
-      <textarea name="content" id="content" rows="12" v-model="guguObj.content" maxlength="200" placeholder="你有什么想说的呢..."></textarea>
+      <textarea name="content" id="content" rows="12" v-model="guguObj.content" maxlength="200" placeholder="你有什么想说的呢..."  :disabled="isDisable"></textarea>
       <div class="footer">
         <div class="name">
           <span>你的名字: </span>
-          <input type="text" v-model="guguObj.name">
+          <input type="text" v-model="guguObj.name" :disabled="isDisable">
         </div>
 
         <button @click="submitHandle">发送</button>
@@ -30,11 +30,13 @@
         guguObj: {
           content: '',
           name: ''
-        }
+        },
+        isDisable: false
       };
     },
     methods: {
       submitHandle() {
+        if (this.isDisable) return;
         if (this.guguObj.content === '') {
           this.$alert('内容未填写');
           return;
@@ -43,14 +45,19 @@
           this.$alert('你的名字未填写');
           return;
         }
+
+        this.isDisable = true;
+
         this.guguObj.type = 'text';
         Gugu.send(this.guguObj)
           .then(response => {
+            this.isDisable = true;
             this.guguObj.name = '';
             this.guguObj.content = '';
             this.$message.success(response.msg);
           })
           .catch(err => {
+            this.isDisable = true;
             if (err.message === '403' || err.message === '401') {
               this.$alert('抱歉，当前无法发送： 处于频率限制或在黑名单中。 请一小时后再试。');
             } else if (err.message === '400') {

@@ -25,23 +25,11 @@
                 </div>
               </div>
             </div>
-            <nav>
-              <router-link to="/" class="nav-link">
-                <span>文章</span>
+            <transition-group name="component-fade" tag="nav">
+              <router-link :to="nav.link" class="nav-link" v-for="(nav, index) in navMap" :key="index" v-if="navAnimationIndex >= index">
+                <span>{{ nav.name }}</span>
               </router-link>
-              <router-link to="/animation" class="nav-link">
-                <span>番剧列表</span>
-              </router-link>
-              <router-link to="/links" class="nav-link">
-                <span>友情链接</span>
-              </router-link>
-              <router-link to="/memobird" class="nav-link">
-                <span>递小纸条</span>
-              </router-link>
-              <router-link to="/about" class="nav-link">
-                <span>关于本站</span>
-              </router-link>
-            </nav>
+            </transition-group>
           </div>
         </div>
       </Sticky>
@@ -61,7 +49,24 @@
   export default {
     data() {
       return {
-        hitokoto: ''
+        hitokoto: '',
+        navMap: [{
+          link: '/',
+          name: '文章'
+        }, {
+          link: '/animation',
+          name: '番剧列表'
+        }, {
+          link: '/links',
+          name: '友情链接'
+        }, {
+          link: '/memobird',
+          name: '递小纸条'
+        }, {
+          link: '/about',
+          name: '关于本站'
+        }],
+        navAnimationIndex: -1
       };
     },
     methods: {
@@ -112,21 +117,26 @@
     },
     beforeMount() {
       Hitokoto.get().then(response => {
-        let h = response.data.content;
-        let t = () => {
-          this.hitokoto += h.substring(0, 1);
-          h = h.substring(1);
-          if (h.length !== 0) {
-            setTimeout(() => {
-              t();
-            }, Math.random() * 100 + 40);
+        let hitokoto = response.data.content;
+        let typingAnimation = () => {
+          this.hitokoto += hitokoto.substring(0, 1);
+          hitokoto = hitokoto.substring(1);
+          if (hitokoto.length !== 0) {
+            setTimeout(typingAnimation, Math.random() * 100 + 40);
           } else {
-            h = t = null;
+            hitokoto = typingAnimation = null;
           }
         };
-        setTimeout(() => {
-          t();
-        }, 2000);
+
+        this.$event.$on('loaded', () => {
+          typingAnimation();
+          let animationIndexTimer = setInterval(() => {
+            this.navAnimationIndex++;
+            if (this.navAnimationIndex >= this.navMap.length) {
+              clearInterval(animationIndexTimer);
+            }
+          }, 200);
+        });
       });
     },
     components: {

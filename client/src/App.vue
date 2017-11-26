@@ -3,10 +3,10 @@
     <r-header/>
     <transition name="fade" mode="out-in">
       <keep-alive exclude="Article">
-        <router-view/>
+        <router-view v-if="$store.state.global.isLoaded"/>
       </keep-alive>
     </transition>
-    <r-footer/>
+    <r-footer v-if="$store.state.global.isLoaded"/>
   </div>
 </template>
 
@@ -26,26 +26,59 @@
     data() {
       return {
         versionCode: '',
-        MAX_RETRY: 1
+        MAX_RETRY: 1,
+        ws: null
       };
     },
-    mounted() {
-      window.__version__ = pkg.version.split('.').map(e => Number(e));
-      setTimeout(() => {
-        let path = 'M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z';
-        document.getElementById('path').setAttribute('d', path);
-        document.getElementById('loader-t').style.opacity = 0;
+
+    methods: {
+      init() {
+        window.__version__ = pkg.version.split('.').map(e => Number(e));
+      },
+
+      closeLoader() {
         setTimeout(() => {
-          document.body.removeChild(document.getElementById('loader'));
-        }, 600);
-      }, 2000);
+          let path = 'M40,30 c 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 0,0 Z';
+          document.getElementById('path').setAttribute('d', path);
+          document.getElementById('loader-t').style.opacity = 0;
+          setTimeout(() => {
+            document.body.removeChild(document.getElementById('loader'));
+            this.$event.$emit('loaded');
+            this.$store.commit('global/SET_ISLOADED', true);
+          }, 600);
+        }, 2000);
+      },
+
+      initWSS() {
+        if (window.WebSocket) {
+          this.ws = new WebSocket('ws://moudicat.com:2333');
+
+          this.ws.onopen = (evt) => {
+          //  console.log('[open]');
+          };
+
+          this.ws.onmessage = (evt) => {
+          //  console.log(`message: ${evt.data}`);
+          };
+
+          this.ws.onclose = (evt) => {
+          //  console.log('[close]');
+          };
+        } else {
+          console.log('[WebSocket] 不支持');
+        }
+      }
+    },
+
+    mounted() {
+      this.init();
+      this.initWSS();
+      this.closeLoader();
     },
 
     computed: {
       version() {
-        return this.$store.state.global.status.filter(e => {
-          return e.name === '当前博客版本';
-        });
+        return this.$store.state.global.status.filter(e => e.name === '当前博客版本');
       }
     },
 
@@ -54,7 +87,9 @@
         newValue = newValue[0].content;
         if (newValue) {
           let nowVersion = newValue.split('@')[1].split('.').map(e => Number(e));
+
           console.log(`%c当前版本号：${nowVersion.join('.')}, 最新版本号: ${window.__version__.join('.')}`, 'color: red');
+
           if (nowVersion[0] > window.__version__[0] || nowVersion[1] > window.__version__[1] || nowVersion[2] > window.__version__[2]) {
             if (SStorage.get('updateRetry')) {
               let retry = SStorage.get('updateRetry');
@@ -93,7 +128,6 @@
   #app {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     min-height: 100vh;
     min-width: 1080px;
     font-family: "Roboto", "PingFang SC", "Microsoft YaHei", Helvetica, "宋体", sans-serif;
@@ -120,6 +154,24 @@
   }
 
   .fade-enter, .fade-leave-to {
+    opacity: 0;
+    transform: translate3d(20px, 0, 0);
+  }
+
+  .fade-slow-enter-active, .fade-slow-leave-active {
+    transition: 1s;
+  }
+
+  .fade-slow-enter, .fade-slow-leave-to {
+    opacity: 0;
+    transform: scale(1.2) translateZ(1px);
+  }
+
+  .component-fade-enter-active, .component-fade-leave-active {
+    transition: .6s;
+  }
+
+  .component-fade-enter, .component-fade-leave-to {
     opacity: 0;
     transform: translate3d(0, 20px, 0);
   }

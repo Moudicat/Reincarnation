@@ -4,7 +4,7 @@
 import Vue from 'vue';
 import merge from 'services/popup/utils/merge';
 
-let MessageBoxConstructor = Vue.extend(require('./index.vue'));
+let MessageBoxConstructor = Vue.extend(require('./index.vue').default);
 
 let MessageBox = (options) => {
   if (typeof options === 'string') {

@@ -3,7 +3,7 @@
  */
 import Vue from 'vue';
 
-let MessageConstructor = Vue.extend(require('./index.vue'));
+let MessageConstructor = Vue.extend(require('./index.vue').default);
 
 let Message = (options) => {
   if (typeof options === 'string') {
@@ -18,6 +18,7 @@ let Message = (options) => {
   });
 
   let vm = instance.$mount();
+
   document.getElementById('app').appendChild(vm.$el);
 
   vm.$el.style.zIndex = 10000;

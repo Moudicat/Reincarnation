@@ -1,16 +1,16 @@
 <template>
   <div class="about-page" v-cloak>
-    <h4>Time Line</h4>
-    <TimeLineTable />
+    <h4>Releases</h4>
+    <ReleaseTable />
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-  import TimeLineTable from 'components/timeLineTable';
+  import ReleaseTable from 'components/releaseTable';
 
   export default {
     components: {
-      TimeLineTable
+      ReleaseTable
     }
   };
 </script>

@@ -4,23 +4,36 @@ import router from './router';
 import store from './store';
 import Lazyload from 'vue-lazyload';
 import 'whatwg-fetch';
-let Promise = require('es6-promise').Promise;
-if (!window.Promise) {
-  window.Promise = Promise;
-}
 import {Table, TableColumn, Form, FormItem, Pagination} from 'element-ui';
 
 import NProgress from 'nprogress'; // Progress 进度条
 import 'nprogress/nprogress.css';// Progress 进度条 样式
 import Popup from 'services/popup';
 
+let Promise = require('es6-promise').Promise;
+if (!window.Promise) {
+  window.Promise = Promise;
+}
+
 Vue.use(Popup);
 Vue.use(Pagination);
-Vue.use(Lazyload);
+Vue.use(Lazyload, {
+  filter: {
+    progressive (listener, options) {
+      const isCDN = /moudicat-data.oss-cn-beijing.aliyuncs.com/;
+      if (isCDN.test(listener.src)) {
+        listener.el.setAttribute('lazy-progressive', 'true');
+        listener.loading = listener.src + '?x-oss-process=style/ss';
+      }
+    }
+  }
+});
 Vue.use(Table);
 Vue.use(Form);
 Vue.use(FormItem);
 Vue.use(TableColumn);
+
+Vue.prototype.$event = Vue.prototype.$event || new Vue();
 
 Vue.config.productionTip = false;
 

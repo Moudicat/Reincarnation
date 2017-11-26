@@ -16,7 +16,7 @@
     align-items: center;
     padding: 50px 15% 50px 30%;
     width: 100%;
-    background: #f2ccc4;
+    background: $divider-color;
     .pic-404 {
       flex: 0 0 45%;
       width: 45%;

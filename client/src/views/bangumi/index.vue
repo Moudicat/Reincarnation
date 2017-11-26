@@ -4,9 +4,9 @@
       <el-table
         :data="bangumiListData"
         :row-class-name="tableRowClassName"
-        @expand="handleDetailOpen">
+        @expand-change="handleDetailOpen">
         <el-table-column type="expand">
-          <template scope="props">
+          <template slot-scope="props">
             <transition name="fade">
               <el-form label-position="left" inline class="demo-table-expand" v-if="props.row.detail">
                 <el-form-item label="原番名">
@@ -51,7 +51,7 @@
         <el-table-column
           label="最后日期"
           width="140">
-          <template scope="scope">
+          <template slot-scope="scope">
             <span>{{scope.row.date | formatDate(scope.row.date)}}</span>
           </template>
         </el-table-column>

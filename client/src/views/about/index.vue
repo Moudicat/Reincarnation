@@ -11,11 +11,13 @@
           </li>
         </ul>
       </div>
-      <transition name="fade">
+      <div>
         <keep-alive>
-          <router-view></router-view>
+          <transition name="fade" mode="out-in">
+              <router-view></router-view>
+          </transition>
         </keep-alive>
-      </transition>
+      </div>
     </div>
   </Layout>
 </template>
