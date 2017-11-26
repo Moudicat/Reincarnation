@@ -12,7 +12,7 @@
       return {
         releaseData: [
           {
-            version: '0.7.0',
+            version: '0.7.1',
             date: '2017-11-27',
             desc: '调整 UI及动效 更新/升级 全线依赖 添加 WebSocket支持 修复 咕咕机bug'
           },
