@@ -14,7 +14,8 @@
     "node-schedule": "^1.2.3",
     "probable": "^2.1.1",
     "spdy": "^3.4.7",
-    "winston": "^2.3.1"
+    "winston": "^2.3.1",
+    "ws": "^3.3.2"
   },
   "devDependencies": {
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
