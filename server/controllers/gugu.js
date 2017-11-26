@@ -71,12 +71,12 @@ export default class Gugu extends BaseRouterController {
     guguLogger.info(`[print] ${type} ${content}, IP: ${ip}`);
     let checkedIP;
     if (os.platform !== 'win32') {
-      try {
-        checkedIP = execSync(`curl -s http://ip.cn/${ip}`);
-      } catch (err) {
-        aelog(err);
+      // try {
+      //   checkedIP = execSync(`curl -s http://ip.cn/${ip}`);
+      // } catch (err) {
+      //   aelog(err);
         checkedIP = `IP: ${ip}`;
-      }
+      // }
     }
     switch (type) {
       case 'text':
