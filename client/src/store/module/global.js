@@ -3,7 +3,7 @@
  */
 const state = {
   version: '',
-  bgUrl: '1_0800',
+  bgUrl: '',
   status: [],
   isLoaded: false
 };

@@ -27,7 +27,8 @@
       return {
         versionCode: '',
         MAX_RETRY: 1,
-        ws: null
+        ws: null,
+        wsTimer: null
       };
     },
 
@@ -55,6 +56,9 @@
 
           this.ws.onopen = (evt) => {
           //  console.log('[open]');
+            this.wsTimer = setInterval(() => {
+              this.ws.send('');
+            }, 30000);
           };
 
           this.ws.onmessage = (evt) => {
@@ -96,7 +100,7 @@
               if (retry.targetVersion === nowVersion.join('') && retry.count >= this.MAX_RETRY) {
                 this.$message({
                   type: 'error',
-                  message: '更新失败，已禁用自动更新系统'
+                  message: '更新失败，已临时禁用自动更新，请手动刷新'
                 });
                 return;
               }
@@ -106,7 +110,7 @@
               });
             } else {
               this.$message({
-                message: '当前版本低于服务端版本，5秒后自动更新...',
+                message: '当前版本低于服务端版本，7秒后自动更新...',
                 duration: 4500
               });
               SStorage.set('updateRetry', {
@@ -116,7 +120,7 @@
             }
             setTimeout(() => {
               location.reload();
-            }, 5000);
+            }, 7000);
           }
         }
       }

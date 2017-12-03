@@ -45,6 +45,7 @@
   import Snow from 'services/weatherSystem/Snow';
   import Star from 'services/weatherSystem/Star';
   import Fireflies from 'services/weatherSystem/Fireflies';
+  import { supportWebp } from 'services/utils';
 
   export default {
     data() {
@@ -109,10 +110,21 @@
         return this.$store.state.header.articleModeState;
       },
       avatarUrl() {
-        return this.$store.state.header.avatarUrl;
+        let isWebp = '';
+        if (supportWebp()) {
+          isWebp = '?x-oss-process=style/webp';
+        }
+        return this.$store.state.header.avatarUrl + isWebp;
       },
       backgroundUrl() { // 'url(' + require('../assets/images/1.jpg') + ')'
-        return `url('https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/banner/${this.$store.state.global.bgUrl}.png') center center`;
+        if (!this.$store.state.global.bgUrl) {
+          return `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAIAAAEYqUiJAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAHZJREFUeNpi+P37N0AAMfz9+xcggBh+/vz58uVLgABiBOH///8DBBDD8+fPgTL//v0DCCDGP3/+AFlfvnxhYmBg+PbtGy8vL1T2169fAAE6moMbAIAQBIL0X6nBDu51E30grhij7S4VQ2lgd23f1cxExMYLA8R/7Uth/ofXN50AAAAASUVORK5CYII=`;
+        }
+        let isWebp = '';
+        if (supportWebp()) {
+          isWebp = '?x-oss-process=style/webp';
+        }
+        return `url('https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/banner/${this.$store.state.global.bgUrl}.png${isWebp}') center center`;
       }
     },
     beforeMount() {

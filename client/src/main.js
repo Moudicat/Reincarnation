@@ -19,11 +19,11 @@ Vue.use(Popup);
 Vue.use(Pagination);
 Vue.use(Lazyload, {
   filter: {
-    progressive (listener, options) {
+    webp (listener, options) {
+      if (!options.supportWebp) return;
       const isCDN = /moudicat-data.oss-cn-beijing.aliyuncs.com/;
       if (isCDN.test(listener.src)) {
-        listener.el.setAttribute('lazy-progressive', 'true');
-        listener.loading = listener.src + '?x-oss-process=style/ss';
+        listener.src += '?x-oss-process=style/webp';
       }
     }
   }
