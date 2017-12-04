@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.7.3',
+            date: '2017-12-05',
+            desc: '修复 bug 增加 文字效果 完善 WebP使用范围'
+          },
+          {
             version: '0.7.2',
             date: '2017-12-04',
             desc: '使用 WebP 大幅降低流量消耗'
