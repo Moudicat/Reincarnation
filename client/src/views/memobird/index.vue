@@ -1,7 +1,7 @@
 <template>
   <Layout :hasAside="true">
     <div slot="aside" class="memobird-aside">
-      <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/memobird-help.png" alt="memobird-help">
+      <img :src="`https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/memobird-help.png${webp}`" alt="memobird-help">
     </div>
     <div slot="content" class="memobird-wrapper">
       <div class="header">
@@ -23,6 +23,7 @@
 <script type="text/ecmascript-6">
   import Layout from 'views/layout';
   import Gugu from 'services/gugu';
+  import { supportWebp } from 'services/utils';
 
   export default {
     data() {
@@ -66,8 +67,15 @@
           });
       }
     },
+
     components: {
       Layout
+    },
+
+    computed: {
+      webp() {
+        return supportWebp() ? '?x-oss-process=style/webp' : '';
+      }
     }
   };
 </script>

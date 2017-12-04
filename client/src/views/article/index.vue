@@ -21,7 +21,7 @@
 
 <script type="text/ecmascript-6">
   import Article from 'services/article';
-  import {formatDate} from 'services/utils';
+  import { formatDate, supportWebp } from 'services/utils';
   let hljs = require('highlight.js');
 
   let md = require('markdown-it')({
@@ -51,6 +51,18 @@
     }
 
     return defaultRender(tokens, idx, options, env, self);
+  };
+
+  let defaultImageRender = md.renderer.rules.image;
+
+  md.renderer.rules.image = function (tokens, idx, options, env, slf) {
+    let token = tokens[idx];
+
+    if (supportWebp()) {
+      token.attrs[token.attrIndex('src')][1] += '?x-oss-process=style/webp';
+    }
+
+    return defaultImageRender(tokens, idx, options, env, slf);
   };
 
   export default {
