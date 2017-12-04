@@ -56,6 +56,7 @@
 
           this.ws.onopen = (evt) => {
           //  console.log('[open]');
+            clearInterval(this.wsTimer);
             this.wsTimer = setInterval(() => {
               this.ws.send('');
             }, 30000);
@@ -66,7 +67,7 @@
           };
 
           this.ws.onclose = (evt) => {
-          //  console.log('[close]');
+            clearInterval(this.wsTimer);
           };
         } else {
           console.log('[WebSocket] 不支持');

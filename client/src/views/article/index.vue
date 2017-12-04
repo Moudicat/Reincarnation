@@ -126,6 +126,7 @@
       border-bottom: 50px solid transparent;
       border-right: 0;
       border-top: 0;
+      border-radius: 0 !important;
       cursor: pointer;
       &::before {
         position: absolute;
@@ -343,6 +344,9 @@
   }
 
   .markdown-body img {
+    display: block;
+    margin: 0 auto;
+    box-shadow: $secondary-boxshadow;
     border-style: none;
   }
 
