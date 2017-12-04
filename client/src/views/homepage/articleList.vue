@@ -30,6 +30,7 @@
 <script type="text/ecmascript-6">
   import ArticleListItem from 'views/homepage/articleListItem';
   import Article from 'services/article';
+  import { scrollToTop } from 'services/utils';
 
   export default {
     name: 'ArticleList',
@@ -50,6 +51,7 @@
       handleCurrentChange(currentPage) {
         this.PAGE = currentPage;
         this.fetchArticle();
+        scrollToTop();
       },
       fetchArticle() {
         Article.get(this.START, this.PAGE_LIMIT)
