@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.7.4',
+            date: '2017-12-06',
+            desc: '调整 加载动画 初步完成 友链申请功能'
+          },
+          {
             version: '0.7.3',
             date: '2017-12-05',
             desc: '修复 bug 增加 文字效果 完善 WebP使用范围'
