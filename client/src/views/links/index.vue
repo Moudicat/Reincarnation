@@ -16,13 +16,27 @@
             </dd>
           </dl>
         </li>
-        <li @click.stop="handleAdd()">
+        <li @click.stop="handleAdd()" :class="{'active': isEditing}">
           <dl class="links">
-            <dd>
+            <dd v-if="!isEditing">
               <h3>点此添加友链</h3>
               <h4></h4>
               <p>可以在这里留下你的信息</p>
             </dd>
+
+            <dd v-else class="link-input-wrapper">
+              <el-input v-model="newLink.name" size="small" :autofocus="true" :maxlength="20">
+                <template slot="prepend">请输入您的称呼</template>
+              </el-input>
+              <el-input v-model="newLink.content" size="small" :maxlength="100">
+                <template slot="prepend">请输入您的网址</template>
+              </el-input>
+              <div class="button-group">
+                <button class="confirm" @click.stop="submit()">提交</button>
+                <button class="cancel" @click.stop="cancelCreateLink()">取消</button>
+              </div>
+            </dd>
+
           </dl>
         </li>
       </ul>
@@ -33,11 +47,17 @@
 <script type="text/ecmascript-6">
   import Layout from 'views/layout';
   import Link from 'services/link';
+  import Gugu from 'services/gugu';
 
   export default {
     data() {
       return {
-        linkList: []
+        linkList: [],
+        isEditing: false,
+        newLink: {
+          name: '',
+          content: ''
+        }
       };
     },
     methods: {
@@ -46,9 +66,36 @@
       },
 
       handleAdd() {
-        this.$alert({
-          message: '该功能开发中'
-        });
+        this.isEditing = true;
+      },
+
+      cancelCreateLink() {
+        console.log(this.isEditing);
+        this.isEditing = false;
+        console.log(this.isEditing);
+      },
+
+      submit() {
+        if (!this.newLink.name.trim() || !this.newLink.content.trim() || this.newLink.name.length > 20 || this.newLink.content.length > 200) {
+          this.$alert('请检查您的输入 _(:з」∠)_');
+          return;
+        }
+        this.newLink.type = 'text';
+        Gugu.send(this.newLink)
+          .then(() => {
+            this.isEditing = false;
+            this.newLink.name = '';
+            this.newLink.content = '';
+            this.$message.success('发送成功，会尽快查阅~');
+          })
+          .catch(err => {
+            if (err.message === '403' || err.message === '401') {
+              this.$alert('抱歉，发送失败，请联系管理员。');
+            }
+            this.newLink.name = '';
+            this.newLink.content = '';
+            this.cancelCreateLink();
+          });
       }
     },
     beforeMount() {
@@ -119,11 +166,44 @@
             font-size: 14px;
           }
         }
+        .link-input-wrapper {
+          margin-left: 0;
+          .el-input {
+            margin-bottom: 10px;
+          }
+
+          .button-group {
+            text-align: right;
+            button {
+              padding: 10px 20px;
+              border-radius: 2px 2px 0 0;
+              font-size: 14px;
+              transition: .4s;
+              cursor: pointer;
+              user-select: none;
+            }
+            .confirm {
+              &:hover {
+                background-color: #79d1ff;
+              }
+            }
+            .cancel {
+              &:hover {
+                background-color: #ff908e;
+              }
+            }
+          }
+
+        }
       }
       &:hover {
         background-color: rgba(0, 0, 0, .6);
         transform: scale(1.02);
         box-shadow: $primary-boxshadow;
+      }
+
+      &.active {
+        height: 155px;
       }
     }
   }
