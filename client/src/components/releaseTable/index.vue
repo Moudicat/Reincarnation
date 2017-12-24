@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.7.5',
+            date: '2017-12-24',
+            desc: '调整 Popup样式 调试 WS 增加 节日系统-圣诞节'
+          },
+          {
             version: '0.7.4',
             date: '2017-12-06',
             desc: '调整 加载动画 初步完成 友链申请功能'
