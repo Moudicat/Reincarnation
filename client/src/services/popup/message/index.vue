@@ -56,6 +56,7 @@
       line-height: 50px;
       background-color: #fff;
       box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.11), 2px 2px 7px 1px rgba(0, 0, 0, 0.27);
+      animation: boxShadow 1.4s .5s backwards;
       border-radius: 4px;
       overflow: hidden;
       .message-img {
@@ -90,6 +91,18 @@
           border-bottom-color: transparent;
         }
       }
+    }
+  }
+
+  @keyframes boxShadow {
+    20% {
+      box-shadow: 0 1px 10px 2px rgba(0, 0, 0, 0.31), 2px 2px 12px 3px rgba(0, 0, 0, 0.37);
+    }
+    50% {
+      box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.11), 2px 2px 7px 1px rgba(0, 0, 0, 0.27);
+    }
+    80% {
+      box-shadow: 0 1px 10px 2px rgba(0, 0, 0, 0.21), 2px 2px 10px 1px rgba(0, 0, 0, 0.31);
     }
   }
 

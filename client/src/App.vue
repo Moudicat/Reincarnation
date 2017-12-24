@@ -26,9 +26,7 @@
     data() {
       return {
         versionCode: '',
-        MAX_RETRY: 1,
-        ws: null,
-        wsTimer: null
+        MAX_RETRY: 1
       };
     },
 
@@ -50,12 +48,11 @@
         }, 2000);
       },
 
-      initWSS() {
+      dispatchCenterInit() {
         if (window.WebSocket) {
           this.ws = new WebSocket('wss://moudicat.com:2333');
 
           this.ws.onopen = (evt) => {
-          //  console.log('[open]');
             clearInterval(this.wsTimer);
             this.wsTimer = setInterval(() => {
               this.ws.send('');
@@ -63,13 +60,17 @@
           };
 
           this.ws.onmessage = (evt) => {
-          //  console.log(`message: ${evt.data}`);
+            // type -> info system
+            // let { type, msg, data } = JSON.parse(evt.data);
+            console.log(`message: ${evt.data}`);
           };
 
           this.ws.onclose = (evt) => {
             clearInterval(this.wsTimer);
+            this.$message.error('与服务器的连接已断开');
           };
         } else {
+          this.$message.error('您的浏览器不支持WebSocket，可能会影响浏览体验。');
           console.log('[WebSocket] 不支持');
         }
       }
@@ -77,7 +78,7 @@
 
     mounted() {
       this.init();
-      this.initWSS();
+      this.dispatchCenterInit();
       this.closeLoader();
     },
 

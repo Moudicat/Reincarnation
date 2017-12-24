@@ -74,8 +74,6 @@
     mounted() {
       this.visibility = true;
       document.body.style.overflowY = 'hidden';
-
-      console.log(this.visibility);
     },
     destroyed() {
       document.body.style.overflowY = '';
