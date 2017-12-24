@@ -10,7 +10,7 @@ import rplMiddleware from '../middlewares/rplMiddleware';
 export default class Weather extends BaseRouterController {
   @get('/')
   get(req, res) {
-    global.weather.timestamp = +new Date() - 1495199400000;
+    global.weather.timestamp = new Date() - 1495199400000;
     res.resData.data = global.weather;
     res.json(res.resData);
   }

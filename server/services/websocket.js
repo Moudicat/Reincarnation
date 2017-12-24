@@ -3,11 +3,17 @@
  */
 import WebSocket from 'ws';
 
+function InfoMsg(type, data) {
+  this.type = `info_${type}`;
+  this.data = data;
+}
+
 export default class WebSocketServer {
   constructor() {
     this.online = 0;
     this.wss = new WebSocket.Server({port: 2778});
     this.init();
+    this.schedule();
   }
 
   init() {
@@ -17,15 +23,20 @@ export default class WebSocketServer {
       });
 
       this.online++;
-      setTimeout(() => {
-        this.broadcast({online: this.online});
-      });
+      setTimeout(() => this.sendOnlineEvent());
 
       ws.on('close', () => {
         this.online--;
-        this.broadcast({online: this.online});
+        this.sendOnlineEvent();
       });
     });
+  }
+
+  schedule() {
+    // 1分钟任务
+    setInterval(() => {
+      this.sendWeatherEvent();
+    }, 1000 * 60);
   }
 
   broadcast(data) {
@@ -39,4 +50,15 @@ export default class WebSocketServer {
       }
     })
   }
+
+  sendOnlineEvent(online) {
+    this.broadcast(new InfoMsg('online', {online: this.online}));
+  }
+
+  sendWeatherEvent() {
+    global.weather.timestamp = new Date() - 1495199400000;
+    this.broadcast(new InfoMsg('weather', global.weather));
+  }
+
+  
 }
