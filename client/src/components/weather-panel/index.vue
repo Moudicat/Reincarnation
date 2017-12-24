@@ -106,7 +106,7 @@
       },
       checkFestival() {
         let festivalMap = [{
-          time: ['/10/29', '/10/30', '/10/31', '/11/01', '/11/02'],
+          time: ['/10/29', '/10/30', '/10/31', '/11/1', '/11/2'],
           name: '万圣节',
           code: 'Halloween',
           banner: 'Halloween-1',
@@ -118,6 +118,19 @@
           },
           musicUrl: 'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/music/TRICK%20or%20TREAT.mp3',
           avatarUrl: 'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_Halloween.png'
+        }, {
+          time: ['/12/22', '/12/23', '/12/24', '/12/25'],
+          name: '圣诞节',
+          code: 'Christmas',
+          banner: 'Christmas-1',
+          tip: {
+            title: '圣诞快乐!',
+            message: 'Merry Christmas',
+            confirmText: '好好好(60秒背景音乐注意)',
+            cancelText: '无视'
+          },
+          musicUrl: 'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/music/Holly%20Jolly%20Christmas.mp3',
+          avatarUrl: 'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_Christmas.png'
         }];
 
         let isFestival = false;
