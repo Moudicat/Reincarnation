@@ -95,7 +95,7 @@
   .article-list-wrapper {
     position: relative;
     z-index: 800;
-    flex: auto;
+    flex: 1;
     margin: 10px 0 5px 5px;
     .article-list-header {
       margin-bottom: -1px;

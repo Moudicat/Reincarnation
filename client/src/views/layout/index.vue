@@ -29,7 +29,7 @@
     position: relative;
     z-index: 800;
     display: flex;
-    flex: auto;
+    flex: 1;
     width: 100%;
     max-width: 1190px;
     margin: 0 auto;
