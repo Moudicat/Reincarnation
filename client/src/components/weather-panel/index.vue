@@ -206,6 +206,11 @@
           if (response.data) {
             this.weather = response.data;
             this.calcTime();
+
+            this.$event.$on('onWeather', data => {
+              this.weather = data;
+            });
+
             setTimeout(() => {
               this.checkWeather();
             }, 2000);

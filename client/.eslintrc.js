@@ -28,6 +28,7 @@ module.exports = {
     //function 后可以直接跟括号
     'space-before-function-paren': 0,
     'no-useless-computed-key': 0,
-    'padded-blocks': 0
+    'padded-blocks': 0,
+    'no-trailing-spaces': 0
   }
 }

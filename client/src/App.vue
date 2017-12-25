@@ -61,8 +61,17 @@
 
           this.ws.onmessage = (evt) => {
             // type -> info system
-            // let { type, msg, data } = JSON.parse(evt.data);
-            console.log(`message: ${evt.data}`);
+            let { type, data } = JSON.parse(evt.data);
+            switch (type) {
+              case 'info_online':
+                this.$event.$emit('onOnline', data.online);
+                break;
+              case 'info_weather':
+                this.$event.$emit('onWeather', data);
+                break;
+              default:
+                console.log('[WS] Unknown message type!');
+            }
           };
 
           this.ws.onclose = (evt) => {
