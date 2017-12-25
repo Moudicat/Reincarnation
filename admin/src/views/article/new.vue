@@ -67,7 +67,11 @@
       if (this.$store.state.articleModifyId) {
         Article.getOne(this.$store.state.articleModifyId)
           .then(response => {
-            this.article = response.data;
+            for (const key in this.article) {
+              if (this.article.hasOwnProperty(key) && response.data[key]) {
+                this.article[key] = response.data[key];
+              }
+            }
             this.mde.value(response.data.content);
           })
           .catch(err => {
