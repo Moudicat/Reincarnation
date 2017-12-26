@@ -24,7 +24,7 @@ export default class WebSocketServer {
   init() {
     this.wss.on('connection', (ws) => {
       ws.on('message', (msg) => {
-        console.log(`[recv] message: ${msg}`);
+        // console.log(`[recv] message: ${msg}`);
       });
 
       this.online++;
