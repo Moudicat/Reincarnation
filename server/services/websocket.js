@@ -2,6 +2,8 @@
  * Created by Moudicat on 2017/11/26.
  */
 import WebSocket from 'ws';
+import { Room } from 'bililive-sub';
+import config from '../config';
 
 function InfoMsg(type, data) {
   this.type = `info_${type}`;
@@ -14,6 +16,9 @@ export default class WebSocketServer {
     this.wss = new WebSocket.Server({port: 2778});
     this.init();
     this.schedule();
+
+    this.bililiveInfo = [];
+    this.initBililive();
   }
 
   init() {
@@ -23,7 +28,10 @@ export default class WebSocketServer {
       });
 
       this.online++;
-      setTimeout(() => this.sendOnlineEvent());
+      setTimeout(() => {
+        this.sendOnlineEvent();
+        ws.send(JSON.stringify(new InfoMsg('historybililive', this.bililiveInfo)));
+      });
 
       ws.on('close', () => {
         this.online--;
@@ -37,6 +45,17 @@ export default class WebSocketServer {
     setInterval(() => {
       this.sendWeatherEvent();
     }, 1000 * 60);
+  }
+
+  initBililive() {
+    config.bililive.roomids.forEach((roomid, index) => {
+      let room = new Room(roomid);
+      room.on('info', info => {
+        this.bililiveInfo[index] = info;
+        info.roomid = roomid;
+        this.sendBililiveEvent(info);
+      });
+    });
   }
 
   broadcast(data) {
@@ -60,5 +79,7 @@ export default class WebSocketServer {
     this.broadcast(new InfoMsg('weather', global.weather));
   }
 
-  
+  sendBililiveEvent(info) {
+    this.broadcast(new InfoMsg('bililive', info));
+  }
 }

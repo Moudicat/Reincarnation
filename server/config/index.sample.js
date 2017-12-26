@@ -30,6 +30,9 @@ const defaultConf = {
   },
   api: {
     prefix: '/api'
+  },
+  bililive: {
+    roomids: [98438, 213, 281, 48360]
   }
 };
 
