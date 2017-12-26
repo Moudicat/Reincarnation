@@ -157,9 +157,9 @@ bcrypt-pbkdf@^1.0.0:
   dependencies:
     tweetnacl "^0.14.3"
 
-bililive-sub@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.npmjs.org/bililive-sub/-/bililive-sub-0.0.6.tgz#b8cca3d5dc49f32e5058e1660a9014d2c900e1ba"
+bililive-sub@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.npmjs.org/bililive-sub/-/bililive-sub-0.0.7.tgz#4a465f7ace616e53804bd6606a928627350f51e4"
   dependencies:
     lodash.isequal "^4.5.0"
     request "^2.83.0"
