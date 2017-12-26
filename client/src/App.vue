@@ -56,7 +56,7 @@
             clearInterval(this.wsTimer);
             this.wsTimer = setInterval(() => {
               this.ws.send('');
-            }, 30000);
+            }, 40000);
           };
 
           this.ws.onmessage = (evt) => {
@@ -68,6 +68,12 @@
                 break;
               case 'info_weather':
                 this.$event.$emit('onWeather', data);
+                break;
+              case 'info_bililive':
+                this.$event.$emit('onBililive', data);
+                break;
+              case 'info_historybililive':
+                this.$store.commit('components/SET_BILILIVEINFO', data);
                 break;
               default:
                 console.log('[WS] Unknown message type!');

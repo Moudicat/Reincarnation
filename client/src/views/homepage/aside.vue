@@ -2,6 +2,7 @@
   <transition-group name="component-fade" tag="aside">
     <StatusPanel v-if="asideAnimationIndex >= 0" key="statusPanel"/>
     <BangumiPanel v-if="asideAnimationIndex >= 1" key="bangumiPanel"/>
+    <BililivePanel v-if="asideAnimationIndex >= 2" key="bililivePanel"/>
   </transition-group>
 </template>
 
@@ -9,12 +10,14 @@
   import StatusPanel from 'components/status-panel';
   import BangumiPanel from 'components/bangumi-panel';
   import WeatherPanel from 'components/weather-panel';
+  import BililivePanel from 'components/bililive-panel';
 
   export default {
     components: {
       StatusPanel,
       BangumiPanel,
-      WeatherPanel
+      WeatherPanel,
+      BililivePanel
     },
     data() {
       return {
@@ -24,7 +27,7 @@
     mounted() {
       let animationIndexTimer = setInterval(() => {
         this.asideAnimationIndex++;
-        if (this.asideAnimationIndex >= 2) {
+        if (this.asideAnimationIndex >= 3) {
           clearInterval(animationIndexTimer);
         }
       }, 250);
