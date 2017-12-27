@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.7.7',
+            date: '2017-12-27',
+            desc: '增加 哔哩哔哩直播挂件'
+          },
+          {
             version: '0.7.5',
             date: '2017-12-24',
             desc: '调整 Popup样式 调试 WS 增加 节日系统-圣诞节'
