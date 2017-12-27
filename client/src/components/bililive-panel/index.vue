@@ -104,7 +104,6 @@
         }
         .live-roomid {
           float: right;
-          font-size: 12px;
         }
       }
     }
