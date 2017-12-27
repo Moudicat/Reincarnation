@@ -2,11 +2,15 @@
   <div class="bililive-panel" v-if="bililiveInfo.length">
     <h3>哔哩哔哩直播</h3>
 
-    <div class="live-card" v-for="liveInfo in bililiveInfo" :key="liveInfo.roomid">
-      <h4>{{liveInfo.data.title}}[{{liveInfo.roomid}}]</h4>
-      <p>直播分区：{{liveInfo.data.parent_area_name}}-{{liveInfo.data.area_name}}</p>
-      <p>{{ liveInfo.data.live_status ? '直播中' : '未直播' }}</p>
-      <img :src="liveInfo.data.user_cover" alt="live-cover">
+    <div class="live-card" v-for="liveInfo in bililiveInfo" :key="liveInfo.roomid" @click="gotobiliLive(liveInfo.roomid)">
+      <span class="live-status" :class="{'live': liveInfo.data.live_status === 1}">{{ liveInfo.data.live_status ? '直播中' : '闲置' }}</span>
+      <span class="live-area">{{liveInfo.data.parent_area_name}}-{{liveInfo.data.area_name}}</span>
+      <img class="live-cover" :src="liveInfo.data.user_cover" alt="live-cover">
+      <div class="live-desc">
+        <span class="live-title">{{liveInfo.data.title}}</span>
+        
+        <span class="live-roomid">{{liveInfo.roomid}}</span>
+      </div>
     </div>
 
   </div>
@@ -17,6 +21,12 @@
     data() {
       return {
       };
+    },
+
+    methods: {
+      gotobiliLive(roomid) {
+        window.open(`https://live.bilibili.com/${roomid}`);
+      }
     },
 
     beforeMount() {
@@ -52,12 +62,50 @@
     }
     
     .live-card {
+      position: relative;
       display: flex;
       flex-direction: column;
       justify-content: center;
       margin: 10px auto;
+      box-shadow: $secondary-boxshadow;
+      background: $secondary-background;
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
       img {
         width: 258px;
+      }
+      .live-status {
+        position: absolute;
+        top: 5px;
+        left: 10px;
+        padding: 4px;
+        border-radius: 4px;
+        font-size: 14px;
+        background-color: rgb(92, 92, 92);
+        color: #fff;
+        &.live {
+          background-color: rgb(231, 75, 75);
+        }
+      }
+      .live-area {
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        padding: 5px;
+        background: rgba(255,255,255,.8);
+        border-radius: 6px;
+        font-size: 12px;
+      }
+      .live-desc {
+        padding: 5px;
+        .live-title {
+
+        }
+        .live-roomid {
+          float: right;
+          font-size: 12px;
+        }
       }
     }
   }
