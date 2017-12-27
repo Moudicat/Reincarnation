@@ -6,7 +6,7 @@
  * @example: formatDate(12353453, 'yyyy-MM-dd hh:mm:ss')
  * @return:  2010-01-11 01:01:00
  * */
-export function formatDate(date, fmt) {
+function formatDate(date, fmt) {
   function padLeftZero(str) {
     return ('00' + str).substr(str.length);
   }
@@ -28,3 +28,7 @@ export function formatDate(date, fmt) {
   }
   return fmt;
 }
+
+export {
+  formatDate
+};

@@ -31,12 +31,15 @@ export default class WebSocketServer {
       setTimeout(() => {
         this.sendOnlineEvent();
         ws.send(JSON.stringify(new InfoMsg('historybililive', this.bililiveInfo)));
-      });
+      }, 1000);
 
       ws.on('close', () => {
         this.online--;
         this.sendOnlineEvent();
       });
+
+      // net.Socket errors are no longer swallowed in current version.
+      ws.on('error', () => {});
     });
   }
 
