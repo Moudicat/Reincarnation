@@ -44,10 +44,10 @@ export default class WebSocketServer {
   }
 
   schedule() {
-    // 1分钟任务
+    // 3分钟任务
     setInterval(() => {
       this.sendWeatherEvent();
-    }, 1000 * 60);
+    }, 1000 * 60 * 3);
   }
 
   initBililive() {
