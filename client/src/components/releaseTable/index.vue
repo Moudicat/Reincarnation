@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.7.8',
+            date: '2018-01-08',
+            desc: '增加 Google Analytics'
+          },
+          {
             version: '0.7.7',
             date: '2017-12-27',
             desc: '增加 哔哩哔哩直播挂件'
