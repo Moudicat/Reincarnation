@@ -12,9 +12,9 @@
       return {
         releaseData: [
           {
-            version: '0.7.8',
+            version: '0.7.9',
             date: '2018-01-08',
-            desc: '增加 Google Analytics'
+            desc: '增加 Google Analytics 修复 sw bug'
           },
           {
             version: '0.7.7',
@@ -105,11 +105,6 @@
             version: '0.5.7',
             date: '2017-08-10',
             desc: '修改 版本号'
-          },
-          {
-            version: '0.5.5',
-            date: '2017-08-10',
-            desc: '添加 自动更新功能'
           },
           {
             version: '0.5.4',
