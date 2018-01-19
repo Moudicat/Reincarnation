@@ -111,7 +111,8 @@ var webpackConfig = merge(baseWebpackConfig, {
           urlPattern: /^https:\/\/moudicat-data\.oss-cn-beijing\.aliyuncs\.com\/cdn\/.*/,
           handler: 'cacheFirst'
         }
-      ]
+      ],
+      staticFileGlobsIgnorePatterns: [/\.html$/]
     })
   ]
 });

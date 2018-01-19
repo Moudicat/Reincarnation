@@ -15,22 +15,17 @@
   import Header from 'views/header';
   import Footer from 'views/footer';
   import pkg from '../package.json';
-  import SStorage from 'services/sstorage';
 
   export default {
     name: 'app',
+
     components: {
       rHeader: Header,
       rFooter: Footer
     },
-    data() {
-      return {
-        versionCode: '',
-        MAX_RETRY: 1
-      };
-    },
 
     methods: {
+      
       init() {
         window.__version__ = pkg.version.split('.').map(e => Number(e));
       },
@@ -95,52 +90,6 @@
       this.init();
       this.dispatchCenterInit();
       this.closeLoader();
-    },
-
-    computed: {
-      version() {
-        return this.$store.state.global.status.filter(e => e.name === '当前博客版本');
-      }
-    },
-
-    watch: {
-      version(newValue) {
-        newValue = newValue[0].content;
-        if (newValue) {
-          let nowVersion = newValue.split('@')[1].split('.').map(e => Number(e));
-
-          console.log(`%c当前版本号：${nowVersion.join('.')}, 最新版本号: ${window.__version__.join('.')}`, 'color: red');
-
-          if (nowVersion[0] > window.__version__[0] || nowVersion[1] > window.__version__[1] || nowVersion[2] > window.__version__[2]) {
-            if (SStorage.get('updateRetry')) {
-              let retry = SStorage.get('updateRetry');
-              if (retry.targetVersion === nowVersion.join('') && retry.count >= this.MAX_RETRY) {
-                this.$message({
-                  type: 'error',
-                  message: '更新失败，已临时禁用自动更新，请手动刷新'
-                });
-                return;
-              }
-              SStorage.set('updateRetry', {
-                count: retry.count + 1,
-                targetVersion: nowVersion.join('')
-              });
-            } else {
-              this.$message({
-                message: '当前版本低于服务端版本，7秒后自动更新...',
-                duration: 4500
-              });
-              SStorage.set('updateRetry', {
-                count: 1,
-                targetVersion: nowVersion.join('')
-              });
-            }
-            setTimeout(() => {
-              location.reload();
-            }, 7000);
-          }
-        }
-      }
     }
   };
 </script>
