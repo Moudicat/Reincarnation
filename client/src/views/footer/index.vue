@@ -1,7 +1,7 @@
 <template>
   <footer>
     <p>Powered By <a href="https://github.com/moudicat/reincarnation">Reincatnation@Beta</a> | <a href="http://www.miitbeian.gov.cn/"  target="_blank" rel="nofollow noopener noreferrer">辽ICP备15016208号-1</a></p>
-    <p>Copyright © 2014-2017 某迪猫 All Rights Reserved.</p>
+    <p>Copyright © 2014-{{ new Date().getFullYear() }} 某迪猫 All Rights Reserved.</p>
   </footer>
 </template>
 
