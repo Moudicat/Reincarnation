@@ -221,7 +221,8 @@
       display: flex;
       position: relative;
       height: 60px;
-      max-width: 1190px;
+      min-width: 1190px;
+      max-width: 1400px;
       margin: 0 auto;
       background-color: $primary-background;
       .avatar-wrapper {

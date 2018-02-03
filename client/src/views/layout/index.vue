@@ -31,7 +31,8 @@
     display: flex;
     flex: 1;
     width: 100%;
-    max-width: 1190px;
+    min-width: 1190px;
+    max-width: 1400px;
     margin: 0 auto;
     .layout-aside {
       flex: 0 0 25.2%;

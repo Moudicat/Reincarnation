@@ -26,7 +26,8 @@
     justify-content: space-around;
     flex: auto;
     width: 100%;
-    max-width: 1190px;
+    min-width: 1190px;
+    max-width: 1400px;
     margin: 0 auto;
   }
 </style>

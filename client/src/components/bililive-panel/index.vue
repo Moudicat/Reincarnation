@@ -73,7 +73,7 @@
       overflow: hidden;
       cursor: pointer;
       img {
-        width: 258px;
+        width: 100%;
       }
       .live-status {
         position: absolute;
