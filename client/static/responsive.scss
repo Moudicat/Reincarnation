@@ -21,6 +21,7 @@
     }
     .nav-container {
       justify-content: center;
+      min-width: auto !important;
       nav {
         overflow-x: auto !important;
         padding-left: 0 !important;
@@ -43,9 +44,12 @@
 
   #app,
   .homepage-wrapper {
-    min-width: 0;
+    min-width: 0 !important;
   }
   section {
+    &.layout-wrapper {
+      min-width: auto !important;
+    }
     .layout-content {
       max-width: 100% !important;
     }
