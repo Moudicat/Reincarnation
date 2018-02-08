@@ -28,7 +28,6 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'UA-112106194-1');
   </script>
 </head>
@@ -48,6 +47,9 @@
     <h6 class="info">正在制造更多的Bug...</h6>
     <h6 class="info">正在连接土豆服务器...</h6>
     <h6 class="info">正在从土豆服务器下载资源...</h6>
+    <noscript>
+      <h6 class="info">ERROR: <br>抱歉，您的浏览器未开启 JavaScript...</h6>
+    </noscript>
   </div>
 
   <div class="background-t">
@@ -62,10 +64,8 @@
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/service-worker.js')
-      .then(() => {})
-      .catch((err) => {
-        console.log('ServiceWorker registration failed: ', err);
-      });
+      .then(function() {})
+      .catch(function(err) { console.log('ServiceWorker registration failed: ', err) });
   } else {
     console.log('%cServiceWorker is not supported 😢', 'color: red');
   }
