@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.7.10',
+            date: '2018-02-08',
+            desc: '修复 主页中的bug 添加 noscript标签'
+          },
+          {
             version: '0.7.9',
             date: '2018-01-08',
             desc: '增加 Google Analytics 修复 sw bug'
