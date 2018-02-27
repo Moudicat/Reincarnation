@@ -1,25 +1,31 @@
 <template>
-  <article :class="{'active': articleMode}">
-    <button class="go-back" @click="handleBack"></button>
-    <h2 class="article-title" v-show="articleObj.title">{{articleObj.title}}</h2>
-    <p class="article-time" v-show="articleObj.postTime"><i class="icon-clock"></i>
-      <time>{{articleObj.postTime | time}}</time>
-      <i class="icon-history"></i>
-      <time>{{articleObj.modifiedTime | time}}</time>
-    </p>
-    <!-- TODO: 各种信息的展示 -->
-    <div class="markdown-body content" v-html="article" v-show="article"></div>
-    <div class="markdown-body content" v-show="!article">
-      <h1>加载中~</h1>
-    </div>
+  <section class="article-section">
+    <article :class="{'active': articleMode}">
+      <button class="go-back" @click="handleBack"></button>
+      <h2 class="article-title" v-show="articleObj.title">{{articleObj.title}}</h2>
+      <p class="article-time" v-show="articleObj.postTime"><i class="icon-clock"></i>
+        <time>{{articleObj.postTime | time}}</time>
+        <i class="icon-history"></i>
+        <time>{{articleObj.modifiedTime | time}}</time>
+      </p>
+      <!-- TODO: 各种信息的展示 -->
+      <div class="markdown-body content" v-html="article" v-show="article"></div>
+      <div class="markdown-body content" v-show="!article">
+        <h1>加载中~</h1>
+      </div>
 
-    <div class="copyright">
+      <div class="copyright">
 
-    </div>
-  </article>
+      </div>
+    </article>
+
+    <div id="disqus_thread"></div>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </section>
 </template>
 
 <script type="text/ecmascript-6">
+  /* eslint-disable */
   import Article from 'services/article';
   import { formatDate, supportWebp } from 'services/utils';
   let hljs = require('highlight.js');
@@ -105,6 +111,20 @@
             this.$router.push('/404');
           });
       }
+
+      // disqus
+      var disqus_config = function () {
+        this.page.url = location.href;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = this.$route.params.id; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+      };
+      
+      (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://moudicat.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+      })();
+
     },
     beforeDestroy() {
       this.$store.commit('header/SET_AVATAR', false);
@@ -171,6 +191,11 @@
         vertical-align: middle;
       }
     }
+  }
+
+  #disqus_thread {
+    max-width: 1190px;
+    margin: -180px auto 0;
   }
 
   @font-face {
