@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.8.0',
+            date: '2018-02-27',
+            desc: '添加 disqus评论系统'
+          },
+          {
             version: '0.7.10',
             date: '2018-02-08',
             desc: '修复 主页中的bug 添加 noscript标签'
