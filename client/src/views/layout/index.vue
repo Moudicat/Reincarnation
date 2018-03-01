@@ -32,16 +32,15 @@
     flex: 1;
     width: 100%;
     min-width: 1190px;
-    max-width: 1400px;
+    max-width: 1300px;
     margin: 0 auto;
     .layout-aside {
-      flex: 0 0 25.2%;
+      flex: 0 0 200px;
       margin: 10px 10px 5px 0;
     }
     .layout-content {
       margin: 10px 0 5px 5px;
       flex: 1;
-      max-width: 73.6%;
       &.full {
         max-width: 100%;
       }

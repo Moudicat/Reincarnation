@@ -27,7 +27,8 @@
     flex: auto;
     width: 100%;
     min-width: 1190px;
-    max-width: 1400px;
-    margin: 0 auto;
+    max-width: 1300px;
+    margin: 10px auto;
+    padding: 0 20px;
   }
 </style>

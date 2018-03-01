@@ -38,7 +38,7 @@
 
 <style lang="scss" rel="stylesheet/scss" scoped>
   aside {
-    flex: 0 0 25.2%;
+    flex: 0 0 280px;
     margin: 10px 10px 5px 0;
     div:nth-child(n) {
       margin-bottom: 10px;
