@@ -8,6 +8,9 @@
         <li>
           <router-link to="/post-it-note" @click.native="handleClick">便利贴</router-link>
         </li>
+        <li>
+          <span class="tag-filter" @click="exitTagMode()" v-if="articleTagMode">取消浏览以 {{articleTagFilter}} 为主题的文章</span>
+        </li>
       </ul>
     </div>
     <div class="article-list">
@@ -41,7 +44,10 @@
         articleList: [],
         articleListHolder: '抓取数据中...',
         total: 0,
-        articleListAnimationIndex: -1
+        articleListAnimationIndex: -1,
+        articleTagMode: false,
+        articleTagFilter: '',
+        articleStatusBackup: null
       };
     },
     methods: {
@@ -54,16 +60,55 @@
         scrollToTop();
       },
       fetchArticle() {
-        Article.get(this.START, this.PAGE_LIMIT)
-          .then(response => {
-            if (response.data) {
-              if (!response.data.length) this.articleListHolder = '暂无文章~';
-              this.articleList.splice(0, this.articleList.length, ...response.data);
-            }
-          })
-          .catch(() => {
-            this.articleListHolder = '抱歉，获取数据失败...';
-          });
+        if (this.articleTagMode) {
+          Article.getByTags(this.articleTagFilter, this.START, this.PAGE_LIMIT)
+            .then(response => {
+              if (response.data) {
+                if (!response.data.length) this.articleListHolder = '此分类暂无文章';
+                this.articleList.splice(0, this.articleList.length, ...response.data);
+                this.showAnimation();
+              }
+            })
+            .catch(() => {
+              this.articleListHolder = '抱歉，获取数据失败...';
+            });
+        } else {
+          Article.get(this.START, this.PAGE_LIMIT)
+            .then(response => {
+              if (response.data) {
+                if (!response.data.length) this.articleListHolder = '暂无文章';
+                this.articleList.splice(0, this.articleList.length, ...response.data);
+                this.showAnimation();
+              }
+            })
+            .catch(() => {
+              this.articleListHolder = '抱歉，获取数据失败...';
+            });
+        }
+      },
+      resetArticleStatus() {
+        this.PAGE_LIMIT = 5;
+        this.PAGE = 1;
+        this.articleList.splice(0, this.articleList.length);
+        this.total = 0;
+        this.articleListAnimationIndex = -1;
+      },
+      showAnimation() {
+        let animationIndexTimer = setInterval(() => {
+          this.articleListAnimationIndex++;
+          if (this.articleListAnimationIndex >= this.PAGE_LIMIT) {
+            clearInterval(animationIndexTimer);
+          }
+        }, 300);
+      },
+      exitTagMode() {
+        this.articleTagMode = false;
+        this.articleTagFilter = '';
+
+        this.PAGE_LIMIT = this.articleStatusBackup.PAGE_LIMIT;
+        this.PAGE = this.articleStatusBackup.PAGE;
+        this.articleList.splice(0, this.articleList.length, ...this.articleStatusBackup.articleList);
+        this.total = this.articleStatusBackup.total;
       }
     },
     computed: {
@@ -75,15 +120,27 @@
       Article.count()
         .then(response => {
           response.data && (this.total = response.data);
-
-          let animationIndexTimer = setInterval(() => {
-            this.articleListAnimationIndex++;
-            if (this.articleListAnimationIndex >= this.PAGE_LIMIT) {
-              clearInterval(animationIndexTimer);
-            }
-          }, 300);
+          this.fetchArticle();
         });
-      this.fetchArticle();
+
+      this.$event.$on('onArticleTagMode', tag => {
+        this.articleTagMode = true;
+        this.articleTagFilter = tag;
+        this.articleStatusBackup = {
+          PAGE_LIMIT: this.PAGE_LIMIT,
+          PAGE: this.PAGE,
+          articleList: JSON.parse(JSON.stringify(this.articleList)),
+          total: this.total
+        };
+
+        this.resetArticleStatus();
+
+        Article.countByTags(tag)
+          .then(response => {
+            response.data && (this.total = response.data);
+            this.fetchArticle();
+          });
+      });
     },
     components: {
       ArticleListItem
@@ -114,6 +171,13 @@
           a.active {
             color: $primary-text;
           }
+        }
+      }
+
+      .tag-filter {
+        &:hover {
+          text-decoration: line-through;
+          cursor: pointer;
         }
       }
     }

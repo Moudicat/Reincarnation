@@ -2,6 +2,9 @@
   <li class="article-list-item">
     <h3 @click="handleOpenArticle">{{article.title}}<span></span></h3>
     <time><i class="icon-clock"></i> {{article.postTime | time}}</time>
+    <div class="tags-wrapper">
+      <span class="tag" v-for="tag in article.tags" :key="tag" @click.stop="handleOpenArticleTagMode(tag)"><span class="tag-prefix">显示以</span>{{ tag }}<span class="tag-suffix">为关键词的文章</span>  </span>
+    </div>
     <p class="desc">{{article.description}}</p>
     <div class="pic-wrapper">
       <img v-lazy="article.banner" alt="article-pic" class="pic" @click.stop="handlePicClick">
@@ -29,11 +32,12 @@
         } else {
           wrapper.style.maxHeight = targetHeight;
         }
-
-        console.log(this.$Lazyload);
       },
       handleOpenArticle() {
         this.$router.push('/article/' + this.article._id);
+      },
+      handleOpenArticleTagMode(tag) {
+        this.$event.$emit('onArticleTagMode', tag);
       }
     },
     filters: {
@@ -46,14 +50,16 @@
 
 <style lang="scss" rel="stylesheet/scss" scoped>
   .article-list-item {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     min-height: 150px;
-    padding: 20px 30px;
+    padding: 35px 30px 20px;
     transition: .3s;
     border-bottom: 1px solid #e6ecf0;
     text-align: center;
+    overflow: hidden;
     &:hover {
       background-color: $secondary-background;
     }
@@ -119,6 +125,50 @@
       white-space: nowrap;
       > i {
         vertical-align: baseline;
+      }
+    }
+
+    .tags-wrapper {
+      position: absolute;
+      left: 10px;
+      top: 0;
+      .tag {
+        position: relative;
+        display: inline-block;
+        margin: 0 5px;
+        padding: 4px 4px 4px;
+        font-size: 14px;
+        background: #e74b4b;
+        color: #fff;
+        border-radius: 0 0 4px 4px;
+        transition: .3s cubic-bezier(.62, .02, .34, 1);
+        cursor: pointer;
+        overflow: hidden;
+
+        .tag-prefix,
+        .tag-suffix {
+          position: absolute;
+          top: 4px;
+          opacity: 0;
+          transition: .2s .1s;
+        }
+
+        .tag-prefix {
+          left: 3px;
+        }
+        .tag-suffix {
+          right: 3px;
+        }
+
+        &:hover {
+          padding-left: 48px;
+          padding-right: 105px;
+          
+          .tag-prefix,
+          .tag-suffix {
+            opacity: 1;
+          }
+        }
       }
     }
     .desc {
