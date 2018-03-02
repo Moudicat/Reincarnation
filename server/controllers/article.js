@@ -29,6 +29,25 @@ export default class Article extends BaseRouterController {
       });
   }
 
+  @get('/tags/:tags')
+  getByTags(req, res) {
+    // start, limit
+    let start = Number(req.query.start) || 0;
+    let limit = Number(req.query.limit) || 5;
+    let tags = req.params.tags;
+
+    tags = tags.split(',');
+    ArticleApi.getByTag(tags, start, limit)
+      .then(response => {
+        res.resData.data = response;
+        res.json(res.resData);
+      })
+      .catch(err => {
+        aelog(req, res, err);
+        res.sendStatus(500);
+      });
+  }
+
   @get('/list')
   list(req, res) {
     ArticleApi.list()
@@ -45,6 +64,22 @@ export default class Article extends BaseRouterController {
   @get('/count')
   count(req, res) {
     ArticleApi.countArticle()
+      .then(response => {
+        res.resData.data = response;
+        res.json(res.resData);
+      })
+      .catch(err => {
+        aelog(req, res, err);
+        res.sendStatus(500);
+      });
+  }
+
+  @get('/countByTags/:tags')
+  countByTags(req, res) {
+    let tags = req.params.tags;
+    tags = tags.split(',');
+
+    ArticleApi.countArticleByTags(tags)
       .then(response => {
         res.resData.data = response;
         res.json(res.resData);
@@ -90,7 +125,8 @@ export default class Article extends BaseRouterController {
      status: String,
      content: String,
      description: String,
-     banner: String
+     banner: String,
+     tags: Array
      */
     let articleObj = req.body;
     if (!(articleObj.title && articleObj.author && articleObj.status && articleObj.content)) {

@@ -17,7 +17,8 @@ const articleSchema = new mongoose.Schema({
   status: String,
   description: String,
   banner: String,
-  content: String
+  content: String,
+  tags: Array
 }, {versionKey: false});
 
 articleSchema.pre('save', function (next) {

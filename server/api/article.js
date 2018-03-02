@@ -12,11 +12,25 @@ class ArticleApi {
   static async get(start, limit) {
     return await ArticleModel.find({status: 'publish'}, '-content -status').sort('-postTime').skip(start).limit(limit);
   }
+  static async getByTag(tags, start, limit) {
+    if (tags.length > 1) {
+      return await ArticleModel.find({status: 'publish', tags: {$all: tags}}, '-content -status').sort('-postTime').skip(start).limit(limit);
+    } else {
+      return await ArticleModel.find({status: 'publish', tags: {$in: tags}}, '-content -status').sort('-postTime').skip(start).limit(limit);
+    }
+  }
   static async list() {
     return await ArticleModel.find({status: 'publish'}, '-content -status').sort('-postTime');
   }
   static async countArticle() {
     return await ArticleModel.count({status: 'publish'});
+  }
+  static async countArticleByTags(tags) {
+    if (tags.length > 1) {
+      return await ArticleModel.count({status: 'publish', tags: {$all: tags}});
+    } else {
+      return await ArticleModel.count({status: 'publish', tags: {$in: tags}});
+    }
   }
   static async listAll() {
     return await ArticleModel.find({}, '-content').sort('-postTime');
@@ -28,7 +42,7 @@ class ArticleApi {
     return await ArticleModel.findOneAndUpdate({_id: id}, {status: status});
   }
   static async update(articleObj) {
-    return await ArticleModel.findOneAndUpdate({_id: articleObj._id}, {title: articleObj.title, status: articleObj.status, description: articleObj.description, banner: articleObj.banner, content: articleObj.content, modifiedTime: articleObj.modifiedTime});
+    return await ArticleModel.findOneAndUpdate({_id: articleObj._id}, {title: articleObj.title, status: articleObj.status, description: articleObj.description, banner: articleObj.banner, content: articleObj.content, modifiedTime: articleObj.modifiedTime, tags: articleObj.tags});
   }
   static async remove() {
     return await ArticleModel.deleteMany({status: 'delete'});
