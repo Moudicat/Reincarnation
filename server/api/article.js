@@ -10,7 +10,7 @@ class ArticleApi {
     return await newArticle.save();
   }
   static async get(start, limit) {
-    return await ArticleModel.find({status: 'publish'}, '-content -status').sort('-postTime').skip(start).limit(limit);
+    return await ArticleModel.find({status: 'publish', tags: {$nin: ["技术半月刊"]}}, '-content -status').sort('-postTime').skip(start).limit(limit);
   }
   static async getByTag(tags, start, limit) {
     if (tags.length > 1) {
@@ -23,7 +23,7 @@ class ArticleApi {
     return await ArticleModel.find({status: 'publish'}, '-content -status').sort('-postTime');
   }
   static async countArticle() {
-    return await ArticleModel.count({status: 'publish'});
+    return await ArticleModel.count({status: 'publish', tags: {$nin: ["技术半月刊"]}});
   }
   static async countArticleByTags(tags) {
     if (tags.length > 1) {
