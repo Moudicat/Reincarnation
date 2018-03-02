@@ -3,7 +3,13 @@
     <h3 @click="handleOpenArticle">{{article.title}}<span></span></h3>
     <time><i class="icon-clock"></i> {{article.postTime | time}}</time>
     <div class="tags-wrapper">
-      <span class="tag" v-for="tag in article.tags" :key="tag" @click.stop="handleOpenArticleTagMode(tag)"><span class="tag-prefix">显示以</span>{{ tag }}<span class="tag-suffix">为关键词的文章</span>  </span>
+      <span 
+        class="tag" 
+        v-for="(tag, index) in article.tags" 
+        :key="tag" 
+        @click.stop="handleOpenArticleTagMode(tag)"
+        :style="{'animation-delay': (index * 0.1 + 0.4) + 's'}"
+        ><span class="tag-prefix">显示以</span>{{ tag }}<span class="tag-suffix">为关键词的文章</span>  </span>
     </div>
     <p class="desc">{{article.description}}</p>
     <div class="pic-wrapper">
@@ -142,6 +148,7 @@
         color: #fff;
         border-radius: 0 0 4px 4px;
         transition: .3s cubic-bezier(.62, .02, .34, 1);
+        animation: fade-in .3s backwards;
         cursor: pointer;
         overflow: hidden;
 
@@ -188,6 +195,16 @@
       .pic {
         width: 100%;
       }
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
     }
   }
 </style>

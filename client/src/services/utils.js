@@ -54,13 +54,16 @@ function supportWebp () {
   return support;
 }
 
-function scrollToTop() {
+function scrollToTop(target = 0, min) {
   const body = document.body;
   let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+
+  if (min && scrollTop < min) return;
+
   const top = () => {
     scrollTop = scrollTop + (-scrollTop) / 6;
-    if (scrollTop < 1) {
-      body.scrollTop = 0;
+    if (scrollTop < target + 1) {
+      body.scrollTop = target;
       return;
     }
     body.scrollTop = document.documentElement.scrollTop = scrollTop;

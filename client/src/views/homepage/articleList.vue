@@ -3,10 +3,13 @@
     <div class="article-list-header">
       <ul>
         <li>
-          <router-link to="/">公开文章</router-link>
+          <router-link to="/" @click.native="exitTagMode()">公开文章</router-link>
         </li>
         <li>
-          <router-link to="/post-it-note" @click.native="handleClick">便利贴</router-link>
+          <router-link to="/" @click.native="enterTagMode('技术半月刊')">技术半月刊</router-link>
+        </li>
+        <li>
+          <router-link to="/" @click.native="handleClick">便利贴</router-link>
         </li>
         <li>
           <span class="tag-filter" @click="exitTagMode()" v-if="articleTagMode">取消浏览以 {{articleTagFilter}} 为主题的文章</span>
@@ -54,11 +57,13 @@
       handleClick() {
         this.$alert('抱歉，该功能尚未开发完毕');
       },
+
       handleCurrentChange(currentPage) {
         this.PAGE = currentPage;
         this.fetchArticle();
         scrollToTop();
       },
+
       fetchArticle() {
         if (this.articleTagMode) {
           Article.getByTags(this.articleTagFilter, this.START, this.PAGE_LIMIT)
@@ -67,6 +72,7 @@
                 if (!response.data.length) this.articleListHolder = '此分类暂无文章';
                 this.articleList.splice(0, this.articleList.length, ...response.data);
                 this.showAnimation();
+                scrollToTop(370, 370);
               }
             })
             .catch(() => {
@@ -79,6 +85,7 @@
                 if (!response.data.length) this.articleListHolder = '暂无文章';
                 this.articleList.splice(0, this.articleList.length, ...response.data);
                 this.showAnimation();
+                scrollToTop(370, 370);
               }
             })
             .catch(() => {
@@ -86,6 +93,7 @@
             });
         }
       },
+
       resetArticleStatus() {
         this.PAGE_LIMIT = 5;
         this.PAGE = 1;
@@ -93,6 +101,7 @@
         this.total = 0;
         this.articleListAnimationIndex = -1;
       },
+
       showAnimation() {
         let animationIndexTimer = setInterval(() => {
           this.articleListAnimationIndex++;
@@ -101,14 +110,24 @@
           }
         }, 300);
       },
+
       exitTagMode() {
         this.articleTagMode = false;
         this.articleTagFilter = '';
+        this.reloadList();
+      },
 
-        this.PAGE_LIMIT = this.articleStatusBackup.PAGE_LIMIT;
-        this.PAGE = this.articleStatusBackup.PAGE;
-        this.articleList.splice(0, this.articleList.length, ...this.articleStatusBackup.articleList);
-        this.total = this.articleStatusBackup.total;
+      enterTagMode(tag) {
+        this.$event.$emit('onArticleTagMode', tag);
+      },
+
+      reloadList() {
+        this.resetArticleStatus();
+        Article.count()
+          .then(response => {
+            response.data && (this.total = response.data);
+            this.fetchArticle();
+          });
       }
     },
     computed: {
