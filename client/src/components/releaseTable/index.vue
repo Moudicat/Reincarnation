@@ -12,6 +12,11 @@
       return {
         releaseData: [
           {
+            version: '0.8.5',
+            date: '2018-03-03',
+            desc: '添加 文章标签系统 微调 主题系统 删除 无用数据'
+          },
+          {
             version: '0.8.0',
             date: '2018-02-27',
             desc: '添加 disqus评论系统'
