@@ -7,18 +7,25 @@
         <r-tag :type="typeMap[index%5]" :num="state.num" v-if="state.num">{{state.content}}</r-tag>
         <r-tag :type="typeMap[index%5]" v-else>{{state.content}}</r-tag>
       </li>
+      <li>
+        博客版本
+        <r-tag type=“gray” v-if="version">{{ version }}</r-tag>
+      </li>
     </ul>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import pkg from '../../../package.json'; // eslint-disable-line
   import Status from 'services/status';
   import Tag from 'components/tag';
+
   export default {
     data() {
       return {
         typeMap: ['orange', 'green', 'red', 'blue', 'gray'],
-        status: []
+        status: [],
+        version: pkg.version
       };
     },
     mounted() {
