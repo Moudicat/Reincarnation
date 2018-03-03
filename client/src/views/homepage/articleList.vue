@@ -49,8 +49,7 @@
         total: 0,
         articleListAnimationIndex: -1,
         articleTagMode: false,
-        articleTagFilter: '',
-        articleStatusBackup: null
+        articleTagFilter: ''
       };
     },
     methods: {
@@ -145,12 +144,6 @@
       this.$event.$on('onArticleTagMode', tag => {
         this.articleTagMode = true;
         this.articleTagFilter = tag;
-        this.articleStatusBackup = {
-          PAGE_LIMIT: this.PAGE_LIMIT,
-          PAGE: this.PAGE,
-          articleList: JSON.parse(JSON.stringify(this.articleList)),
-          total: this.total
-        };
 
         this.resetArticleStatus();
 

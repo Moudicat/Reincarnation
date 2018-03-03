@@ -222,6 +222,10 @@
 </script>
 
 <style lang="scss" rel="stylesheet/scss">
+  .bangumi {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
   .demo-table-expand {
     font-size: 0;
   }

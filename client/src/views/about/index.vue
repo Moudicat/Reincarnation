@@ -34,6 +34,8 @@
 
 <style lang="scss" rel="stylesheet/scss" scoped>
   .about {
+    max-width: 1000px;
+    margin: 0 auto;
     .about-header {
       margin-bottom: -1px;
       background-color: #fff;
