@@ -168,7 +168,8 @@ export default class Article extends BaseRouterController {
       res.sendStatus(400);
       return;
     }
-    ArticleApi.update(req.body.articleObj)
+
+    ArticleApi.update(req.params.id, req.body.articleObj)
       .then(response => {
         res.resData.msg = '修改成功';
         res.json(res.resData);

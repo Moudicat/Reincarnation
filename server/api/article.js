@@ -39,10 +39,17 @@ class ArticleApi {
     return await ArticleModel.findOne({_id: id});
   }
   static async setStatus(id, status) {
-    return await ArticleModel.findOneAndUpdate({_id: id}, {status: status});
+    return await ArticleModel.update({_id: id}, {$set: {'status': status}});
   }
-  static async update(articleObj) {
-    return await ArticleModel.findOneAndUpdate({_id: articleObj._id}, {title: articleObj.title, status: articleObj.status, description: articleObj.description, banner: articleObj.banner, content: articleObj.content, modifiedTime: articleObj.modifiedTime, tags: articleObj.tags});
+  static async update(id, articleObj) {
+    return await ArticleModel.update({_id: id}, {$set: {
+      'title': articleObj.title, 
+      'status': articleObj.status,
+      'description': articleObj.description,
+      'banner': articleObj.banner, 
+      'content': articleObj.content, 
+      'tags': articleObj.tags
+    }});
   }
   static async remove() {
     return await ArticleModel.deleteMany({status: 'delete'});
