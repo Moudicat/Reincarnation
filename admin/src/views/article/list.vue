@@ -18,7 +18,7 @@
 
       <el-table-column label="标题">
         <template scope="scope">
-          <span class="link-type" @click="handleModify(scope.row._id)">{{scope.row.title}}</span>
+          <span class="link-type">{{scope.row.title}}</span>
         </template>
       </el-table-column>
 
@@ -40,6 +40,7 @@
           </el-button>
           <el-button v-if="scope.row.status != 'draft'" size="small" @click="handleModifyStatus(scope.row,'draft')">草稿
           </el-button>
+          <el-button size="small" @click="handleModify(scope.row._id)" type="warning">编辑</el-button>
           <el-button v-if="scope.row.status != 'delete'" size="small" type="danger" @click="handleModifyStatus(scope.row,'delete')">删除
           </el-button>
         </template>
