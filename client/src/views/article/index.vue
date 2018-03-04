@@ -9,14 +9,15 @@
         <time>{{articleObj.modifiedTime | time}}</time>
       </p>
       <!-- TODO: 各种信息的展示 -->
-      <div class="markdown-body content" v-html="article" v-show="article"></div>
-      <div class="markdown-body content" v-show="!article">
+      <div class="markdown-body content" v-html="article" v-if="article"></div>
+      <div class="markdown-body content" v-else>
         <h1>加载中~</h1>
       </div>
 
       <div class="copyright">
 
       </div>
+      <div class="back-btn" @click="handleBack"><i class="icon icon-home3"></i> 返回首页</div>
     </article>
 
     <div id="disqus_thread"></div>
@@ -196,6 +197,13 @@
   #disqus_thread {
     max-width: 1190px;
     margin: -180px auto 0;
+  }
+
+  .back-btn {
+    border-top: 1px dashed #24292e;
+    line-height: 80px;
+    text-align: center;
+    cursor: pointer;
   }
 
   @font-face {
