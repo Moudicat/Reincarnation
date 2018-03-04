@@ -84,7 +84,7 @@
       handleBack() {
         this.articleMode = false;
         setTimeout(() => {
-          this.$router.back(-1);
+          this.$router.push('/'); // don't use back  cause disqus
         }, 420);
       }
     },
@@ -145,7 +145,7 @@
     transition: .4s;
     overflow: hidden;
     &.active {
-      transform: translateY(-200px);
+      transform: translateY(-200px) translateZ(0);
       box-shadow: 0 0 2px rgba(0,0,0,.12), 0 2px 4px rgba(0,0,0,.24);
     }
     .go-back {
