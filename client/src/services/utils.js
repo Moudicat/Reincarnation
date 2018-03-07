@@ -72,8 +72,41 @@ function scrollToTop(target = 0, min) {
   top();
 }
 
+function jsonp(url, callbackName) {
+  let head = document.querySelector('head');
+  let script = document.createElement('script');
+
+  return new Promise((resolve, reject) => {
+    if (typeof url !== 'string') {
+      throw new Error('[jsonp] url is not string');
+    }
+
+    window[callbackName] = function (json) {
+      script.removeEventListener('error', onError);
+      head.removeChild(script);
+      resolve(json);
+      delete window[callbackName];
+    };
+
+    let onError = () => {
+      script.removeEventListener('error', onError);
+      head.removeChild(script);
+      reject(new Error({
+        status: 400,
+        statusText: 'Bad Request'
+      }));
+    };
+
+    script.addEventListener('error', onError);
+
+    script.src = url;
+    head.appendChild(script);
+  });
+}
+
 export {
   formatDate,
   supportWebp,
-  scrollToTop
+  scrollToTop,
+  jsonp
 };

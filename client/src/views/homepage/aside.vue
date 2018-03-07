@@ -3,6 +3,7 @@
     <StatusPanel v-if="asideAnimationIndex >= 0" key="statusPanel"/>
     <BangumiPanel v-if="asideAnimationIndex >= 1" key="bangumiPanel"/>
     <BililivePanel v-if="asideAnimationIndex >= 2" key="bililivePanel"/>
+    <WakatimePanel v-if="asideAnimationIndex >= 3" key="wakatimePanel"/>
   </transition-group>
 </template>
 
@@ -11,13 +12,15 @@
   import BangumiPanel from 'components/bangumi-panel';
   import WeatherPanel from 'components/weather-panel';
   import BililivePanel from 'components/bililive-panel';
+  import WakatimePanel from 'components/wakatime-panel';
 
   export default {
     components: {
       StatusPanel,
       BangumiPanel,
       WeatherPanel,
-      BililivePanel
+      BililivePanel,
+      WakatimePanel
     },
     data() {
       return {
@@ -27,7 +30,7 @@
     mounted() {
       let animationIndexTimer = setInterval(() => {
         this.asideAnimationIndex++;
-        if (this.asideAnimationIndex >= 3) {
+        if (this.asideAnimationIndex >= 4) {
           clearInterval(animationIndexTimer);
         }
       }, 250);
