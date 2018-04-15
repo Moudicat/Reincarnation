@@ -70,176 +70,187 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import Layout from 'views/layout';
-  import Animation from 'services/animation';
-  import Bangumi from 'services/bangumi';
-  import {formatDate} from 'services/utils';
-  import Tag from 'components/tag';
+import Layout from 'views/layout'
+import Animation from 'services/animation'
+import Bangumi from 'services/bangumi'
+import { formatDate } from 'services/utils'
+import Tag from 'components/tag'
 
-  export default {
-    data() {
-      return {
-        bangumiListData: [],
-        sites: {
-          'bangumi': {
-            'title': '番组计划',
-            'urlTemplate': 'http://bangumi.tv/subject/{{id}}',
-            'type': 'info'
-          },
-          'saraba1st': {
-            'title': 'Stage1st',
-            'urlTemplate': 'http://bbs.saraba1st.com/2b/thread-{{id}}-1-1.html',
-            'type': 'info'
-          },
-          'acfun': {
-            'title': 'AcFun',
-            'urlTemplate': 'http://www.acfun.cn/v/ab{{id}}',
-            'type': 'onair'
-          },
-          'bilibili': {
-            'title': '哔哩哔哩',
-            'urlTemplate': 'https://bangumi.bilibili.com/anime/{{id}}',
-            'type': 'onair'
-          },
-          'tucao': {
-            'title': 'TUCAO',
-            'urlTemplate': 'http://www.tucao.tv/index.php?m=search&c=index&a=init2&q={{id}}',
-            'type': 'onair'
-          },
-          'sohu': {
-            'title': '搜狐视频',
-            'urlTemplate': 'http://tv.sohu.com/{{id}}',
-            'type': 'onair'
-          },
-          'youku': {
-            'title': '优酷',
-            'urlTemplate': 'https://list.youku.com/show/id_z{{id}}.html',
-            'type': 'onair'
-          },
-          'tudou': {
-            'title': '土豆',
-            'urlTemplate': 'http://www.tudou.com/albumcover/{{id}}.html',
-            'type': 'onair'
-          },
-          'qq': {
-            'title': '腾讯视频',
-            'urlTemplate': 'https://v.qq.com/detail/{{id}}.html',
-            'type': 'onair'
-          },
-          'iqiyi': {
-            'title': '爱奇艺',
-            'urlTemplate': 'http://www.iqiyi.com/{{id}}.html',
-            'type': 'onair'
-          },
-          'letv': {
-            'title': '乐视',
-            'urlTemplate': 'http://www.le.com/comic/{{id}}.html',
-            'type': 'onair'
-          },
-          'pptv': {
-            'title': 'PPTV',
-            'urlTemplate': 'http://v.pptv.com/page/{{id}}.html',
-            'type': 'onair'
-          },
-          'kankan': {
-            'title': '响巢看看',
-            'urlTemplate': 'http://movie.kankan.com/movie/{{id}}',
-            'type': 'onair'
-          },
-          'mgtv': {
-            'title': '芒果tv',
-            'urlTemplate': 'http://www.mgtv.com/h/{{id}}.html',
-            'type': 'onair'
-          },
-          'dmhy': {
-            'title': '动漫花园',
-            'urlTemplate': 'https://share.dmhy.org/topics/list?keyword={{keyword}}',
-            'type': 'resource'
-          },
-          'nyaa': {
-            'title': 'nyaa',
-            'urlTemplate': 'https://www.nyaa.se/?page=search&term={{keyword}}',
-            'type': 'resource'
-          }
+export default {
+  data() {
+    return {
+      bangumiListData: [],
+      sites: {
+        bangumi: {
+          title: '番组计划',
+          urlTemplate: 'http://bangumi.tv/subject/{{id}}',
+          type: 'info'
+        },
+        saraba1st: {
+          title: 'Stage1st',
+          urlTemplate: 'http://bbs.saraba1st.com/2b/thread-{{id}}-1-1.html',
+          type: 'info'
+        },
+        acfun: {
+          title: 'AcFun',
+          urlTemplate: 'http://www.acfun.cn/v/ab{{id}}',
+          type: 'onair'
+        },
+        bilibili: {
+          title: '哔哩哔哩',
+          urlTemplate: 'https://bangumi.bilibili.com/anime/{{id}}',
+          type: 'onair'
+        },
+        tucao: {
+          title: 'TUCAO',
+          urlTemplate:
+            'http://www.tucao.tv/index.php?m=search&c=index&a=init2&q={{id}}',
+          type: 'onair'
+        },
+        sohu: {
+          title: '搜狐视频',
+          urlTemplate: 'http://tv.sohu.com/{{id}}',
+          type: 'onair'
+        },
+        youku: {
+          title: '优酷',
+          urlTemplate: 'https://list.youku.com/show/id_z{{id}}.html',
+          type: 'onair'
+        },
+        tudou: {
+          title: '土豆',
+          urlTemplate: 'http://www.tudou.com/albumcover/{{id}}.html',
+          type: 'onair'
+        },
+        qq: {
+          title: '腾讯视频',
+          urlTemplate: 'https://v.qq.com/detail/{{id}}.html',
+          type: 'onair'
+        },
+        iqiyi: {
+          title: '爱奇艺',
+          urlTemplate: 'http://www.iqiyi.com/{{id}}.html',
+          type: 'onair'
+        },
+        letv: {
+          title: '乐视',
+          urlTemplate: 'http://www.le.com/comic/{{id}}.html',
+          type: 'onair'
+        },
+        pptv: {
+          title: 'PPTV',
+          urlTemplate: 'http://v.pptv.com/page/{{id}}.html',
+          type: 'onair'
+        },
+        kankan: {
+          title: '响巢看看',
+          urlTemplate: 'http://movie.kankan.com/movie/{{id}}',
+          type: 'onair'
+        },
+        mgtv: {
+          title: '芒果tv',
+          urlTemplate: 'http://www.mgtv.com/h/{{id}}.html',
+          type: 'onair'
+        },
+        dmhy: {
+          title: '动漫花园',
+          urlTemplate: 'https://share.dmhy.org/topics/list?keyword={{keyword}}',
+          type: 'resource'
+        },
+        nyaa: {
+          title: 'nyaa',
+          urlTemplate: 'https://www.nyaa.se/?page=search&term={{keyword}}',
+          type: 'resource'
+        },
+        nicovideo: {
+          title: 'Niconico',
+          urlTemplate: 'http://ch.nicovideo.jp/{{id}}',
+          type: 'onair'
+        },
+        netflix: {
+          title: 'Netflix',
+          urlTemplate: 'https://www.netflix.com/title/{{id}}',
+          type: 'onair'
         }
-      };
-    },
-    methods: {
-      handleDetailOpen(row) {
-        if (row.detail) return;
-        if (row.id) {
-          Bangumi.get(row.id)
-            .then(response => {
-              this.bangumiListData.forEach(e => {
-                if (e.id === row.id) {
-                  this.$set(e, 'detail', response.data);
-                }
-              });
-            })
-            .catch(err => {
-              console.log(err);
-            });
-        }
-      },
-      siteMap(site) {
-        let tp = this.sites[site.site].urlTemplate;
-        const regexp = /{{(.+)}}/;
-        tp = tp.replace(regexp, ($0, $1) => {
-          return site[$1];
-        });
-        return tp;
-      },
-      tableRowClassName(row, index) {
-        if (index % 2) return 'gray-row';
       }
-    },
-    beforeMount() {
-      Animation.get()
-        .then(response => {
-          if (response.data && response.data.length) {
-            this.bangumiListData = response.data;
-          }
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    filters: {
-      formatDate(date) {
-        return formatDate(new Date(date), 'yyyy-MM-dd');
-      },
-      formatDate1(date) {
-        if (date === '') return '';
-        if (date === '未确定') return '未确定';
-        return formatDate(new Date(date), 'yyyy-MM-dd hh:mm');
-      }
-    },
-    components: {
-      Layout,
-      Tag
     }
-  };
+  },
+  methods: {
+    handleDetailOpen(row) {
+      if (row.detail) return
+      if (row.id) {
+        Bangumi.get(row.id)
+          .then(response => {
+            this.bangumiListData.forEach(e => {
+              if (e.id === row.id) {
+                this.$set(e, 'detail', response.data)
+              }
+            })
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      }
+    },
+    siteMap(site) {
+      let tp = this.sites[site.site].urlTemplate
+      const regexp = /{{(.+)}}/
+      tp = tp.replace(regexp, ($0, $1) => {
+        return site[$1]
+      })
+      return tp
+    },
+    tableRowClassName(row, index) {
+      if (index % 2) return 'gray-row'
+    }
+  },
+  beforeMount() {
+    Animation.get()
+      .then(response => {
+        if (response.data && response.data.length) {
+          this.bangumiListData = response.data
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  },
+  filters: {
+    formatDate(date) {
+      return formatDate(new Date(date), 'yyyy-MM-dd')
+    },
+    formatDate1(date) {
+      if (date === '') return ''
+      if (date === '未确定') return '未确定'
+      return formatDate(new Date(date), 'yyyy-MM-dd hh:mm')
+    }
+  },
+  components: {
+    Layout,
+    Tag
+  }
+}
 </script>
 
 <style lang="scss" rel="stylesheet/scss">
-  .bangumi {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .demo-table-expand {
-    font-size: 0;
-  }
-  .demo-table-expand label {
-    width: 100px;
-    color: #99a9bf;
-  }
-  .demo-table-expand .el-form-item {
-    margin-right: 0;
-    margin-bottom: 0;
-    width: 50%;
-  }
+.bangumi {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.demo-table-expand {
+  font-size: 0;
+}
+.demo-table-expand label {
+  width: 100px;
+  color: #99a9bf;
+}
+.demo-table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 50%;
+}
 
-  .el-table .gray-row {
-    background: #e9f1fb;
-  }
+.el-table .gray-row {
+  background: #e9f1fb;
+}
 </style>
