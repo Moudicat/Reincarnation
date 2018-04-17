@@ -70,11 +70,11 @@
 </template>
 
 <script type="text/ecmascript-6">
-import Layout from 'views/layout'
-import Animation from 'services/animation'
-import Bangumi from 'services/bangumi'
-import { formatDate } from 'services/utils'
-import Tag from 'components/tag'
+import Layout from 'views/layout';
+import Animation from 'services/animation';
+import Bangumi from 'services/bangumi';
+import { formatDate } from 'services/utils';
+import Tag from 'components/tag';
 
 export default {
   data() {
@@ -173,63 +173,63 @@ export default {
           type: 'onair'
         }
       }
-    }
+    };
   },
   methods: {
     handleDetailOpen(row) {
-      if (row.detail) return
+      if (row.detail) return;
       if (row.id) {
         Bangumi.get(row.id)
           .then(response => {
             this.bangumiListData.forEach(e => {
               if (e.id === row.id) {
-                this.$set(e, 'detail', response.data)
+                this.$set(e, 'detail', response.data);
               }
-            })
+            });
           })
           .catch(err => {
-            console.log(err)
-          })
+            console.log(err);
+          });
       }
     },
     siteMap(site) {
-      let tp = this.sites[site.site].urlTemplate
-      const regexp = /{{(.+)}}/
+      let tp = this.sites[site.site].urlTemplate;
+      const regexp = /{{(.+)}}/;
       tp = tp.replace(regexp, ($0, $1) => {
-        return site[$1]
-      })
-      return tp
+        return site[$1];
+      });
+      return tp;
     },
     tableRowClassName(row, index) {
-      if (index % 2) return 'gray-row'
+      if (index % 2) return 'gray-row';
     }
   },
   beforeMount() {
     Animation.get()
       .then(response => {
         if (response.data && response.data.length) {
-          this.bangumiListData = response.data
+          this.bangumiListData = response.data;
         }
       })
       .catch(err => {
-        console.log(err)
-      })
+        console.log(err);
+      });
   },
   filters: {
     formatDate(date) {
-      return formatDate(new Date(date), 'yyyy-MM-dd')
+      return formatDate(new Date(date), 'yyyy-MM-dd');
     },
     formatDate1(date) {
-      if (date === '') return ''
-      if (date === '未确定') return '未确定'
-      return formatDate(new Date(date), 'yyyy-MM-dd hh:mm')
+      if (date === '') return '';
+      if (date === '未确定') return '未确定';
+      return formatDate(new Date(date), 'yyyy-MM-dd hh:mm');
     }
   },
   components: {
     Layout,
     Tag
   }
-}
+};
 </script>
 
 <style lang="scss" rel="stylesheet/scss">
