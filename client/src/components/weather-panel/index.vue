@@ -137,7 +137,8 @@
         let festival = null;
         festivalMap.forEach((fastival) => {
           fastival.time.forEach(time => {
-            if (new Date().toLocaleDateString().indexOf(time) > -1) {
+            const reg = new RegExp(time + '$');
+            if (reg.test(new Date().toLocaleDateString())) {
               isFestival = true;
               festival = {
                 name: fastival.name,
