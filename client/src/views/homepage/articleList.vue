@@ -18,7 +18,7 @@
     </div>
     <div class="article-list">
       <transition-group name="fade-top" tag="ol" v-if="articleList.length">
-        <ArticleListItem v-for="(article, index) in articleList" v-if="articleListAnimationIndex >= index" :key="index" :article="article" />
+        <ArticleListItem v-for="(article, index) in articleList" v-if="articleListAnimationIndex >= index" :key="article._id" :article="article" />
       </transition-group>
       <h3 class="info" v-else><i class="icon-smile"></i>{{articleListHolder}}</h3>
     </div>
