@@ -11,7 +11,6 @@ import calendar from '../services/programmerCalendar';
 export default class Weather extends BaseRouterController {
   @get('/')
   get(req, res) {
-    console.log(calendar.getTodayString());
     try {
       res.resData.data = {
         today: calendar.getTodayString(),
