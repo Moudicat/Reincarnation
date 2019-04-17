@@ -12,6 +12,7 @@ export default class Weather extends BaseRouterController {
   @get('/')
   get(req, res) {
     try {
+      calendar.init();
       res.resData.data = {
         today: calendar.getTodayString(),
         direction: calendar.getDirectionString(),

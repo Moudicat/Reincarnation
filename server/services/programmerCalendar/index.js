@@ -24,8 +24,13 @@ try {
 }
 
 const define = defineNewest;
-const today = new Date();
-const iday = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+let today = new Date();
+let iday = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+
+function init() {
+  today = new Date();
+  iday = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+}
 
 /*
  * 注意：本程序中的“随机”都是伪随机概念，以当前的天为种子。
@@ -65,8 +70,8 @@ function star(num) {
 function pickTodaysLuck() {
   let _activities = filter(define.activities);
 
-  let numGood = (random(iday, 98) % 3) + 2;
-  let numBad = (random(iday, 87) % 3) + 2;
+  let numGood = (random(iday, 98) % 3) + 3;
+  let numBad = (random(iday, 87) % 3) + 3;
   let eventArr = pickRandomActivity(_activities, numGood + numBad);
 
   let special = pickSpecials();
@@ -198,6 +203,7 @@ function getStarString() {
   return star((random(iday, 6) % 5) + 1);
 }
 
+exports.init = init;
 exports.getTodayString = getTodayString;
 exports.getDirectionString = getDirectionString;
 exports.getDrinkString = getDrinkString;
