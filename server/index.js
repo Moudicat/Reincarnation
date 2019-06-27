@@ -4,12 +4,7 @@
 import express from 'express';
 import config from './config/';
 import { resolve } from 'path';
-import {
-  apiInfoLogger as apiInfoLoggerMiddleware,
-  apiWarnLogger as apiWarnLoggerMiddleware,
-  apiErrorLogger as aelog,
-  guguLogger
-} from './services/logger';
+import { apiInfoLogger as apiInfoLoggerMiddleware, apiWarnLogger as apiWarnLoggerMiddleware, apiErrorLogger as aelog, guguLogger } from './services/logger';
 
 import WebSocketServer from './services/websocket';
 
@@ -51,8 +46,8 @@ class ApiServer {
   start() {
     if (isProd) {
       this.app.listen(config.app.port, () => {
-          console.log(`线上模式: 端口${config.app.port}`);
-        });
+        console.log(`线上模式: 端口${config.app.port}`);
+      });
     } else {
       this.app.listen(config.app.port, () => {
         console.log(`本地开发模式: 端口${config.app.port}`);
