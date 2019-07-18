@@ -24,88 +24,89 @@
 </template>
 
 <script type="text/ecmascript-6">
-  import Weather from 'services/weather';
-  import Tag from 'components/tag';
-  import {formatDate} from 'services/utils';
-  export default {
-    data() {
-      return {
-        weather: {},
-        timer: null,
-        count: 120,
-        disableChange: false
-      };
-    },
-    methods: {
-      calcTime() {
-        this.timer = setInterval(() => {
-          this.weather.timestamp += 1000;
-          if (this.disableChange) return;
-          this.count++;
-          if (this.count >= 120) {
-            this.count = 0;
-            let s = null;
-            let t = null;
-            let hours = new Date(this.weather.timestamp).getHours();
-            if (this.weather.season === '春季') {
-              s = 1;
-            } else if (this.weather.season === '夏季') {
-              s = 2;
-            } else if (this.weather.season === '秋季') {
-              s = 3;
-            } else {
-              s = 4;
-            }
-            if (hours > 6 && hours < 11) {
-              t = '0800';
-            } else if (hours >= 11 && hours < 17) {
-              t = '1200';
-            } else if (hours >= 17 && hours < 20) {
-              t = '1800';
-            } else {
-              t = '2200';
-            }
-            this.$store.commit('global/SET_BGURL', `${s}_${t}`);
+import Weather from 'services/weather';
+import Tag from 'components/tag';
+import { formatDate } from 'services/utils';
+export default {
+  data() {
+    return {
+      weather: {},
+      timer: null,
+      count: 120,
+      disableChange: false
+    };
+  },
+  methods: {
+    calcTime() {
+      this.timer = setInterval(() => {
+        this.weather.timestamp += 1000;
+        if (this.disableChange) return;
+        this.count++;
+        if (this.count >= 120) {
+          this.count = 0;
+          let s = null;
+          let t = null;
+          let hours = new Date(this.weather.timestamp).getHours();
+          if (this.weather.season === '春季') {
+            s = 1;
+          } else if (this.weather.season === '夏季') {
+            s = 2;
+          } else if (this.weather.season === '秋季') {
+            s = 3;
+          } else {
+            s = 4;
           }
-        }, 1000);
-      },
-      checkWeather() {
-        switch (this.weather.type) {
-          case '小雨':
-            this.$emit('weatherChange', 'rain');
-            break;
-          case '大雨':
-            this.$emit('weatherChange', 'heavyRain');
-            break;
-          case '小雪':
-          case '大雪':
-            this.$emit('weatherChange', 'snow');
-            break;
-          default:
-            switch (this.weather.season) {
-              case '夏季':
-                // 晚间萤火虫
-                if (this.$store.state.global.bgUrl.indexOf('2200') > -1) {
-                  this.$emit('weatherChange', 'fireflies');
-                }
-                break;
-              case '秋季':
-                // 晚间星空
-                if (this.$store.state.global.bgUrl.indexOf('2200') > -1) {
-                  this.$emit('weatherChange', 'star');
-                }
-                break;
-              case '冬季':
-                // 晚间星空
-                if (this.$store.state.global.bgUrl.indexOf('2200') > -1) {
-                  this.$emit('weatherChange', 'star');
-                }
-                break;
-            }
+          if (hours > 6 && hours < 11) {
+            t = '0800';
+          } else if (hours >= 11 && hours < 17) {
+            t = '1200';
+          } else if (hours >= 17 && hours < 20) {
+            t = '1800';
+          } else {
+            t = '2200';
+          }
+          this.$store.commit('global/SET_BGURL', `${s}_${t}`);
         }
-      },
-      checkFestival() {
-        let festivalMap = [{
+      }, 1000);
+    },
+    checkWeather() {
+      switch (this.weather.type) {
+        case '小雨':
+          this.$emit('weatherChange', 'rain');
+          break;
+        case '大雨':
+          this.$emit('weatherChange', 'heavyRain');
+          break;
+        case '小雪':
+        case '大雪':
+          this.$emit('weatherChange', 'snow');
+          break;
+        default:
+          switch (this.weather.season) {
+            case '夏季':
+              // 晚间萤火虫
+              if (this.$store.state.global.bgUrl.indexOf('2200') > -1) {
+                this.$emit('weatherChange', 'fireflies');
+              }
+              break;
+            case '秋季':
+              // 晚间星空
+              if (this.$store.state.global.bgUrl.indexOf('2200') > -1) {
+                this.$emit('weatherChange', 'star');
+              }
+              break;
+            case '冬季':
+              // 晚间星空
+              if (this.$store.state.global.bgUrl.indexOf('2200') > -1) {
+                this.$emit('weatherChange', 'star');
+              }
+              break;
+          }
+      }
+    },
+    checkFestival() {
+      let festivalMap = [
+        {
           time: ['/10/29', '/10/30', '/10/31', '/11/1', '/11/2'],
           name: '万圣节',
           code: 'Halloween',
@@ -118,7 +119,8 @@
           },
           musicUrl: 'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/music/TRICK%20or%20TREAT.mp3',
           avatarUrl: 'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_Halloween.png'
-        }, {
+        },
+        {
           time: ['/12/22', '/12/23', '/12/24', '/12/25'],
           name: '圣诞节',
           code: 'Christmas',
@@ -131,180 +133,203 @@
           },
           musicUrl: 'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/music/Holly%20Jolly%20Christmas.mp3',
           avatarUrl: 'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_Christmas.png'
-        }];
-
-        let isFestival = false;
-        let festival = null;
-        festivalMap.forEach((fastival) => {
-          fastival.time.forEach(time => {
-            const reg = new RegExp(time + '$');
-            if (reg.test(new Date().toLocaleDateString())) {
-              isFestival = true;
-              festival = {
-                name: fastival.name,
-                code: fastival.code,
-                banner: fastival.banner,
-                tip: fastival.tip,
-                musicUrl: fastival.musicUrl,
-                avatarUrl: fastival.avatarUrl
-              };
-            }
-          });
-        });
-
-        return {
-          isFestival,
-          festival
-        };
-      }
-    },
-    computed: {
-      temperatureType() {
-        if (this.weather.temperature < 0) {
-          return 'blue';
-        } else if (this.weather.temperature < 20) {
-          return 'green';
-        } else if (this.weather.temperature < 35) {
-          return 'orange';
-        } else {
-          return 'red';
+        },
+        {
+          time: ['2019/7/18', '2019/7/19', '2019/7/20', '2019/7/21', '2019/7/22', '2019/7/23', '2019/7/24', '2019/7/25'],
+          name: 'Pray for kyoani',
+          code: 'kyoani',
+          banner: 'kyoani-1',
+          tip: {
+            title: 'Pray for 京阿尼',
+            message: '祈愿逝者安息，伤者早日康复',
+            confirmText: '🕯',
+            cancelText: '🙏'
+          },
+          musicUrl: '',
+          avatarUrl: 'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_240x240.png',
+          grey: true
         }
-      },
-      seasonType() {
-        if (this.weather.season === '春季') {
-          return 'green';
-        } else if (this.weather.season === '夏季') {
-          return 'red';
-        } else if (this.weather.season === '秋季') {
-          return 'orange';
-        } else {
-          return 'blue';
-        }
-      },
-      typeType() {
-        const t = this.weather.type;
-        if (t === '晴' || t === '多云') {
-          return 'gray';
-        } else if (t === '小雨' || t === '大雨' || t === '大雪' || t === '小雪') {
-          return 'blue';
-        } else if (t === '雷电') {
-          return 'red';
-        } else {
-          return '';
-        }
-      },
-      warningType() {
-        if (this.weather.warning === '') {
-          return '';
-        } else {
-          return 'red';
-        }
-      }
-    },
-    beforeMount() {
-      Weather.get()
-        .then(response => {
-          if (response.data) {
-            this.weather = response.data;
-            this.calcTime();
+      ];
 
-            this.$event.$on('onWeather', data => {
-              this.weather = data;
-            });
-
-            setTimeout(() => {
-              this.checkWeather();
-            }, 2000);
-          } else {
-            throw new Error('内部错误');
+      let isFestival = false;
+      let festival = null;
+      festivalMap.forEach(fastival => {
+        fastival.time.forEach(time => {
+          const reg = new RegExp(time + '$');
+          console.log(reg, new Date().toLocaleDateString());
+          if (reg.test(new Date().toLocaleDateString())) {
+            isFestival = true;
+            festival = {
+              name: fastival.name,
+              code: fastival.code,
+              banner: fastival.banner,
+              tip: fastival.tip,
+              musicUrl: fastival.musicUrl,
+              avatarUrl: fastival.avatarUrl,
+              grey: fastival.grey
+            };
           }
-        })
-        .catch(err => {
-          this.weather = {
-            temperature: '传感器离线',
-            season: '未知',
-            timestamp: 0,
-            type: '未知',
-            warning: err.message
-          };
         });
+      });
 
-      let festivalObj = this.checkFestival();
+      return {
+        isFestival,
+        festival
+      };
+    }
+  },
+  computed: {
+    temperatureType() {
+      if (this.weather.temperature < 0) {
+        return 'blue';
+      } else if (this.weather.temperature < 20) {
+        return 'green';
+      } else if (this.weather.temperature < 35) {
+        return 'orange';
+      } else {
+        return 'red';
+      }
+    },
+    seasonType() {
+      if (this.weather.season === '春季') {
+        return 'green';
+      } else if (this.weather.season === '夏季') {
+        return 'red';
+      } else if (this.weather.season === '秋季') {
+        return 'orange';
+      } else {
+        return 'blue';
+      }
+    },
+    typeType() {
+      const t = this.weather.type;
+      if (t === '晴' || t === '多云') {
+        return 'gray';
+      } else if (t === '小雨' || t === '大雨' || t === '大雪' || t === '小雪') {
+        return 'blue';
+      } else if (t === '雷电') {
+        return 'red';
+      } else {
+        return '';
+      }
+    },
+    warningType() {
+      if (this.weather.warning === '') {
+        return '';
+      } else {
+        return 'red';
+      }
+    }
+  },
+  beforeMount() {
+    Weather.get()
+      .then(response => {
+        if (response.data) {
+          this.weather = response.data;
+          this.calcTime();
 
-      if (festivalObj.isFestival) {
-        this.disableChange = true;
+          this.$event.$on('onWeather', data => {
+            this.weather = data;
+          });
 
-        this.$store.commit('global/SET_BGURL', festivalObj.festival.banner);
-        this.$store.commit('header/SET_AVATARURL', festivalObj.festival.avatarUrl);
+          setTimeout(() => {
+            this.checkWeather();
+          }, 2000);
+        } else {
+          throw new Error('内部错误');
+        }
+      })
+      .catch(err => {
+        this.weather = {
+          temperature: '传感器离线',
+          season: '未知',
+          timestamp: 0,
+          type: '未知',
+          warning: err.message
+        };
+      });
 
-        setTimeout(() => {
-          this.$confirm({
-            title: festivalObj.festival.tip.title,
-            message: festivalObj.festival.tip.message,
-            confirmText: festivalObj.festival.tip.confirmText,
-            cancelText: festivalObj.festival.tip.cancelText
-          }).then(() => {
+    let festivalObj = this.checkFestival();
+
+    if (festivalObj.isFestival) {
+      this.disableChange = true;
+
+      this.$store.commit('global/SET_BGURL', festivalObj.festival.banner);
+      this.$store.commit('header/SET_AVATARURL', festivalObj.festival.avatarUrl);
+      if (festivalObj.festival.grey) {
+        document.documentElement.classList.add('grey');
+      }
+      setTimeout(() => {
+        this.$confirm({
+          title: festivalObj.festival.tip.title,
+          message: festivalObj.festival.tip.message,
+          confirmText: festivalObj.festival.tip.confirmText,
+          cancelText: festivalObj.festival.tip.cancelText
+        })
+          .then(() => {
+            if (!festivalObj.festival.musicUrl) return;
             let audioElement = document.createElement('audio');
             audioElement.autoplay = 'autoplay';
             let sourceElement = document.createElement('source');
             sourceElement.src = festivalObj.festival.musicUrl;
             sourceElement.type = 'audio/mp3';
             audioElement.appendChild(sourceElement);
-          }).catch(() => {});
-        }, 0);
-      }
-    },
-    beforeDestroy() {
-      clearInterval(this.timer);
-    },
-    filters: {
-      time(t) {
-        return formatDate(new Date(t), '教会历yyyy年MM月dd日 hh:mm:ss', true);
-      }
-    },
-    components: {
-      rTag: Tag
+          })
+          .catch(() => {});
+      }, 0);
     }
-  };
+  },
+  beforeDestroy() {
+    clearInterval(this.timer);
+  },
+  filters: {
+    time(t) {
+      return formatDate(new Date(t), '教会历yyyy年MM月dd日 hh:mm:ss', true);
+    }
+  },
+  components: {
+    rTag: Tag
+  }
+};
 </script>
 
 <style lang="scss" rel="stylesheet/scss" scoped>
-  .weather-panel {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 10;
+.weather-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  padding: 5px;
+  border: 1px solid $primary-background;
+  border-radius: 0 0 4px 4px;
+  border-top: 0;
+  box-shadow: $primary-boxshadow;
+  line-height: 22px;
+  text-shadow: #aaaaaa 1px 1px 1px;
+  transition: 0.4s;
+  background-color: $primary-background;
+  color: #242424;
+  user-select: none;
+  > h3 {
+    font-weight: 500;
+  }
+  > span {
+    display: block;
+    margin-left: 20px;
+  }
+  .weather-panel-list {
     display: flex;
-    justify-content: center;
-    margin: 0 auto;
-    padding: 5px;
-    border: 1px solid $primary-background;
-    border-radius: 0 0 4px 4px;
-    border-top: 0;
-    box-shadow: $primary-boxshadow;
-    line-height: 22px;
-    text-shadow: #aaaaaa 1px 1px 1px;
-    transition: .4s;
-    background-color: $primary-background;
-    color: #242424;
-    user-select: none;
-    > h3 {
-      font-weight: 500;
-    }
-    > span {
-      display: block;
-      margin-left: 20px;
-    }
-    .weather-panel-list {
-      display: flex;
-      margin-left: 20px;
-      li {
-        margin-right: 10px;
-      }
-    }
-    &:hover {
-      background-color:  rgba(255, 255, 255, .8);
+    margin-left: 20px;
+    li {
+      margin-right: 10px;
     }
   }
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+}
 </style>

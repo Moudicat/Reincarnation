@@ -6,7 +6,20 @@
  * 2016/10/21 Add fieldset & legend css reset.
  * 2017/5/2   Add html5 reset & blockquote reset.
  * */
-body, h1, h2, h3, h4, h5, h6, dl, dd, ul, ol, p, fieldset, legend {
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+dl,
+dd,
+ul,
+ol,
+p,
+fieldset,
+legend {
   margin: 0;
   padding: 0;
 }
@@ -15,11 +28,21 @@ body {
   font-family: PingFang SC, Helvetica Neue, Helvetica, Arial, Microsoft YaHei, 微软雅黑, sans-serif;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 
-h1, h2, h3, h4, h5, h6, strong, b, i, em {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+strong,
+b,
+i,
+em {
   font-weight: normal;
   font-style: normal;
 }
@@ -47,7 +70,10 @@ textarea {
   resize: none;
 }
 
-input, button, select, textarea {
+input,
+button,
+select,
+textarea {
   outline: 0;
 }
 
@@ -55,12 +81,15 @@ legend {
   border: 0;
 }
 
-blockquote, q {
+blockquote,
+q {
   quotes: none;
 }
 
-blockquote:before, blockquote:after,
-q:before, q:after {
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
   content: '';
   content: none;
 }
@@ -70,8 +99,18 @@ table {
   border-spacing: 0;
 }
 
-article, aside, details, figcaption, figure,
-footer, header, hgroup, main, menu, nav, section {
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section {
   display: block;
 }
 
@@ -81,7 +120,7 @@ button {
 }
 
 .clearfix:after {
-  content: "";
+  content: '';
   display: block;
   clear: both;
   overflow: hidden;
@@ -92,10 +131,8 @@ button {
 @font-face {
   font-family: 'icomoon';
   src: url('fonts/icomoon.eot?mkzw5p');
-  src: url('fonts/icomoon.eot?mkzw5p#iefix') format('embedded-opentype'),
-  url('fonts/icomoon.ttf?mkzw5p') format('truetype'),
-  url('fonts/icomoon.woff?mkzw5p') format('woff'),
-  url('fonts/icomoon.svg?mkzw5p#icomoon') format('svg');
+  src: url('fonts/icomoon.eot?mkzw5p#iefix') format('embedded-opentype'), url('fonts/icomoon.ttf?mkzw5p') format('truetype'), url('fonts/icomoon.woff?mkzw5p') format('woff'),
+    url('fonts/icomoon.svg?mkzw5p#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -116,86 +153,88 @@ i {
 }
 
 .icon-sun:before {
-  content: "\e900";
+  content: '\e900';
 }
 
 .icon-moon:before {
-  content: "\e901";
+  content: '\e901';
 }
 
 .icon-wind:before {
-  content: "\e902";
+  content: '\e902';
 }
 
 .icon-cloudy:before {
-  content: "\e903";
+  content: '\e903';
 }
 
 .icon-cloud:before {
-  content: "\e904";
+  content: '\e904';
 }
 
 .icon-cloud2:before {
-  content: "\e905";
+  content: '\e905';
 }
 
 .icon-lightning:before {
-  content: "\e906";
+  content: '\e906';
 }
 
 .icon-rainy:before {
-  content: "\e907";
+  content: '\e907';
 }
 
 .icon-rainy2:before {
-  content: "\e908";
+  content: '\e908';
 }
 
 .icon-snowy:before {
-  content: "\e909";
+  content: '\e909';
 }
 
 .icon-snowy2:before {
-  content: "\e90a";
+  content: '\e90a';
 }
 
 .icon-thermometer:before {
-  content: "\e90b";
+  content: '\e90b';
 }
 
 .icon-Celsius:before {
-  content: "\e90c";
+  content: '\e90c';
 }
 
 .icon-home3:before {
-  content: "\e90d";
+  content: '\e90d';
 }
 
 .icon-compass:before {
-  content: "\e949";
+  content: '\e949';
 }
 
 .icon-history:before {
-  content: "\e94d";
+  content: '\e94d';
 }
 
 .icon-clock:before {
-  content: "\e94e";
+  content: '\e94e';
 }
 
 .icon-bubbles4:before {
-  content: "\e970";
+  content: '\e970';
 }
 
 .icon-smile:before {
-  content: "\e9e1";
+  content: '\e9e1';
 }
 
 .icon-github:before {
-  content: "\eab0";
+  content: '\eab0';
 }
 
-*, *::after, *::before {
+*,
+*::after,
+*::before {
   box-sizing: border-box;
 }
 
@@ -222,8 +261,8 @@ body {
   width: 200px;
   height: 30px;
   z-index: 99999;
-  -webkit-transition: .4s opacity;
-  transition: .4s opacity;
+  -webkit-transition: 0.4s opacity;
+  transition: 0.4s opacity;
   opacity: 1;
 }
 
@@ -241,11 +280,11 @@ body {
 }
 
 #loader-t > .info:nth-child(2) {
-  animation-delay: .2s;
+  animation-delay: 0.2s;
 }
 
 #loader-t > .info:nth-child(3) {
-  animation-delay: .6s;
+  animation-delay: 0.6s;
   animation-duration: 1s;
 }
 
@@ -267,15 +306,16 @@ body {
   width: 60px;
   z-index: 0;
   background: #333;
-  animation: top 1.7s .3s forwards;
+  animation: top 1.7s 0.3s forwards;
 }
 
-.cat:before, .cat:after {
+.cat:before,
+.cat:after {
   width: 0;
   height: 0;
   top: -10px;
   position: absolute;
-  content: "";
+  content: '';
 }
 
 .cat:before {
@@ -323,7 +363,7 @@ body {
 
 @-webkit-keyframes top {
   from {
-    opacity: .2;
+    opacity: 0.2;
   }
   60% {
     opacity: 1;
@@ -337,7 +377,7 @@ body {
 
 @keyframes top {
   from {
-    opacity: .2;
+    opacity: 0.2;
   }
   60% {
     opacity: 1;
@@ -394,10 +434,14 @@ body {
   top: 0;
   left: 0;
   pointer-events: none;
-  transition: .5s;
+  transition: 0.5s;
 }
 
 .pageload-overlay svg path {
-  fill: #FFF4F0;
-  transition: .5s;
+  fill: #fff4f0;
+  transition: 0.5s;
+}
+
+.grey {
+  filter: grayscale(1);
 }
