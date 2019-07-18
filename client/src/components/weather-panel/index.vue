@@ -156,8 +156,10 @@ export default {
       festivalMap.forEach(fastival => {
         fastival.time.forEach(time => {
           const reg = new RegExp(time + '$');
-          console.log(reg, new Date().toLocaleDateString());
-          if (reg.test(new Date().toLocaleDateString())) {
+          const curDate = new Date();
+          const currentDate = `${curDate.getFullYear()}/${curDate.getMonth() + 1}/${curDate.getDate()}`;
+
+          if (reg.test(currentDate)) {
             isFestival = true;
             festival = {
               name: fastival.name,
