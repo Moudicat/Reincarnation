@@ -1,0 +1,4 @@
+线上模式: 端口6666
+已成功连接到数据库: mongodb:27017/reincarnation
+[32minfo[39m: [GET] - /api/hitokoto - ::ffff:172.19.0.1 - PostmanRuntime/7.15.0 - Tue Aug 06 2019 14:43:02 GMT+0000 (Coordinated Universal Time)
+[32minfo[39m: [GET] - /api/hitokoto0 - ::ffff:172.19.0.1 - PostmanRuntime/7.15.0 - Tue Aug 06 2019 14:43:06 GMT+0000 (Coordinated Universal Time)

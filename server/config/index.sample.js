@@ -16,10 +16,9 @@ const defaultConf = {
     secret: 'your secret key'
   },
   db: {
-    host: 'localhost',
-    port: '27088',
-    db: 'your db name',
-    path: 'path/to/your/db'
+    host: process.env.MONGODB_HOST || 'localhost',
+    port: process.env.MONGODB_PORT || '27017',
+    db: process.env.MONGODB_DB || 'reincarnation'
   },
   gugu: {
     ak: 'your ak code',
@@ -36,4 +35,4 @@ const defaultConf = {
   }
 };
 
-export default Object.assign({env, host}, conf, defaultConf);
+export default Object.assign({ env, host }, conf, defaultConf);

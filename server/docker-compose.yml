@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  api:
+    container_name: reincarnation-api
+    build: .
+    ports:
+      - 6666:6666
+    environment:
+      - MONGODB_HOST=mongodb
+      - MONGODB_PORT=27017
+      - MONGODB_DB=reincarnation
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - mongodb
+  mongodb:
+    container_name: reincarnation-mongodb
+    image: mongo:3.4
+    volumes:
+      - ./db:/data/db
