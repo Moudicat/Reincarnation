@@ -3,7 +3,7 @@
     <StatusPanel v-if="asideAnimationIndex >= 0" key="statusPanel"/>
     <BangumiPanel v-if="asideAnimationIndex >= 1" key="bangumiPanel"/>
     <BililivePanel v-if="asideAnimationIndex >= 2" key="bililivePanel"/>
-    <WakatimePanel v-if="asideAnimationIndex >= 3" key="wakatimePanel"/>
+    <!-- <WakatimePanel v-if="asideAnimationIndex >= 3" key="wakatimePanel"/> -->
   </transition-group>
 </template>
 
@@ -30,7 +30,7 @@
     mounted() {
       let animationIndexTimer = setInterval(() => {
         this.asideAnimationIndex++;
-        if (this.asideAnimationIndex >= 4) {
+        if (this.asideAnimationIndex >= 3) {
           clearInterval(animationIndexTimer);
         }
       }, 250);
