@@ -113,12 +113,15 @@ export default {
           banner: 'Halloween-1',
           tip: {
             title: 'Trick or Treat!',
-            message: 'The sky is blue, the grass is green, may we have our Halloween. (不给糖就捣蛋!)',
+            message:
+              'The sky is blue, the grass is green, may we have our Halloween. (不给糖就捣蛋!)',
             confirmText: '好好好(40秒背景音乐注意)',
             cancelText: '无视'
           },
-          musicUrl: 'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/music/TRICK%20or%20TREAT.mp3',
-          avatarUrl: 'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_Halloween.png'
+          musicUrl:
+            'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/music/TRICK%20or%20TREAT.mp3',
+          avatarUrl:
+            'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_Halloween.png'
         },
         {
           time: ['/12/22', '/12/23', '/12/24', '/12/25'],
@@ -131,11 +134,22 @@ export default {
             confirmText: '好好好(60秒背景音乐注意)',
             cancelText: '无视'
           },
-          musicUrl: 'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/music/Holly%20Jolly%20Christmas.mp3',
-          avatarUrl: 'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_Christmas.png'
+          musicUrl:
+            'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/music/Holly%20Jolly%20Christmas.mp3',
+          avatarUrl:
+            'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_Christmas.png'
         },
         {
-          time: ['2019/7/18', '2019/7/19', '2019/7/20', '2019/7/21', '2019/7/22', '2019/7/23', '2019/7/24', '2019/7/25'],
+          time: [
+            '2019/7/18',
+            '2019/7/19',
+            '2019/7/20',
+            '2019/7/21',
+            '2019/7/22',
+            '2019/7/23',
+            '2019/7/24',
+            '2019/7/25'
+          ],
           name: 'Pray for kyoani',
           code: 'kyoani',
           banner: 'kyoani-1',
@@ -146,8 +160,24 @@ export default {
             cancelText: '🙏'
           },
           musicUrl: '',
-          avatarUrl: 'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_240x240.png',
+          avatarUrl:
+            'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_240x240.png',
           grey: true
+        },
+        {
+          time: ['/4/9'],
+          name: '懒懒生日',
+          code: 'lanlan',
+          banner: 'lanlan-1',
+          tip: {
+            title: 'From Moudicat:',
+            message: '生日快乐，懒懒~',
+            confirmText: '好的',
+            cancelText: '🎂'
+          },
+          musicUrl: '',
+          avatarUrl:
+            'https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/avatar_240x240.png'
         }
       ];
 
@@ -157,7 +187,8 @@ export default {
         fastival.time.forEach(time => {
           const reg = new RegExp(time + '$');
           const curDate = new Date();
-          const currentDate = `${curDate.getFullYear()}/${curDate.getMonth() + 1}/${curDate.getDate()}`;
+          const currentDate = `${curDate.getFullYear()}/${curDate.getMonth() +
+            1}/${curDate.getDate()}`;
 
           if (reg.test(currentDate)) {
             isFestival = true;
@@ -257,7 +288,10 @@ export default {
       this.disableChange = true;
 
       this.$store.commit('global/SET_BGURL', festivalObj.festival.banner);
-      this.$store.commit('header/SET_AVATARURL', festivalObj.festival.avatarUrl);
+      this.$store.commit(
+        'header/SET_AVATARURL',
+        festivalObj.festival.avatarUrl
+      );
       if (festivalObj.festival.grey) {
         document.documentElement.classList.add('grey');
       }

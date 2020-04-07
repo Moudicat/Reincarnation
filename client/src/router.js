@@ -7,17 +7,18 @@ import ReleaseTable from 'views/about/releaseNote';
 import Bangumi from 'views/bangumi';
 import Links from 'views/links';
 import Memoird from 'views/memobird';
+import Lanlan from 'views/lanlan';
 import Page404 from 'views/404';
 const Article = () => import('./views/article');
 Vue.use(Router);
 
 export default new Router({
   mode: 'history',
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       return savedPosition;
     } else {
-      return {x: 0, y: 0};
+      return { x: 0, y: 0 };
     }
   },
   routes: [
@@ -63,6 +64,11 @@ export default new Router({
           component: ReleaseTable
         }
       ]
+    },
+    {
+      path: '/lanlan',
+      name: 'Lanlan',
+      component: Lanlan
     },
     {
       path: '*',
