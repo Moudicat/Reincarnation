@@ -2,33 +2,33 @@
 
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
+  parser: "babel-eslint",
   parserOptions: {
-    sourceType: 'module'
+    sourceType: "module"
   },
   env: {
-    browser: true,
+    browser: true
   },
   // https://github.com/feross/standard/blob/master/RULES.md#javascript-standard-style
-  extends: 'standard',
+  extends: "standard",
   // required to lint *.vue files
-  plugins: [
-    'html'
-  ],
+  plugins: ["html"],
   // add your custom rules here
-  'rules': {
+  rules: {
     // allow paren-less arrow functions
-    'arrow-parens': 0,
+    "arrow-parens": 0,
     // allow async-await
-    'generator-star-spacing': 0,
+    "generator-star-spacing": 0,
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    "no-debugger": process.env.NODE_ENV === "production" ? 2 : 0,
     // 强制分号
-    'semi': ['error', 'always'],
+    semi: ["error", "always"],
     //function 后可以直接跟括号
-    'space-before-function-paren': 0,
-    'no-useless-computed-key': 0,
-    'padded-blocks': 0,
-    'no-trailing-spaces': 0
+    "space-before-function-paren": 0,
+    "no-useless-computed-key": 0,
+    "padded-blocks": 0,
+    "no-trailing-spaces": 0,
+    "comma-dangle": 0,
+    quotes: 0
   }
-}
+};
