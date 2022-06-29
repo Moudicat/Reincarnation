@@ -1,13 +1,13 @@
 import BaseRouterController from './base/baseRouterController';
-import { controller, get  } from '../decorators/router';
+import { controller, post  } from '../decorators/router';
 import rplMiddleware from '../middlewares/rplMiddleware';
 import config from '../config';
 import request from 'superagent';
 
 @controller('/notify', rplMiddleware)
 export default class Notify extends BaseRouterController {
-  @get('/')
-  async get(req, res) {
+  @post('/')
+  async post(req, res) {
     const getTokenUrl = `https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=${config.wecom.cid}&corpsecret=${config.wecom.secret}`
     const getTokenRes = await request.get(getTokenUrl)
     const accessToken = getTokenRes.body.access_token
