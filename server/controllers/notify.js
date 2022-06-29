@@ -11,7 +11,7 @@ export default class Notify extends BaseRouterController {
     const getTokenUrl = `https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=${config.wecom.cid}&corpsecret=${config.wecom.secret}`
     const getTokenRes = await request.get(getTokenUrl)
     const accessToken = getTokenRes.body.access_token
-    if (accessToken?.length <= 0) {
+    if (accessToken && accessToken.length <= 0) {
       aelog(req, res, new Error('获取 accessToken 失败'));
       res.sendStatus(500);
       return;
