@@ -5,22 +5,21 @@ import mongoose from 'mongoose';
 const HitokotoModel = mongoose.model('Hitokoto');
 
 class HitokotoApi {
-  static async insert(payload) {
+  static insert(payload) {
     const hitokoto = new HitokotoModel(payload);
-    await hitokoto.save();
-    return hitokoto;
+    return hitokoto.save();
   }
-  static async get() {
-    return await HitokotoModel.aggregate([{$match: {isActive: true}}, {$sample: {size: 1}}]);
+  static get() {
+    return HitokotoModel.aggregate([{$match: {isActive: true}}, {$sample: {size: 1}}]);
   }
-  static async getAll() {
-    return await HitokotoModel.find({});
+  static getAll() {
+    return HitokotoModel.find({});
   }
-  static async setActive(id, isActive) {
-    return await HitokotoModel.update({_id: id}, {$set: {isActive: isActive}});
+  static setActive(id, isActive) {
+    return HitokotoModel.update({_id: id}, {$set: {isActive: isActive}});
   }
-  static async remove(id) {
-    return await HitokotoModel.findOneAndRemove({_id: id});
+  static remove(id) {
+    return HitokotoModel.findOneAndRemove({_id: id});
   }
 }
 

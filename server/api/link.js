@@ -2,19 +2,18 @@ import mongoose from 'mongoose';
 const LinkModel = mongoose.model('Link');
 
 class LinkApi {
-  static async list() {
-    return await LinkModel.find({});
+  static list() {
+    return LinkModel.find({});
   }
-  static async insert(linkInfo) {
+  static insert(linkInfo) {
     const link = new LinkModel(linkInfo);
-    await link.save();
-    return link;
+    return link.save();
   }
-  static async update(linkInfo) {
-    return await LinkModel.findOneAndUpdate({_id: linkInfo._id});
+  static update(linkInfo) {
+    return LinkModel.findOneAndUpdate({_id: linkInfo._id});
   }
-  static async remove(id) {
-    return await LinkModel.findOneAndRemove({_id: id});
+  static remove(id) {
+    return LinkModel.findOneAndRemove({_id: id});
   }
 }
 

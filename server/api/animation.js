@@ -5,24 +5,24 @@ import mongoose from 'mongoose';
 const AnimationModel = mongoose.model('Animation');
 
 class AnimationApi {
-  static async insert(payload) {
+  static insert(payload) {
     const animation = new AnimationModel(payload);
-    return await animation.save();
+    return animation.save();
   }
-  static async get() {
-    return await AnimationModel.find({}).sort('-date');
+  static get() {
+    return AnimationModel.find({}).sort('-date');
   }
-  static async getOne(id) {
-    return await AnimationModel.findOne({_id: id});
+  static getOne(id) {
+    return AnimationModel.findOne({_id: id});
   }
-  static async update(payload) {
-    return await AnimationModel.findOneAndUpdate({_id: payload.id}, {name: payload.name, episode: payload.episode, date: payload.date, isDone: payload.isDone, comment: payload.comment});
+  static update(payload) {
+    return AnimationModel.findOneAndUpdate({_id: payload.id}, {name: payload.name, episode: payload.episode, date: payload.date, isDone: payload.isDone, comment: payload.comment});
   }
-  static async getLatest() {
-    return await AnimationModel.find({}).sort('-date').limit(1);
+  static getLatest() {
+    return AnimationModel.find({}).sort('-date').limit(1);
   }
-  static async remove(id) {
-    return await AnimationModel.findOneAndRemove({_id: id});
+  static remove(id) {
+    return AnimationModel.findOneAndRemove({_id: id});
   }
 }
 

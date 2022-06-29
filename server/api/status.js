@@ -5,13 +5,12 @@ import mongoose from 'mongoose';
 const StatusModel = mongoose.model('Status');
 
 class StatusApi {
-  static async update(payload) {
+  static update(payload) {
     const status = new StatusModel(payload);
-    await status.save();
-    return status;
+    return status.save();
   }
-  static async get() {
-    return await StatusModel.find({}, '-_id').sort('-date').limit(1);
+  static get() {
+    return StatusModel.find({}, '-_id').sort('-date').limit(1);
   }
 }
 

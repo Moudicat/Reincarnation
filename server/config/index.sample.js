@@ -33,6 +33,11 @@ const defaultConf = {
   },
   bililive: {
     roomids: [98438, 213, 281, 48360]
+  },
+  wecom: {
+    cid: 'cid',
+    secret: 'secret',
+    aid: 'aid'
   }
 };
 
