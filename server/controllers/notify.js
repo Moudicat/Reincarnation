@@ -12,7 +12,9 @@ export default class Notify extends BaseRouterController {
     const getTokenRes = await request.get(getTokenUrl)
     const accessToken = getTokenRes.body.access_token
     if (accessToken?.length <= 0) {
-      throw new Error('获取 accessToken 失败')
+      aelog(req, res, new Error('获取 accessToken 失败'));
+      res.sendStatus(500);
+      return;
     }
     const sendMsgUrl = `https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=${accessToken}`
     await request.post(sendMsgUrl).send({
