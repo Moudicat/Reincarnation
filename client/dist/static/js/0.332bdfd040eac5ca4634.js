@@ -132,9 +132,8 @@ function replaceEntityPattern(match, name) {
 
   if (name.charCodeAt(0) === 0x23/* # */ && DIGITAL_ENTITY_TEST_RE.test(name)) {
     code = name[1].toLowerCase() === 'x' ?
-      parseInt(name.slice(2), 16)
-    :
-      parseInt(name.slice(1), 10);
+      parseInt(name.slice(2), 16) : parseInt(name.slice(1), 10);
+
     if (isValidEntityCode(code)) {
       return fromCodePoint(code);
     }
@@ -285,10 +284,53 @@ function isMdAsciiPunct(ch) {
 // Hepler to unify [reference labels].
 //
 function normalizeReference(str) {
-  // use .toUpperCase() instead of .toLowerCase()
-  // here to avoid a conflict with Object.prototype
-  // members (most notably, `__proto__`)
-  return str.trim().replace(/\s+/g, ' ').toUpperCase();
+  // Trim and collapse whitespace
+  //
+  str = str.trim().replace(/\s+/g, ' ');
+
+  // In node v10 'ẞ'.toLowerCase() === 'Ṿ', which is presumed to be a bug
+  // fixed in v12 (couldn't find any details).
+  //
+  // So treat this one as a special case
+  // (remove this when node v10 is no longer supported).
+  //
+  if ('ẞ'.toLowerCase() === 'Ṿ') {
+    str = str.replace(/ẞ/g, 'ß');
+  }
+
+  // .toLowerCase().toUpperCase() should get rid of all differences
+  // between letter variants.
+  //
+  // Simple .toLowerCase() doesn't normalize 125 code points correctly,
+  // and .toUpperCase doesn't normalize 6 of them (list of exceptions:
+  // İ, ϴ, ẞ, Ω, K, Å - those are already uppercased, but have differently
+  // uppercased versions).
+  //
+  // Here's an example showing how it happens. Lets take greek letter omega:
+  // uppercase U+0398 (Θ), U+03f4 (ϴ) and lowercase U+03b8 (θ), U+03d1 (ϑ)
+  //
+  // Unicode entries:
+  // 0398;GREEK CAPITAL LETTER THETA;Lu;0;L;;;;;N;;;;03B8;
+  // 03B8;GREEK SMALL LETTER THETA;Ll;0;L;;;;;N;;;0398;;0398
+  // 03D1;GREEK THETA SYMBOL;Ll;0;L;<compat> 03B8;;;;N;GREEK SMALL LETTER SCRIPT THETA;;0398;;0398
+  // 03F4;GREEK CAPITAL THETA SYMBOL;Lu;0;L;<compat> 0398;;;;N;;;;03B8;
+  //
+  // Case-insensitive comparison should treat all of them as equivalent.
+  //
+  // But .toLowerCase() doesn't change ϑ (it's already lowercase),
+  // and .toUpperCase() doesn't change ϴ (already uppercase).
+  //
+  // Applying first lower then upper case normalizes any character:
+  // '\u0398\u03f4\u03b8\u03d1'.toLowerCase().toUpperCase() === '\u0398\u0398\u0398\u0398'
+  //
+  // Note: this is equivalent to unicode case folding; unicode normalization
+  // is a different step that is not required here.
+  //
+  // Final result should be uppercased, because it's later stored in an object
+  // (this avoid a conflict with Object.prototype members,
+  // most notably, `__proto__`)
+  //
+  return str.toLowerCase().toUpperCase();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -775,7 +817,11 @@ function Token(type, tag, nesting) {
   /**
    * Token#info -> String
    *
-   * fence infostring
+   * Additional information:
+   *
+   * - Info string for "fence" tokens
+   * - The value "auto" for autolink "link_open" and "link_close" tokens
+   * - The string value of the item marker for ordered-list "list_item_open" tokens
    **/
   this.info     = '';
 
@@ -1069,7 +1115,7 @@ var open_tag    = '<[A-Za-z][A-Za-z0-9\\-]*' + attribute + '*\\s*\\/?>';
 
 var close_tag   = '<\\/[A-Za-z][A-Za-z0-9\\-]*\\s*>';
 var comment     = '<!---->|<!--(?:-?[^>-])(?:-?[^-])*-->';
-var processing  = '<[?].*?[?]>';
+var processing  = '<[?][\\s\\S]*?[?]>';
 var declaration = '<![A-Z]+\\s+[^>]*>';
 var cdata       = '<!\\[CDATA\\[[\\s\\S]*?\\]\\]>';
 
@@ -1120,9 +1166,8 @@ module.exports.tokenize = function strikethrough(state, silent) {
 
     state.delimiters.push({
       marker: marker,
-      jump:   i,
+      length: 0,     // disable "rule of 3" length checks meant for emphasis
       token:  state.tokens.length - 1,
-      level:  state.level,
       end:    -1,
       open:   scanned.can_open,
       close:  scanned.can_close
@@ -1135,16 +1180,13 @@ module.exports.tokenize = function strikethrough(state, silent) {
 };
 
 
-// Walk through delimiter list and replace text tokens with tags
-//
-module.exports.postProcess = function strikethrough(state) {
+function postProcess(state, delimiters) {
   var i, j,
       startDelim,
       endDelim,
       token,
       loneMarkers = [],
-      delimiters = state.delimiters,
-      max = state.delimiters.length;
+      max = delimiters.length;
 
   for (i = 0; i < max; i++) {
     startDelim = delimiters[i];
@@ -1202,6 +1244,23 @@ module.exports.postProcess = function strikethrough(state) {
       state.tokens[i] = token;
     }
   }
+}
+
+
+// Walk through delimiter list and replace text tokens with tags
+//
+module.exports.postProcess = function strikethrough(state) {
+  var curr,
+      tokens_meta = state.tokens_meta,
+      max = state.tokens_meta.length;
+
+  postProcess(state, state.delimiters);
+
+  for (curr = 0; curr < max; curr++) {
+    if (tokens_meta[curr] && tokens_meta[curr].delimiters) {
+      postProcess(state, tokens_meta[curr].delimiters);
+    }
+  }
 };
 
 
@@ -1241,22 +1300,9 @@ module.exports.tokenize = function emphasis(state, silent) {
       //
       length: scanned.length,
 
-      // An amount of characters before this one that's equivalent to
-      // current one. In plain English: if this delimiter does not open
-      // an emphasis, neither do previous `jump` characters.
-      //
-      // Used to skip sequences like "*****" in one step, for 1st asterisk
-      // value will be 0, for 2nd it's 1 and so on.
-      //
-      jump:   i,
-
       // A position of the token this delimiter corresponds to.
       //
       token:  state.tokens.length - 1,
-
-      // Token level.
-      //
-      level:  state.level,
 
       // If this delimiter is matched as a valid opener, `end` will be
       // equal to its position, otherwise it's `-1`.
@@ -1277,17 +1323,14 @@ module.exports.tokenize = function emphasis(state, silent) {
 };
 
 
-// Walk through delimiter list and replace text tokens with tags
-//
-module.exports.postProcess = function emphasis(state) {
+function postProcess(state, delimiters) {
   var i,
       startDelim,
       endDelim,
       token,
       ch,
       isStrong,
-      delimiters = state.delimiters,
-      max = state.delimiters.length;
+      max = delimiters.length;
 
   for (i = max - 1; i >= 0; i--) {
     startDelim = delimiters[i];
@@ -1310,9 +1353,11 @@ module.exports.postProcess = function emphasis(state) {
     //
     isStrong = i > 0 &&
                delimiters[i - 1].end === startDelim.end + 1 &&
+               // check that first two markers match and adjacent
+               delimiters[i - 1].marker === startDelim.marker &&
                delimiters[i - 1].token === startDelim.token - 1 &&
-               delimiters[startDelim.end + 1].token === endDelim.token + 1 &&
-               delimiters[i - 1].marker === startDelim.marker;
+               // check that last two markers are adjacent (we can safely assume they match)
+               delimiters[startDelim.end + 1].token === endDelim.token + 1;
 
     ch = String.fromCharCode(startDelim.marker);
 
@@ -1336,6 +1381,23 @@ module.exports.postProcess = function emphasis(state) {
       i--;
     }
   }
+}
+
+
+// Walk through delimiter list and replace text tokens with tags
+//
+module.exports.postProcess = function emphasis(state) {
+  var curr,
+      tokens_meta = state.tokens_meta,
+      max = state.tokens_meta.length;
+
+  postProcess(state, state.delimiters);
+
+  for (curr = 0; curr < max; curr++) {
+    if (tokens_meta[curr] && tokens_meta[curr].delimiters) {
+      postProcess(state, tokens_meta[curr].delimiters);
+    }
+  }
 };
 
 
@@ -1350,7 +1412,7 @@ var content = __webpack_require__(355);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(338)("0ebffb1c", content, true, {});
+var update = __webpack_require__(338)("3f1a278c", content, true, {});
 
 /***/ }),
 /* 355 */
@@ -42949,7 +43011,7 @@ var punycode     = __webpack_require__(599);
 
 
 var config = {
-  'default': __webpack_require__(601),
+  default: __webpack_require__(601),
   zero: __webpack_require__(602),
   commonmark: __webpack_require__(603)
 };
@@ -43015,7 +43077,8 @@ function normalizeLinkText(url) {
     }
   }
 
-  return mdurl.decode(mdurl.format(parsed));
+  // add '%' to exclude list because of https://github.com/markdown-it/markdown-it/issues/720
+  return mdurl.decode(mdurl.format(parsed), mdurl.decode.defaultChars + '%');
 }
 
 
@@ -43121,7 +43184,7 @@ function normalizeLinkText(url) {
  *   highlight: function (str, lang) {
  *     if (lang && hljs.getLanguage(lang)) {
  *       try {
- *         return hljs.highlight(lang, str, true).value;
+ *         return hljs.highlight(str, { language: lang, ignoreIllegals: true }).value;
  *       } catch (__) {}
  *     }
  *
@@ -43141,7 +43204,7 @@ function normalizeLinkText(url) {
  *     if (lang && hljs.getLanguage(lang)) {
  *       try {
  *         return '<pre class="hljs"><code>' +
- *                hljs.highlight(lang, str, true).value +
+ *                hljs.highlight(str, { language: lang, ignoreIllegals: true }).value +
  *                '</code></pre>';
  *       } catch (__) {}
  *     }
@@ -43311,7 +43374,7 @@ MarkdownIt.prototype.set = function (options) {
  * MarkdownIt.configure(presets)
  *
  * Batch load of all options and compenent settings. This is internal method,
- * and you probably will not need it. But if you with - see available presets
+ * and you probably will not need it. But if you will - see available presets
  * and data structure [here](https://github.com/markdown-it/markdown-it/tree/master/lib/presets)
  *
  * We strongly recommend to use presets instead of direct config loads. That
@@ -43437,7 +43500,7 @@ MarkdownIt.prototype.use = function (plugin /*, params, ... */) {
  * - src (String): source string
  * - env (Object): environment sandbox
  *
- * Parse input string and returns list of block tokens (special token type
+ * Parse input string and return list of block tokens (special token type
  * "inline" will contain list of inline tokens). You should not call this
  * method directly, until you write custom renderer (for example, to produce
  * AST).
@@ -44205,7 +44268,6 @@ module.exports = function parseLinkLabel(state, start, disableNested) {
 
 
 
-var isSpace     = __webpack_require__(341).isSpace;
 var unescapeAll = __webpack_require__(341).unescapeAll;
 
 
@@ -44224,7 +44286,8 @@ module.exports = function parseLinkDestination(str, pos, max) {
     pos++;
     while (pos < max) {
       code = str.charCodeAt(pos);
-      if (code === 0x0A /* \n */ || isSpace(code)) { return result; }
+      if (code === 0x0A /* \n */) { return result; }
+      if (code === 0x3C /* < */) { return result; }
       if (code === 0x3E /* > */) {
         result.pos = pos + 1;
         result.str = unescapeAll(str.slice(start + 1, pos));
@@ -44255,12 +44318,14 @@ module.exports = function parseLinkDestination(str, pos, max) {
     if (code < 0x20 || code === 0x7F) { break; }
 
     if (code === 0x5C /* \ */ && pos + 1 < max) {
+      if (str.charCodeAt(pos + 1) === 0x20) { break; }
       pos += 2;
       continue;
     }
 
     if (code === 0x28 /* ( */) {
       level++;
+      if (level > 32) { return result; }
     }
 
     if (code === 0x29 /* ) */) {
@@ -44326,6 +44391,8 @@ module.exports = function parseLinkTitle(str, pos, max) {
       result.str = unescapeAll(str.slice(start + 1, pos));
       result.ok = true;
       return result;
+    } else if (code === 0x28 /* ( */ && marker === 0x29 /* ) */) {
+      return result;
     } else if (code === 0x0A) {
       lines++;
     } else if (code === 0x5C /* \ */ && pos + 1 < max) {
@@ -44389,14 +44456,17 @@ default_rules.fence = function (tokens, idx, options, env, slf) {
   var token = tokens[idx],
       info = token.info ? unescapeAll(token.info).trim() : '',
       langName = '',
-      highlighted, i, tmpAttrs, tmpToken;
+      langAttrs = '',
+      highlighted, i, arr, tmpAttrs, tmpToken;
 
   if (info) {
-    langName = info.split(/\s+/g)[0];
+    arr = info.split(/(\s+)/g);
+    langName = arr[0];
+    langAttrs = arr.slice(2).join('');
   }
 
   if (options.highlight) {
-    highlighted = options.highlight(token.content, langName) || escapeHtml(token.content);
+    highlighted = options.highlight(token.content, langName, langAttrs) || escapeHtml(token.content);
   } else {
     highlighted = escapeHtml(token.content);
   }
@@ -44406,7 +44476,7 @@ default_rules.fence = function (tokens, idx, options, env, slf) {
   }
 
   // If language exists, inject class gently, without modifying original token.
-  // May be, one day we will add .clone() for token and simplify this part, but
+  // May be, one day we will add .deepClone() for token and simplify this part, but
   // now we prefer to keep things local.
   if (info) {
     i        = token.attrIndex('class');
@@ -44415,6 +44485,7 @@ default_rules.fence = function (tokens, idx, options, env, slf) {
     if (i < 0) {
       tmpAttrs.push([ 'class', options.langPrefix + langName ]);
     } else {
+      tmpAttrs[i] = tmpAttrs[i].slice();
       tmpAttrs[i][1] += ' ' + options.langPrefix + langName;
     }
 
@@ -44602,7 +44673,7 @@ Renderer.prototype.renderToken = function renderToken(tokens, idx, options) {
 
 /**
  * Renderer.renderInline(tokens, options, env) -> String
- * - tokens (Array): list on block tokens to renter
+ * - tokens (Array): list on block tokens to render
  * - options (Object): params of parser instance
  * - env (Object): additional data from parsed input (references, for example)
  *
@@ -44629,7 +44700,7 @@ Renderer.prototype.renderInline = function (tokens, options, env) {
 
 /** internal
  * Renderer.renderInlineAsText(tokens, options, env) -> String
- * - tokens (Array): list on block tokens to renter
+ * - tokens (Array): list on block tokens to render
  * - options (Object): params of parser instance
  * - env (Object): additional data from parsed input (references, for example)
  *
@@ -44645,6 +44716,8 @@ Renderer.prototype.renderInlineAsText = function (tokens, options, env) {
       result += tokens[i].content;
     } else if (tokens[i].type === 'image') {
       result += this.renderInlineAsText(tokens[i].children, options, env);
+    } else if (tokens[i].type === 'softbreak') {
+      result += '\n';
     }
   }
 
@@ -44654,7 +44727,7 @@ Renderer.prototype.renderInlineAsText = function (tokens, options, env) {
 
 /**
  * Renderer.render(tokens, options, env) -> String
- * - tokens (Array): list on block tokens to renter
+ * - tokens (Array): list on block tokens to render
  * - options (Object): params of parser instance
  * - env (Object): additional data from parsed input (references, for example)
  *
@@ -44759,11 +44832,12 @@ module.exports = Core;
 
 
 
-var NEWLINES_RE  = /\r[\n\u0085]?|[\u2424\u2028\u0085]/g;
-var NULL_RE      = /\u0000/g;
+// https://spec.commonmark.org/0.29/#line-ending
+var NEWLINES_RE  = /\r\n?|\n/g;
+var NULL_RE      = /\0/g;
 
 
-module.exports = function inline(state) {
+module.exports = function normalize(state) {
   var str;
 
   // Normalize newlines
@@ -44964,7 +45038,7 @@ module.exports = function linkify(state) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-// Simple typographyc replacements
+// Simple typographic replacements
 //
 // (c) (C) → ©
 // (tm) (TM) → ™
@@ -45028,16 +45102,16 @@ function replace_rare(inlineTokens) {
     if (token.type === 'text' && !inside_autolink) {
       if (RARE_RE.test(token.content)) {
         token.content = token.content
-                    .replace(/\+-/g, '±')
-                    // .., ..., ....... -> …
-                    // but ?..... & !..... -> ?.. & !..
-                    .replace(/\.{2,}/g, '…').replace(/([?!])…/g, '$1..')
-                    .replace(/([?!]){4,}/g, '$1$1$1').replace(/,{2,}/g, ',')
-                    // em-dash
-                    .replace(/(^|[^-])---([^-]|$)/mg, '$1\u2014$2')
-                    // en-dash
-                    .replace(/(^|\s)--(\s|$)/mg, '$1\u2013$2')
-                    .replace(/(^|[^-\s])--([^-\s]|$)/mg, '$1\u2013$2');
+          .replace(/\+-/g, '±')
+          // .., ..., ....... -> …
+          // but ?..... & !..... -> ?.. & !..
+          .replace(/\.{2,}/g, '…').replace(/([?!])…/g, '$1..')
+          .replace(/([?!]){4,}/g, '$1$1$1').replace(/,{2,}/g, ',')
+          // em-dash
+          .replace(/(^|[^-])---(?=[^-]|$)/mg, '$1\u2014')
+          // en-dash
+          .replace(/(^|\s)--(?=\s|$)/mg, '$1\u2013')
+          .replace(/(^|[^-\s])--(?=[^-\s]|$)/mg, '$1\u2013');
       }
     }
 
@@ -45140,7 +45214,7 @@ function process_inlines(tokens, state) {
       } else {
         for (j = i - 1; j >= 0; j--) {
           if (tokens[j].type === 'softbreak' || tokens[j].type === 'hardbreak') break; // lastChar defaults to 0x20
-          if (tokens[j].type !== 'text') continue;
+          if (!tokens[j].content) continue; // should skip all tokens except 'text', 'html_inline' or 'code_inline'
 
           lastChar = tokens[j].content.charCodeAt(tokens[j].content.length - 1);
           break;
@@ -45157,7 +45231,7 @@ function process_inlines(tokens, state) {
       } else {
         for (j = i + 1; j < tokens.length; j++) {
           if (tokens[j].type === 'softbreak' || tokens[j].type === 'hardbreak') break; // nextChar defaults to 0x20
-          if (tokens[j].type !== 'text') continue;
+          if (!tokens[j].content) continue; // should skip all tokens except 'text', 'html_inline' or 'code_inline'
 
           nextChar = tokens[j].content.charCodeAt(0);
           break;
@@ -45194,8 +45268,14 @@ function process_inlines(tokens, state) {
       }
 
       if (canOpen && canClose) {
-        // treat this as the middle of the word
-        canOpen = false;
+        // Replace quotes in the middle of punctuation sequence, but not
+        // in the middle of the words, i.e.:
+        //
+        // 1. foo " bar " baz - not replaced
+        // 2. foo-"-bar-"-baz - replaced
+        // 3. foo"bar"baz     - not replaced
+        //
+        canOpen = isLastPunctChar;
         canClose = isNextPunctChar;
       }
 
@@ -45328,9 +45408,9 @@ var _rules = [
   [ 'hr',         __webpack_require__(575),         [ 'paragraph', 'reference', 'blockquote', 'list' ] ],
   [ 'list',       __webpack_require__(576),       [ 'paragraph', 'reference', 'blockquote' ] ],
   [ 'reference',  __webpack_require__(577) ],
-  [ 'heading',    __webpack_require__(578),    [ 'paragraph', 'reference', 'blockquote' ] ],
-  [ 'lheading',   __webpack_require__(579) ],
-  [ 'html_block', __webpack_require__(580), [ 'paragraph', 'reference', 'blockquote' ] ],
+  [ 'html_block', __webpack_require__(578), [ 'paragraph', 'reference', 'blockquote' ] ],
+  [ 'heading',    __webpack_require__(580),    [ 'paragraph', 'reference', 'blockquote' ] ],
+  [ 'lheading',   __webpack_require__(581) ],
   [ 'paragraph',  __webpack_require__(582) ]
 ];
 
@@ -45436,7 +45516,7 @@ module.exports = ParserBlock;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-// GFM table, non-standard
+// GFM table, https://github.github.com/gfm/#tables-extension-
 
 
 
@@ -45444,7 +45524,7 @@ var isSpace = __webpack_require__(341).isSpace;
 
 
 function getLine(state, line) {
-  var pos = state.bMarks[line] + state.blkIndent,
+  var pos = state.bMarks[line] + state.tShift[line],
       max = state.eMarks[line];
 
   return state.src.substr(pos, max - pos);
@@ -45455,56 +45535,42 @@ function escapedSplit(str) {
       pos = 0,
       max = str.length,
       ch,
-      escapes = 0,
+      isEscaped = false,
       lastPos = 0,
-      backTicked = false,
-      lastBackTick = 0;
+      current = '';
 
   ch  = str.charCodeAt(pos);
 
   while (pos < max) {
-    if (ch === 0x60/* ` */) {
-      if (backTicked) {
-        // make \` close code sequence, but not open it;
-        // the reason is: `\` is correct code block
-        backTicked = false;
-        lastBackTick = pos;
-      } else if (escapes % 2 === 0) {
-        backTicked = true;
-        lastBackTick = pos;
+    if (ch === 0x7c/* | */) {
+      if (!isEscaped) {
+        // pipe separating cells, '|'
+        result.push(current + str.substring(lastPos, pos));
+        current = '';
+        lastPos = pos + 1;
+      } else {
+        // escaped pipe, '\|'
+        current += str.substring(lastPos, pos - 1);
+        lastPos = pos;
       }
-    } else if (ch === 0x7c/* | */ && (escapes % 2 === 0) && !backTicked) {
-      result.push(str.substring(lastPos, pos));
-      lastPos = pos + 1;
     }
 
-    if (ch === 0x5c/* \ */) {
-      escapes++;
-    } else {
-      escapes = 0;
-    }
-
+    isEscaped = (ch === 0x5c/* \ */);
     pos++;
-
-    // If there was an un-closed backtick, go back to just after
-    // the last backtick, but as if it was a normal character
-    if (pos === max && backTicked) {
-      backTicked = false;
-      pos = lastBackTick + 1;
-    }
 
     ch = str.charCodeAt(pos);
   }
 
-  result.push(str.substring(lastPos));
+  result.push(current + str.substring(lastPos));
 
   return result;
 }
 
 
 module.exports = function table(state, startLine, endLine, silent) {
-  var ch, lineText, pos, i, nextLine, columns, columnCount, token,
-      aligns, t, tableLines, tbodyLines;
+  var ch, lineText, pos, i, l, nextLine, columns, columnCount, token,
+      aligns, t, tableLines, tbodyLines, oldParentType, terminate,
+      terminatorRules, firstCh, secondCh;
 
   // should have at least two lines
   if (startLine + 2 > endLine) { return false; }
@@ -45523,8 +45589,19 @@ module.exports = function table(state, startLine, endLine, silent) {
   pos = state.bMarks[nextLine] + state.tShift[nextLine];
   if (pos >= state.eMarks[nextLine]) { return false; }
 
-  ch = state.src.charCodeAt(pos++);
-  if (ch !== 0x7C/* | */ && ch !== 0x2D/* - */ && ch !== 0x3A/* : */) { return false; }
+  firstCh = state.src.charCodeAt(pos++);
+  if (firstCh !== 0x7C/* | */ && firstCh !== 0x2D/* - */ && firstCh !== 0x3A/* : */) { return false; }
+
+  if (pos >= state.eMarks[nextLine]) { return false; }
+
+  secondCh = state.src.charCodeAt(pos++);
+  if (secondCh !== 0x7C/* | */ && secondCh !== 0x2D/* - */ && secondCh !== 0x3A/* : */ && !isSpace(secondCh)) {
+    return false;
+  }
+
+  // if first character is '-', then second character must not be a space
+  // (due to parsing ambiguity with list)
+  if (firstCh === 0x2D/* - */ && isSpace(secondCh)) { return false; }
 
   while (pos < state.eMarks[nextLine]) {
     ch = state.src.charCodeAt(pos);
@@ -45563,14 +45640,23 @@ module.exports = function table(state, startLine, endLine, silent) {
   lineText = getLine(state, startLine).trim();
   if (lineText.indexOf('|') === -1) { return false; }
   if (state.sCount[startLine] - state.blkIndent >= 4) { return false; }
-  columns = escapedSplit(lineText.replace(/^\||\|$/g, ''));
+  columns = escapedSplit(lineText);
+  if (columns.length && columns[0] === '') columns.shift();
+  if (columns.length && columns[columns.length - 1] === '') columns.pop();
 
   // header row will define an amount of columns in the entire table,
-  // and align row shouldn't be smaller than that (the rest of the rows can)
+  // and align row should be exactly the same (the rest of the rows can differ)
   columnCount = columns.length;
-  if (columnCount > aligns.length) { return false; }
+  if (columnCount === 0 || columnCount !== aligns.length) { return false; }
 
   if (silent) { return true; }
+
+  oldParentType = state.parentType;
+  state.parentType = 'table';
+
+  // use 'blockquote' lists for termination because it's
+  // the most similar to tables
+  terminatorRules = state.md.block.ruler.getRules('blockquote');
 
   token     = state.push('table_open', 'table', 1);
   token.map = tableLines = [ startLine, 0 ];
@@ -45583,14 +45669,12 @@ module.exports = function table(state, startLine, endLine, silent) {
 
   for (i = 0; i < columns.length; i++) {
     token          = state.push('th_open', 'th', 1);
-    token.map      = [ startLine, startLine + 1 ];
     if (aligns[i]) {
       token.attrs  = [ [ 'style', 'text-align:' + aligns[i] ] ];
     }
 
     token          = state.push('inline', '', 0);
     token.content  = columns[i].trim();
-    token.map      = [ startLine, startLine + 1 ];
     token.children = [];
 
     token          = state.push('th_close', 'th', -1);
@@ -45599,18 +45683,33 @@ module.exports = function table(state, startLine, endLine, silent) {
   token     = state.push('tr_close', 'tr', -1);
   token     = state.push('thead_close', 'thead', -1);
 
-  token     = state.push('tbody_open', 'tbody', 1);
-  token.map = tbodyLines = [ startLine + 2, 0 ];
-
   for (nextLine = startLine + 2; nextLine < endLine; nextLine++) {
     if (state.sCount[nextLine] < state.blkIndent) { break; }
 
-    lineText = getLine(state, nextLine).trim();
-    if (lineText.indexOf('|') === -1) { break; }
-    if (state.sCount[nextLine] - state.blkIndent >= 4) { break; }
-    columns = escapedSplit(lineText.replace(/^\||\|$/g, ''));
+    terminate = false;
+    for (i = 0, l = terminatorRules.length; i < l; i++) {
+      if (terminatorRules[i](state, nextLine, endLine, true)) {
+        terminate = true;
+        break;
+      }
+    }
 
-    token = state.push('tr_open', 'tr', 1);
+    if (terminate) { break; }
+    lineText = getLine(state, nextLine).trim();
+    if (!lineText) { break; }
+    if (state.sCount[nextLine] - state.blkIndent >= 4) { break; }
+    columns = escapedSplit(lineText);
+    if (columns.length && columns[0] === '') columns.shift();
+    if (columns.length && columns[columns.length - 1] === '') columns.pop();
+
+    if (nextLine === startLine + 2) {
+      token     = state.push('tbody_open', 'tbody', 1);
+      token.map = tbodyLines = [ startLine + 2, 0 ];
+    }
+
+    token     = state.push('tr_open', 'tr', 1);
+    token.map = [ nextLine, nextLine + 1 ];
+
     for (i = 0; i < columnCount; i++) {
       token          = state.push('td_open', 'td', 1);
       if (aligns[i]) {
@@ -45625,10 +45724,16 @@ module.exports = function table(state, startLine, endLine, silent) {
     }
     token = state.push('tr_close', 'tr', -1);
   }
-  token = state.push('tbody_close', 'tbody', -1);
-  token = state.push('table_close', 'table', -1);
 
-  tableLines[1] = tbodyLines[1] = nextLine;
+  if (tbodyLines) {
+    token = state.push('tbody_close', 'tbody', -1);
+    tbodyLines[1] = nextLine;
+  }
+
+  token = state.push('table_close', 'table', -1);
+  tableLines[1] = nextLine;
+
+  state.parentType = oldParentType;
   state.line = nextLine;
   return true;
 };
@@ -45668,7 +45773,7 @@ module.exports = function code(state, startLine, endLine/*, silent*/) {
   state.line = last;
 
   token         = state.push('code_block', 'code', 0);
-  token.content = state.getLines(startLine, last, 4 + state.blkIndent, true);
+  token.content = state.getLines(startLine, last, 4 + state.blkIndent, false) + '\n';
   token.map     = [ startLine, state.line ];
 
   return true;
@@ -45713,7 +45818,11 @@ module.exports = function fence(state, startLine, endLine, silent) {
   markup = state.src.slice(mem, pos);
   params = state.src.slice(pos, max);
 
-  if (params.indexOf(String.fromCharCode(marker)) >= 0) { return false; }
+  if (marker === 0x60 /* ` */) {
+    if (params.indexOf(String.fromCharCode(marker)) >= 0) {
+      return false;
+    }
+  }
 
   // Since start is found, we can report success here in validation mode
   if (silent) { return true; }
@@ -45808,7 +45917,7 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
       terminate,
       terminatorRules,
       token,
-      wasOutdented,
+      isOutdented,
       oldLineMax = state.lineMax,
       pos = state.bMarks[startLine] + state.tShift[startLine],
       max = state.eMarks[startLine];
@@ -45823,8 +45932,8 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
   // so no point trying to find the end of it in silent mode
   if (silent) { return true; }
 
-  // skip spaces after ">" and re-calculate offset
-  initial = offset = state.sCount[startLine] + pos - (state.bMarks[startLine] + state.tShift[startLine]);
+  // set offset past spaces and ">"
+  initial = offset = state.sCount[startLine] + 1;
 
   // skip one optional space after '>'
   if (state.src.charCodeAt(pos) === 0x20 /* space */) {
@@ -45889,7 +45998,6 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
 
   oldParentType = state.parentType;
   state.parentType = 'blockquote';
-  wasOutdented = false;
 
   // Search the end of the block
   //
@@ -45918,7 +46026,7 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
     //    > current blockquote
     // 2. checking this line
     // ```
-    if (state.sCount[nextLine] < state.blkIndent) wasOutdented = true;
+    isOutdented = state.sCount[nextLine] < state.blkIndent;
 
     pos = state.bMarks[nextLine] + state.tShift[nextLine];
     max = state.eMarks[nextLine];
@@ -45928,11 +46036,11 @@ module.exports = function blockquote(state, startLine, endLine, silent) {
       break;
     }
 
-    if (state.src.charCodeAt(pos++) === 0x3E/* > */ && !wasOutdented) {
+    if (state.src.charCodeAt(pos++) === 0x3E/* > */ && !isOutdented) {
       // This line is inside the blockquote.
 
-      // skip spaces after ">" and re-calculate offset
-      initial = offset = state.sCount[nextLine] + pos - (state.bMarks[nextLine] + state.tShift[nextLine]);
+      // set offset past spaces and ">"
+      initial = offset = state.sCount[nextLine] + 1;
 
       // skip one optional space after '>'
       if (state.src.charCodeAt(pos) === 0x20 /* space */) {
@@ -46241,9 +46349,9 @@ module.exports = function list(state, startLine, endLine, silent) {
       max,
       nextLine,
       offset,
-      oldIndent,
-      oldLIndent,
+      oldListIndent,
       oldParentType,
+      oldSCount,
       oldTShift,
       oldTight,
       pos,
@@ -46259,6 +46367,18 @@ module.exports = function list(state, startLine, endLine, silent) {
   // if it's indented more than 3 spaces, it should be a code block
   if (state.sCount[startLine] - state.blkIndent >= 4) { return false; }
 
+  // Special case:
+  //  - item 1
+  //   - item 2
+  //    - item 3
+  //     - item 4
+  //      - this one is a paragraph continuation
+  if (state.listIndent >= 0 &&
+      state.sCount[startLine] - state.listIndent >= 4 &&
+      state.sCount[startLine] < state.blkIndent) {
+    return false;
+  }
+
   // limit conditions when list can interrupt
   // a paragraph (validation mode only)
   if (silent && state.parentType === 'paragraph') {
@@ -46267,7 +46387,7 @@ module.exports = function list(state, startLine, endLine, silent) {
     // This code can fail if plugins use blkIndent as well as lists,
     // but I hope the spec gets fixed long before that happens.
     //
-    if (state.tShift[startLine] >= state.blkIndent) {
+    if (state.sCount[startLine] >= state.blkIndent) {
       isTerminatingParagraph = true;
     }
   }
@@ -46276,7 +46396,7 @@ module.exports = function list(state, startLine, endLine, silent) {
   if ((posAfterMarker = skipOrderedListMarker(state, startLine)) >= 0) {
     isOrdered = true;
     start = state.bMarks[startLine] + state.tShift[startLine];
-    markerValue = Number(state.src.substr(start, posAfterMarker - start - 1));
+    markerValue = Number(state.src.slice(start, posAfterMarker - 1));
 
     // If we're starting a new ordered list right after
     // a paragraph, it should start with 1.
@@ -46369,12 +46489,23 @@ module.exports = function list(state, startLine, endLine, silent) {
     token        = state.push('list_item_open', 'li', 1);
     token.markup = String.fromCharCode(markerCharCode);
     token.map    = itemLines = [ startLine, 0 ];
+    if (isOrdered) {
+      token.info = state.src.slice(start, posAfterMarker - 1);
+    }
 
-    oldIndent = state.blkIndent;
+    // change current state, then restore it after parser subcall
     oldTight = state.tight;
     oldTShift = state.tShift[startLine];
-    oldLIndent = state.sCount[startLine];
+    oldSCount = state.sCount[startLine];
+
+    //  - example list
+    // ^ listIndent position will be here
+    //   ^ blkIndent position will be here
+    //
+    oldListIndent = state.listIndent;
+    state.listIndent = state.blkIndent;
     state.blkIndent = indent;
+
     state.tight = true;
     state.tShift[startLine] = contentStart - state.bMarks[startLine];
     state.sCount[startLine] = offset;
@@ -46400,9 +46531,10 @@ module.exports = function list(state, startLine, endLine, silent) {
     // but we should filter last element, because it means list finish
     prevEmptyEnd = (state.line - startLine) > 1 && state.isEmpty(state.line - 1);
 
-    state.blkIndent = oldIndent;
+    state.blkIndent = state.listIndent;
+    state.listIndent = oldListIndent;
     state.tShift[startLine] = oldTShift;
-    state.sCount[startLine] = oldLIndent;
+    state.sCount[startLine] = oldSCount;
     state.tight = oldTight;
 
     token        = state.push('list_item_close', 'li', -1);
@@ -46419,6 +46551,9 @@ module.exports = function list(state, startLine, endLine, silent) {
     //
     if (state.sCount[nextLine] < state.blkIndent) { break; }
 
+    // if it's indented more than 3 spaces, it should be a code block
+    if (state.sCount[startLine] - state.blkIndent >= 4) { break; }
+
     // fail if terminating block found
     terminate = false;
     for (i = 0, l = terminatorRules.length; i < l; i++) {
@@ -46433,6 +46568,7 @@ module.exports = function list(state, startLine, endLine, silent) {
     if (isOrdered) {
       posAfterMarker = skipOrderedListMarker(state, nextLine);
       if (posAfterMarker < 0) { break; }
+      start = state.bMarks[nextLine] + state.tShift[nextLine];
     } else {
       posAfterMarker = skipBulletListMarker(state, nextLine);
       if (posAfterMarker < 0) { break; }
@@ -46673,6 +46809,164 @@ module.exports = function reference(state, startLine, _endLine, silent) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+// HTML block
+
+
+
+
+var block_names = __webpack_require__(579);
+var HTML_OPEN_CLOSE_TAG_RE = __webpack_require__(351).HTML_OPEN_CLOSE_TAG_RE;
+
+// An array of opening and corresponding closing sequences for html tags,
+// last argument defines whether it can terminate a paragraph or not
+//
+var HTML_SEQUENCES = [
+  [ /^<(script|pre|style|textarea)(?=(\s|>|$))/i, /<\/(script|pre|style|textarea)>/i, true ],
+  [ /^<!--/,        /-->/,   true ],
+  [ /^<\?/,         /\?>/,   true ],
+  [ /^<![A-Z]/,     />/,     true ],
+  [ /^<!\[CDATA\[/, /\]\]>/, true ],
+  [ new RegExp('^</?(' + block_names.join('|') + ')(?=(\\s|/?>|$))', 'i'), /^$/, true ],
+  [ new RegExp(HTML_OPEN_CLOSE_TAG_RE.source + '\\s*$'),  /^$/, false ]
+];
+
+
+module.exports = function html_block(state, startLine, endLine, silent) {
+  var i, nextLine, token, lineText,
+      pos = state.bMarks[startLine] + state.tShift[startLine],
+      max = state.eMarks[startLine];
+
+  // if it's indented more than 3 spaces, it should be a code block
+  if (state.sCount[startLine] - state.blkIndent >= 4) { return false; }
+
+  if (!state.md.options.html) { return false; }
+
+  if (state.src.charCodeAt(pos) !== 0x3C/* < */) { return false; }
+
+  lineText = state.src.slice(pos, max);
+
+  for (i = 0; i < HTML_SEQUENCES.length; i++) {
+    if (HTML_SEQUENCES[i][0].test(lineText)) { break; }
+  }
+
+  if (i === HTML_SEQUENCES.length) { return false; }
+
+  if (silent) {
+    // true if this sequence can be a terminator, false otherwise
+    return HTML_SEQUENCES[i][2];
+  }
+
+  nextLine = startLine + 1;
+
+  // If we are here - we detected HTML block.
+  // Let's roll down till block end.
+  if (!HTML_SEQUENCES[i][1].test(lineText)) {
+    for (; nextLine < endLine; nextLine++) {
+      if (state.sCount[nextLine] < state.blkIndent) { break; }
+
+      pos = state.bMarks[nextLine] + state.tShift[nextLine];
+      max = state.eMarks[nextLine];
+      lineText = state.src.slice(pos, max);
+
+      if (HTML_SEQUENCES[i][1].test(lineText)) {
+        if (lineText.length !== 0) { nextLine++; }
+        break;
+      }
+    }
+  }
+
+  state.line = nextLine;
+
+  token         = state.push('html_block', '', 0);
+  token.map     = [ startLine, nextLine ];
+  token.content = state.getLines(startLine, nextLine, state.blkIndent, true);
+
+  return true;
+};
+
+
+/***/ }),
+/* 579 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+// List of valid html blocks names, accorting to commonmark spec
+// http://jgm.github.io/CommonMark/spec.html#html-blocks
+
+
+
+
+module.exports = [
+  'address',
+  'article',
+  'aside',
+  'base',
+  'basefont',
+  'blockquote',
+  'body',
+  'caption',
+  'center',
+  'col',
+  'colgroup',
+  'dd',
+  'details',
+  'dialog',
+  'dir',
+  'div',
+  'dl',
+  'dt',
+  'fieldset',
+  'figcaption',
+  'figure',
+  'footer',
+  'form',
+  'frame',
+  'frameset',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'head',
+  'header',
+  'hr',
+  'html',
+  'iframe',
+  'legend',
+  'li',
+  'link',
+  'main',
+  'menu',
+  'menuitem',
+  'nav',
+  'noframes',
+  'ol',
+  'optgroup',
+  'option',
+  'p',
+  'param',
+  'section',
+  'source',
+  'summary',
+  'table',
+  'tbody',
+  'td',
+  'tfoot',
+  'th',
+  'thead',
+  'title',
+  'tr',
+  'track',
+  'ul'
+];
+
+
+/***/ }),
+/* 580 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 // heading (#, ##, ...)
 
 
@@ -46731,7 +47025,7 @@ module.exports = function heading(state, startLine, endLine, silent) {
 
 
 /***/ }),
-/* 579 */
+/* 581 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46818,165 +47112,6 @@ module.exports = function lheading(state, startLine, endLine/*, silent*/) {
 
   return true;
 };
-
-
-/***/ }),
-/* 580 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-// HTML block
-
-
-
-
-var block_names = __webpack_require__(581);
-var HTML_OPEN_CLOSE_TAG_RE = __webpack_require__(351).HTML_OPEN_CLOSE_TAG_RE;
-
-// An array of opening and corresponding closing sequences for html tags,
-// last argument defines whether it can terminate a paragraph or not
-//
-var HTML_SEQUENCES = [
-  [ /^<(script|pre|style)(?=(\s|>|$))/i, /<\/(script|pre|style)>/i, true ],
-  [ /^<!--/,        /-->/,   true ],
-  [ /^<\?/,         /\?>/,   true ],
-  [ /^<![A-Z]/,     />/,     true ],
-  [ /^<!\[CDATA\[/, /\]\]>/, true ],
-  [ new RegExp('^</?(' + block_names.join('|') + ')(?=(\\s|/?>|$))', 'i'), /^$/, true ],
-  [ new RegExp(HTML_OPEN_CLOSE_TAG_RE.source + '\\s*$'),  /^$/, false ]
-];
-
-
-module.exports = function html_block(state, startLine, endLine, silent) {
-  var i, nextLine, token, lineText,
-      pos = state.bMarks[startLine] + state.tShift[startLine],
-      max = state.eMarks[startLine];
-
-  // if it's indented more than 3 spaces, it should be a code block
-  if (state.sCount[startLine] - state.blkIndent >= 4) { return false; }
-
-  if (!state.md.options.html) { return false; }
-
-  if (state.src.charCodeAt(pos) !== 0x3C/* < */) { return false; }
-
-  lineText = state.src.slice(pos, max);
-
-  for (i = 0; i < HTML_SEQUENCES.length; i++) {
-    if (HTML_SEQUENCES[i][0].test(lineText)) { break; }
-  }
-
-  if (i === HTML_SEQUENCES.length) { return false; }
-
-  if (silent) {
-    // true if this sequence can be a terminator, false otherwise
-    return HTML_SEQUENCES[i][2];
-  }
-
-  nextLine = startLine + 1;
-
-  // If we are here - we detected HTML block.
-  // Let's roll down till block end.
-  if (!HTML_SEQUENCES[i][1].test(lineText)) {
-    for (; nextLine < endLine; nextLine++) {
-      if (state.sCount[nextLine] < state.blkIndent) { break; }
-
-      pos = state.bMarks[nextLine] + state.tShift[nextLine];
-      max = state.eMarks[nextLine];
-      lineText = state.src.slice(pos, max);
-
-      if (HTML_SEQUENCES[i][1].test(lineText)) {
-        if (lineText.length !== 0) { nextLine++; }
-        break;
-      }
-    }
-  }
-
-  state.line = nextLine;
-
-  token         = state.push('html_block', '', 0);
-  token.map     = [ startLine, nextLine ];
-  token.content = state.getLines(startLine, nextLine, state.blkIndent, true);
-
-  return true;
-};
-
-
-/***/ }),
-/* 581 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-// List of valid html blocks names, accorting to commonmark spec
-// http://jgm.github.io/CommonMark/spec.html#html-blocks
-
-
-
-
-module.exports = [
-  'address',
-  'article',
-  'aside',
-  'base',
-  'basefont',
-  'blockquote',
-  'body',
-  'caption',
-  'center',
-  'col',
-  'colgroup',
-  'dd',
-  'details',
-  'dialog',
-  'dir',
-  'div',
-  'dl',
-  'dt',
-  'fieldset',
-  'figcaption',
-  'figure',
-  'footer',
-  'form',
-  'frame',
-  'frameset',
-  'h1',
-  'h2',
-  'h3',
-  'h4',
-  'h5',
-  'h6',
-  'head',
-  'header',
-  'hr',
-  'html',
-  'iframe',
-  'legend',
-  'li',
-  'link',
-  'main',
-  'menu',
-  'menuitem',
-  'meta',
-  'nav',
-  'noframes',
-  'ol',
-  'optgroup',
-  'option',
-  'p',
-  'param',
-  'section',
-  'source',
-  'summary',
-  'table',
-  'tbody',
-  'td',
-  'tfoot',
-  'th',
-  'thead',
-  'title',
-  'tr',
-  'track',
-  'ul'
-];
 
 
 /***/ }),
@@ -47085,12 +47220,13 @@ function StateBlock(src, md, env, tokens) {
   this.bsCount = [];
 
   // block parser variables
-  this.blkIndent  = 0; // required block content indent
-                       // (for example, if we are in list)
+  this.blkIndent  = 0; // required block content indent (for example, if we are
+                       // inside a list, it would be positioned after list marker)
   this.line       = 0; // line index in src
   this.lineMax    = 0; // lines count
   this.tight      = false;  // loose/tight mode for lists
   this.ddIndent   = -1; // indent of the current dd block (-1 if there isn't any)
+  this.listIndent = -1; // indent of the current list block (-1 if there isn't any)
 
   // can be 'blockquote', 'list', 'root', 'paragraph' or 'reference'
   // used in lists to determine if they interrupt a paragraph
@@ -47155,9 +47291,9 @@ StateBlock.prototype.push = function (type, tag, nesting) {
   var token = new Token(type, tag, nesting);
   token.block = true;
 
-  if (nesting < 0) { this.level--; }
+  if (nesting < 0) this.level--; // closing tag
   token.level = this.level;
-  if (nesting > 0) { this.level++; }
+  if (nesting > 0) this.level++; // opening tag
 
   this.tokens.push(token);
   return token;
@@ -47568,7 +47704,7 @@ var isSpace = __webpack_require__(341).isSpace;
 
 
 module.exports = function newline(state, silent) {
-  var pmax, max, pos = state.pos;
+  var pmax, max, ws, pos = state.pos;
 
   if (state.src.charCodeAt(pos) !== 0x0A/* \n */) { return false; }
 
@@ -47582,7 +47718,11 @@ module.exports = function newline(state, silent) {
   if (!silent) {
     if (pmax >= 0 && state.pending.charCodeAt(pmax) === 0x20) {
       if (pmax >= 1 && state.pending.charCodeAt(pmax - 1) === 0x20) {
-        state.pending = state.pending.replace(/ +$/, '');
+        // Find whitespaces tail of pending chars.
+        ws = pmax - 1;
+        while (ws >= 1 && state.pending.charCodeAt(ws - 1) === 0x20) ws--;
+
+        state.pending = state.pending.slice(0, ws);
         state.push('hardbreak', 'br', 0);
       } else {
         state.pending = state.pending.slice(0, -1);
@@ -47672,8 +47812,9 @@ module.exports = function escape(state, silent) {
 
 
 
+
 module.exports = function backtick(state, silent) {
-  var start, max, marker, matchStart, matchEnd, token,
+  var start, max, marker, token, matchStart, matchEnd, openerLength, closerLength,
       pos = state.pos,
       ch = state.src.charCodeAt(pos);
 
@@ -47683,32 +47824,51 @@ module.exports = function backtick(state, silent) {
   pos++;
   max = state.posMax;
 
+  // scan marker length
   while (pos < max && state.src.charCodeAt(pos) === 0x60/* ` */) { pos++; }
 
   marker = state.src.slice(start, pos);
+  openerLength = marker.length;
+
+  if (state.backticksScanned && (state.backticks[openerLength] || 0) <= start) {
+    if (!silent) state.pending += marker;
+    state.pos += openerLength;
+    return true;
+  }
 
   matchStart = matchEnd = pos;
 
+  // Nothing found in the cache, scan until the end of the line (or until marker is found)
   while ((matchStart = state.src.indexOf('`', matchEnd)) !== -1) {
     matchEnd = matchStart + 1;
 
+    // scan marker length
     while (matchEnd < max && state.src.charCodeAt(matchEnd) === 0x60/* ` */) { matchEnd++; }
 
-    if (matchEnd - matchStart === marker.length) {
+    closerLength = matchEnd - matchStart;
+
+    if (closerLength === openerLength) {
+      // Found matching closer length.
       if (!silent) {
-        token         = state.push('code_inline', 'code', 0);
+        token     = state.push('code_inline', 'code', 0);
         token.markup  = marker;
         token.content = state.src.slice(pos, matchStart)
-                                 .replace(/[ \n]+/g, ' ')
-                                 .trim();
+          .replace(/\n/g, ' ')
+          .replace(/^ (.+) $/, '$1');
       }
       state.pos = matchEnd;
       return true;
     }
+
+    // Some different length found, put it in cache as upper limit of where closer can be found
+    state.backticks[closerLength] = matchStart;
   }
 
-  if (!silent) { state.pending += marker; }
-  state.pos += marker.length;
+  // Scanned through the end, didn't find anything
+  state.backticksScanned = true;
+
+  if (!silent) state.pending += marker;
+  state.pos += openerLength;
   return true;
 };
 
@@ -47735,9 +47895,9 @@ module.exports = function link(state, silent) {
       pos,
       res,
       ref,
-      title,
       token,
       href = '',
+      title = '',
       oldPos = state.pos,
       max = state.posMax,
       start = state.pos,
@@ -47780,31 +47940,29 @@ module.exports = function link(state, silent) {
       } else {
         href = '';
       }
-    }
-
-    // [link](  <href>  "title"  )
-    //                ^^ skipping these spaces
-    start = pos;
-    for (; pos < max; pos++) {
-      code = state.src.charCodeAt(pos);
-      if (!isSpace(code) && code !== 0x0A) { break; }
-    }
-
-    // [link](  <href>  "title"  )
-    //                  ^^^^^^^ parsing link title
-    res = state.md.helpers.parseLinkTitle(state.src, pos, state.posMax);
-    if (pos < max && start !== pos && res.ok) {
-      title = res.str;
-      pos = res.pos;
 
       // [link](  <href>  "title"  )
-      //                         ^^ skipping these spaces
+      //                ^^ skipping these spaces
+      start = pos;
       for (; pos < max; pos++) {
         code = state.src.charCodeAt(pos);
         if (!isSpace(code) && code !== 0x0A) { break; }
       }
-    } else {
-      title = '';
+
+      // [link](  <href>  "title"  )
+      //                  ^^^^^^^ parsing link title
+      res = state.md.helpers.parseLinkTitle(state.src, pos, state.posMax);
+      if (pos < max && start !== pos && res.ok) {
+        title = res.str;
+        pos = res.pos;
+
+        // [link](  <href>  "title"  )
+        //                         ^^ skipping these spaces
+        for (; pos < max; pos++) {
+          code = state.src.charCodeAt(pos);
+          if (!isSpace(code) && code !== 0x0A) { break; }
+        }
+      }
     }
 
     if (pos >= max || state.src.charCodeAt(pos) !== 0x29/* ) */) {
@@ -48040,24 +48198,31 @@ module.exports = function image(state, silent) {
 
 
 /*eslint max-len:0*/
-var EMAIL_RE    = /^<([a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)>/;
-var AUTOLINK_RE = /^<([a-zA-Z][a-zA-Z0-9+.\-]{1,31}):([^<>\x00-\x20]*)>/;
+var EMAIL_RE    = /^([a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)$/;
+var AUTOLINK_RE = /^([a-zA-Z][a-zA-Z0-9+.\-]{1,31}):([^<>\x00-\x20]*)$/;
 
 
 module.exports = function autolink(state, silent) {
-  var tail, linkMatch, emailMatch, url, fullUrl, token,
+  var url, fullUrl, token, ch, start, max,
       pos = state.pos;
 
   if (state.src.charCodeAt(pos) !== 0x3C/* < */) { return false; }
 
-  tail = state.src.slice(pos);
+  start = state.pos;
+  max = state.posMax;
 
-  if (tail.indexOf('>') < 0) { return false; }
+  for (;;) {
+    if (++pos >= max) return false;
 
-  if (AUTOLINK_RE.test(tail)) {
-    linkMatch = tail.match(AUTOLINK_RE);
+    ch = state.src.charCodeAt(pos);
 
-    url = linkMatch[0].slice(1, -1);
+    if (ch === 0x3C /* < */) return false;
+    if (ch === 0x3E /* > */) break;
+  }
+
+  url = state.src.slice(start + 1, pos);
+
+  if (AUTOLINK_RE.test(url)) {
     fullUrl = state.md.normalizeLink(url);
     if (!state.md.validateLink(fullUrl)) { return false; }
 
@@ -48075,14 +48240,11 @@ module.exports = function autolink(state, silent) {
       token.info    = 'auto';
     }
 
-    state.pos += linkMatch[0].length;
+    state.pos += url.length + 2;
     return true;
   }
 
-  if (EMAIL_RE.test(tail)) {
-    emailMatch = tail.match(EMAIL_RE);
-
-    url = emailMatch[0].slice(1, -1);
+  if (EMAIL_RE.test(url)) {
     fullUrl = state.md.normalizeLink('mailto:' + url);
     if (!state.md.validateLink(fullUrl)) { return false; }
 
@@ -48100,7 +48262,7 @@ module.exports = function autolink(state, silent) {
       token.info    = 'auto';
     }
 
-    state.pos += emailMatch[0].length;
+    state.pos += url.length + 2;
     return true;
   }
 
@@ -48177,7 +48339,7 @@ var isValidEntityCode = __webpack_require__(341).isValidEntityCode;
 var fromCodePoint     = __webpack_require__(341).fromCodePoint;
 
 
-var DIGITAL_RE = /^&#((?:x[a-f0-9]{1,8}|[0-9]{1,8}));/i;
+var DIGITAL_RE = /^&#((?:x[a-f0-9]{1,6}|[0-9]{1,7}));/i;
 var NAMED_RE   = /^&([a-z][a-z0-9]{1,31});/i;
 
 
@@ -48227,42 +48389,128 @@ module.exports = function entity(state, silent) {
 
 
 
-module.exports = function link_pairs(state) {
-  var i, j, lastDelim, currDelim,
-      delimiters = state.delimiters,
-      max = state.delimiters.length;
+function processDelimiters(state, delimiters) {
+  var closerIdx, openerIdx, closer, opener, minOpenerIdx, newMinOpenerIdx,
+      isOddMatch, lastJump,
+      openersBottom = {},
+      max = delimiters.length;
 
-  for (i = 0; i < max; i++) {
-    lastDelim = delimiters[i];
+  if (!max) return;
 
-    if (!lastDelim.close) { continue; }
+  // headerIdx is the first delimiter of the current (where closer is) delimiter run
+  var headerIdx = 0;
+  var lastTokenIdx = -2; // needs any value lower than -1
+  var jumps = [];
 
-    j = i - lastDelim.jump - 1;
+  for (closerIdx = 0; closerIdx < max; closerIdx++) {
+    closer = delimiters[closerIdx];
 
-    while (j >= 0) {
-      currDelim = delimiters[j];
+    jumps.push(0);
 
-      if (currDelim.open &&
-          currDelim.marker === lastDelim.marker &&
-          currDelim.end < 0 &&
-          currDelim.level === lastDelim.level) {
+    // markers belong to same delimiter run if:
+    //  - they have adjacent tokens
+    //  - AND markers are the same
+    //
+    if (delimiters[headerIdx].marker !== closer.marker || lastTokenIdx !== closer.token - 1) {
+      headerIdx = closerIdx;
+    }
 
-        // typeofs are for backward compatibility with plugins
-        var odd_match = (currDelim.close || lastDelim.open) &&
-                        typeof currDelim.length !== 'undefined' &&
-                        typeof lastDelim.length !== 'undefined' &&
-                        (currDelim.length + lastDelim.length) % 3 === 0;
+    lastTokenIdx = closer.token;
 
-        if (!odd_match) {
-          lastDelim.jump = i - j;
-          lastDelim.open = false;
-          currDelim.end  = i;
-          currDelim.jump = 0;
+    // Length is only used for emphasis-specific "rule of 3",
+    // if it's not defined (in strikethrough or 3rd party plugins),
+    // we can default it to 0 to disable those checks.
+    //
+    closer.length = closer.length || 0;
+
+    if (!closer.close) continue;
+
+    // Previously calculated lower bounds (previous fails)
+    // for each marker, each delimiter length modulo 3,
+    // and for whether this closer can be an opener;
+    // https://github.com/commonmark/cmark/commit/34250e12ccebdc6372b8b49c44fab57c72443460
+    if (!openersBottom.hasOwnProperty(closer.marker)) {
+      openersBottom[closer.marker] = [ -1, -1, -1, -1, -1, -1 ];
+    }
+
+    minOpenerIdx = openersBottom[closer.marker][(closer.open ? 3 : 0) + (closer.length % 3)];
+
+    openerIdx = headerIdx - jumps[headerIdx] - 1;
+
+    newMinOpenerIdx = openerIdx;
+
+    for (; openerIdx > minOpenerIdx; openerIdx -= jumps[openerIdx] + 1) {
+      opener = delimiters[openerIdx];
+
+      if (opener.marker !== closer.marker) continue;
+
+      if (opener.open && opener.end < 0) {
+
+        isOddMatch = false;
+
+        // from spec:
+        //
+        // If one of the delimiters can both open and close emphasis, then the
+        // sum of the lengths of the delimiter runs containing the opening and
+        // closing delimiters must not be a multiple of 3 unless both lengths
+        // are multiples of 3.
+        //
+        if (opener.close || closer.open) {
+          if ((opener.length + closer.length) % 3 === 0) {
+            if (opener.length % 3 !== 0 || closer.length % 3 !== 0) {
+              isOddMatch = true;
+            }
+          }
+        }
+
+        if (!isOddMatch) {
+          // If previous delimiter cannot be an opener, we can safely skip
+          // the entire sequence in future checks. This is required to make
+          // sure algorithm has linear complexity (see *_*_*_*_*_... case).
+          //
+          lastJump = openerIdx > 0 && !delimiters[openerIdx - 1].open ?
+            jumps[openerIdx - 1] + 1 :
+            0;
+
+          jumps[closerIdx] = closerIdx - openerIdx + lastJump;
+          jumps[openerIdx] = lastJump;
+
+          closer.open  = false;
+          opener.end   = closerIdx;
+          opener.close = false;
+          newMinOpenerIdx = -1;
+          // treat next token as start of run,
+          // it optimizes skips in **<...>**a**<...>** pathological case
+          lastTokenIdx = -2;
           break;
         }
       }
+    }
 
-      j -= currDelim.jump + 1;
+    if (newMinOpenerIdx !== -1) {
+      // If match for this delimiter run failed, we want to set lower bound for
+      // future lookups. This is required to make sure algorithm has linear
+      // complexity.
+      //
+      // See details here:
+      // https://github.com/commonmark/cmark/issues/178#issuecomment-270417442
+      //
+      openersBottom[closer.marker][(closer.open ? 3 : 0) + ((closer.length || 0) % 3)] = newMinOpenerIdx;
+    }
+  }
+}
+
+
+module.exports = function link_pairs(state) {
+  var curr,
+      tokens_meta = state.tokens_meta,
+      max = state.tokens_meta.length;
+
+  processDelimiters(state, state.delimiters);
+
+  for (curr = 0; curr < max; curr++) {
+    if (tokens_meta[curr] && tokens_meta[curr].delimiters) {
+      processDelimiters(state, tokens_meta[curr].delimiters);
     }
   }
 };
@@ -48273,7 +48521,13 @@ module.exports = function link_pairs(state) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-// Merge adjacent text nodes into one, and re-calculate all token levels
+// Clean up tokens after emphasis and strikethrough postprocessing:
+// merge adjacent text nodes into one and re-calculate all token levels
+//
+// This is necessary because initially emphasis delimiter markers (*, _, ~)
+// are treated as their own separate text tokens. Then emphasis rule either
+// leaves them as text (needed to merge with adjacent text) or turns them
+// into opening/closing tags (which messes up levels inside).
 //
 
 
@@ -48285,9 +48539,11 @@ module.exports = function text_collapse(state) {
       max = state.tokens.length;
 
   for (curr = last = 0; curr < max; curr++) {
-    // re-calculate levels
-    level += tokens[curr].nesting;
+    // re-calculate levels after emphasis/strikethrough turns some text nodes
+    // into opening/closing tags
+    if (tokens[curr].nesting < 0) level--; // closing tag
     tokens[curr].level = level;
+    if (tokens[curr].nesting > 0) level++; // opening tag
 
     if (tokens[curr].type === 'text' &&
         curr + 1 < max &&
@@ -48329,6 +48585,7 @@ function StateInline(src, md, env, outTokens) {
   this.env = env;
   this.md = md;
   this.tokens = outTokens;
+  this.tokens_meta = Array(outTokens.length);
 
   this.pos = 0;
   this.posMax = this.src.length;
@@ -48336,10 +48593,19 @@ function StateInline(src, md, env, outTokens) {
   this.pending = '';
   this.pendingLevel = 0;
 
-  this.cache = {};        // Stores { start: end } pairs. Useful for backtrack
-                          // optimization of pairs parse (emphasis, strikes).
+  // Stores { start: end } pairs. Useful for backtrack
+  // optimization of pairs parse (emphasis, strikes).
+  this.cache = {};
 
-  this.delimiters = [];   // Emphasis-like delimiters
+  // List of emphasis-like delimiters for current tag
+  this.delimiters = [];
+
+  // Stack of delimiter lists for upper level tags
+  this._prev_delimiters = [];
+
+  // backtick length => last seen position
+  this.backticks = {};
+  this.backticksScanned = false;
 }
 
 
@@ -48364,13 +48630,27 @@ StateInline.prototype.push = function (type, tag, nesting) {
   }
 
   var token = new Token(type, tag, nesting);
+  var token_meta = null;
 
-  if (nesting < 0) { this.level--; }
+  if (nesting < 0) {
+    // closing tag
+    this.level--;
+    this.delimiters = this._prev_delimiters.pop();
+  }
+
   token.level = this.level;
-  if (nesting > 0) { this.level++; }
+
+  if (nesting > 0) {
+    // opening tag
+    this.level++;
+    this._prev_delimiters.push(this.delimiters);
+    this.delimiters = [];
+    token_meta = { delimiters: this.delimiters };
+  }
 
   this.pendingLevel = this.level;
   this.tokens.push(token);
+  this.tokens_meta.push(token_meta);
   return token;
 };
 
@@ -49144,19 +49424,20 @@ module.exports = function (opts) {
     '(?:' +
       '[/?#]' +
         '(?:' +
-          '(?!' + re.src_ZCc + '|' + text_separators + '|[()[\\]{}.,"\'?!\\-]).|' +
+          '(?!' + re.src_ZCc + '|' + text_separators + '|[()[\\]{}.,"\'?!\\-;]).|' +
           '\\[(?:(?!' + re.src_ZCc + '|\\]).)*\\]|' +
           '\\((?:(?!' + re.src_ZCc + '|[)]).)*\\)|' +
           '\\{(?:(?!' + re.src_ZCc + '|[}]).)*\\}|' +
           '\\"(?:(?!' + re.src_ZCc + '|["]).)+\\"|' +
           "\\'(?:(?!" + re.src_ZCc + "|[']).)+\\'|" +
           "\\'(?=" + re.src_pseudo_letter + '|[-]).|' +  // allow `I'm_king` if no pair found
-          '\\.{2,4}[a-zA-Z0-9%/]|' + // github has ... in commit range links,
-                                     // google has .... in links (issue #66)
+          '\\.{2,}[a-zA-Z0-9%/&]|' + // google has many dots in "google search" links (#66, #81).
+                                     // github has ... in commit range links,
                                      // Restrict to
                                      // - english
                                      // - percent-encoded
                                      // - parts of file path
+                                     // - params separator
                                      // until more examples found.
           '\\.(?!' + re.src_ZCc + '|[.]).|' +
           (opts && opts['---'] ?
@@ -49164,8 +49445,9 @@ module.exports = function (opts) {
             :
             '\\-+|'
           ) +
-          '\\,(?!' + re.src_ZCc + ').|' +      // allow `,,,` in paths
-          '\\!(?!' + re.src_ZCc + '|[!]).|' +
+          ',(?!' + re.src_ZCc + ').|' +       // allow `,,,` in paths
+          ';(?!' + re.src_ZCc + ').|' +       // allow `;` if not followed by space-like char
+          '\\!+(?!' + re.src_ZCc + '|[!]).|' +  // allow `!!!` in paths, but not at the end
           '\\?(?!' + re.src_ZCc + '|[?]).' +
         ')+' +
       '|\\/' +
