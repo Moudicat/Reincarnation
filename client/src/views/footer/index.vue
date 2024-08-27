@@ -4,6 +4,9 @@
       Powered By
       <a href="https://github.com/moudicat/reincarnation">Reincarnation@Beta</a>
       |
+      <img src="https://moudicat-data.oss-cn-beijing.aliyuncs.com/cdn/images/beian.png" style="margin-right: 5px;width: 16px;">
+      <a href="https://beian.mps.gov.cn/#/query/webSearch?code=52011502009325" rel="noreferrer" target="_blank">贵公网安备52011502009325</a>
+      |
       <a
         href="https://beian.miit.gov.cn/"
         target="_blank"
